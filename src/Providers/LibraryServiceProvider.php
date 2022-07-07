@@ -22,6 +22,30 @@ class LibraryServiceProvider extends ServiceProvider
         });
     }
 
+    public static function basePath(string $module, string $basePath): ?string
+    {
+        $library = [
+            'Api/Views/AcervoController',
+            'Api/Views/AssuntoController',
+            'Api/Views/AutorController',
+            'Api/Views/CategoriaController',
+            'Api/Views/ClienteController',
+            'Biblioteca/Views/EmprestimoApiController',
+            'Biblioteca/Views/EmprestimoController',
+            'Biblioteca/Views/ReservaApiController',
+            'Biblioteca/Views/ReservaController',
+            'DynamicInput/Views/BibliotecaController',
+            'DynamicInput/Views/TipoExemplarController',
+            'OrdenacaoAlunos/Views/OrdenacaoAlunosApiController',
+        ];
+
+        if (in_array($module, $library)) {
+            return __DIR__ . '/../../ieducar/modules';
+        }
+
+        return $basePath;
+    }
+
     public static function intranet(): array
     {
         return [

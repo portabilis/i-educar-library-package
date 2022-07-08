@@ -14,17 +14,25 @@ class LibraryServiceProvider extends ServiceProvider
         }
 
         LegacyController::resolver(function ($uri) {
-            if (in_array($uri, LibraryServiceProvider::intranet())) {
+            if (in_array($uri, static::intranet())) {
                 return __DIR__ . '/../../ieducar/' . $uri;
+            }
+
+            return null;
+        });
+
+        LegacyController::resolver(function ($uri) {
+            if (in_array($uri, static::module())) {
+                return __DIR__ . '/../../ieducar/modules';
             }
 
             return null;
         });
     }
 
-    public static function basePath(string $module, string $basePath): ?string
+    public static function module(): array
     {
-        $library = [
+        return [
             'Api/Views/AcervoController',
             'Api/Views/AssuntoController',
             'Api/Views/AutorController',
@@ -38,12 +46,6 @@ class LibraryServiceProvider extends ServiceProvider
             'DynamicInput/Views/TipoExemplarController',
             'OrdenacaoAlunos/Views/OrdenacaoAlunosApiController',
         ];
-
-        if (in_array($module, $library)) {
-            return __DIR__ . '/../../ieducar/modules';
-        }
-
-        return $basePath;
     }
 
     public static function intranet(): array

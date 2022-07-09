@@ -215,7 +215,7 @@ return new class extends clsCadastro {
 
     public function makeCss()
     {
-        return file_get_contents(__DIR__ . '/scripts/extra/educar-exemplar-tipo-cad.css');
+        return file_get_contents(__DIR__ . '/styles/extra/educar-exemplar-tipo-cad.css');
     }
 
     public function Formular()

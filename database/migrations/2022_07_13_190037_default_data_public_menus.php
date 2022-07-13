@@ -10,11 +10,7 @@ return new class extends Migration {
         $menus = $this->getMenusForInsert();
 
         foreach ($menus as $menu) {
-            if(!Menu::query()->where('link', '=', $menu['link'])->exists()) {
-                (new Menu())
-                    ->fill($menu)
-                    ->saveOrFail();
-            }
+            Menu::query()->updateOrCreate($menu);
         }
     }
 

@@ -7,7 +7,7 @@ return new class extends Migration {
     public function up(): void
     {
         DB::unprepared(
-            __DIR__ . '/../sqls/inserts/menus.sql'
+            file_get_contents( __DIR__ . '/../sqls/inserts/menus.sql')
         );
     }
 };

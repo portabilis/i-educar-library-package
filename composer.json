@@ -10,7 +10,7 @@
         "classmap": [
             "ieducar/intranet/include",
             "ieducar/lib",
-            "ieducar/modules/Transporte/Model"
+            "ieducar/modules/Biblioteca/Model"
         ],
         "psr-4": {
             "iEducar\\Packages\\Library\\": "src/"

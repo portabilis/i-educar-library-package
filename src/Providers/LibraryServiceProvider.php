@@ -144,7 +144,6 @@ class LibraryServiceProvider extends ServiceProvider
             'intranet/educar_situacao_lst.php',
             'intranet/educar_situacao_xml.php',
             'intranet/educar_tombo_automatico.ajax.php',
-            'intranet/educar_usuario_cad.php',
         ];
     }
 }

@@ -13,7 +13,7 @@ class AddFunctionModulesPreveDataEmprestimo extends Migration
     public function up()
     {
         DB::unprepared(
-            file_get_contents(__DIR__ . '/../../sqls/functions/modules.preve_data_emprestimo.sql')
+            file_get_contents(__DIR__ . '/../sqls/functions/modules.preve_data_emprestimo.sql')
         );
     }
 

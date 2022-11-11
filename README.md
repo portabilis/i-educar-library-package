@@ -13,3 +13,11 @@ composer plug-and-play
 # (Docker) docker-compose exec php artisan migrate
 php artisan migrate
 ```
+
+## Perguntas frequentes (FAQ)
+
+Algumas perguntas aparecem recorrentemente. Olhe primeiro por aqui: [FAQ](https://github.com/portabilis/i-educar-website/blob/master/docs/faq.md).
+
+---
+
+Powered by [Portabilis Tecnologia](http://www.portabilis.com.br/).

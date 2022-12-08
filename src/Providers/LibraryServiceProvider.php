@@ -3,6 +3,7 @@
 namespace iEducar\Packages\Library\Providers;
 
 use App\Http\Controllers\LegacyController;
+use iEducar\Packages\Library\Commands\LibraryInstallCommand;
 use Illuminate\Support\ServiceProvider;
 
 class LibraryServiceProvider extends ServiceProvider
@@ -11,6 +12,7 @@ class LibraryServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+            $this->commands(LibraryInstallCommand::class);
         }
 
         LegacyController::resolver(function ($uri) {

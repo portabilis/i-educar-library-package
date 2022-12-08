@@ -24,6 +24,7 @@ class LibraryInstallCommand extends Command
     public function handle()
     {
         $this->installMenus();
+        $this->info('Menus adicionado com sucesso!');
     }
 
     private function installMenus(): void

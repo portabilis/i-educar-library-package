@@ -10,8 +10,8 @@ git clone git@github.com:portabilis/i-educar-library-package.git packages/portab
 # (Docker) docker-compose exec php composer plug-and-play
 composer plug-and-play
 
-# (Docker) docker-compose exec php artisan library:install
-php artisan library:install
+# (Docker) docker-compose exec php artisan migrate
+php artisan migrate
 ```
 
 ## Perguntas frequentes (FAQ)

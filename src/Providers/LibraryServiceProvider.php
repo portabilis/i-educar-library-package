@@ -12,7 +12,6 @@ class LibraryServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-            $this->commands(LibraryInstallCommand::class);
         }
 
         LegacyController::resolver(function ($uri) {

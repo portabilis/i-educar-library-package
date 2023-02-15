@@ -122,7 +122,6 @@ class LibraryServiceProvider extends ServiceProvider
             'intranet/educar_fonte_det.php',
             'intranet/educar_fonte_lst.php',
             'intranet/educar_fonte_xml.php',
-            'intranet/educar_funcao_det.php',
             'intranet/educar_idioma_xml.php',
             'intranet/educar_motivo_baixa_cad.php',
             'intranet/educar_motivo_baixa_det.php',

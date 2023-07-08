@@ -1,15 +1,27 @@
 # i-Educar Biblioteca
 
+Módulo de biblioteca para o [i-Educar](https://github.com/portabilis/i-educar).
+
 ## Instalação
 
-Para adicionar este repositório ao i-Educar execute os comandos abaixo na raiz do repositório principal:
+> Para usuários Docker, executar os comandos `# (Docker)` ao invés da linha seguinte.
+
+Clone este repositório a partir da raiz do i-Educar:
 
 ```bash
 git clone git@github.com:portabilis/i-educar-library-package.git packages/portabilis/i-educar-library-package
+```
 
+Instale o pacote:
+
+```bash
 # (Docker) docker-compose exec php composer plug-and-play
 composer plug-and-play
+```
 
+Execute as migrações:
+ 
+```bash
 # (Docker) docker-compose exec php artisan migrate
 php artisan migrate
 ```
@@ -20,4 +32,4 @@ Algumas perguntas aparecem recorrentemente. Olhe primeiro por aqui: [FAQ](https:
 
 ---
 
-Powered by [Portabilis Tecnologia](http://www.portabilis.com.br/).
+Powered by [Portábilis](https://portabilis.com.br/).

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 // TODO migrar novo padrao api controller
 
 class ReservaApiController extends ApiCoreController
@@ -386,11 +388,7 @@ class ReservaApiController extends ApiCoreController
         $cliente = $cliente->detalhe();
 
         $_cliente['pessoaId'] = $cliente['ref_idpes'];
-
-        $pessoa = new clsPessoa_($_cliente['pessoaId']);
-        $pessoa = $pessoa->detalhe();
-
-        $_cliente['nome']        = $pessoa['nome'];
+        $_cliente['nome']     = LegacyPerson::query()->whereKey($_cliente['pessoaId'])->value('nome');
 
         $sql = 'select 1 from pmieducar.cliente_suspensao where ref_cod_cliente = $1 and data_liberacao is null and data_suspensao + (dias||\' day\')::interval >= now()';
         $suspenso = $this->fetchPreparedQuery($sql, $params = [$id], true, 'first-field');

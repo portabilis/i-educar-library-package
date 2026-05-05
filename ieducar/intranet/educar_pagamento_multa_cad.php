@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -60,11 +62,7 @@ return new class extends clsCadastro {
             $det_cliente     = $obj_cliente->detalhe();
             if ($det_cliente) {
                 $this->ref_idpes = $det_cliente['ref_idpes'];
-                $obj_pessoa      = new clsPessoa_($this->ref_idpes);
-                $det_pessoa      = $obj_pessoa->detalhe();
-                if ($det_pessoa) {
-                    $this->nm_pessoa = $det_pessoa['nome'];
-                }
+                $this->nm_pessoa = LegacyPerson::query()->whereKey($this->ref_idpes)->value('nome');
                 $obj_divida = new clsPmieducarExemplarEmprestimo(null, null, null, $this->ref_cod_cliente);
                 $det_divida = $obj_divida->clienteDividaTotal($this->ref_idpes, $this->ref_cod_cliente, null, $this->ref_cod_biblioteca);
                 if ($det_divida) {

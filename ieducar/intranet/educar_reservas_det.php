@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 return new class extends clsDetalhe {
     /**
      * Titulo no topo da pagina
@@ -41,9 +43,7 @@ return new class extends clsDetalhe {
         $obj_cliente = new clsPmieducarCliente($registro['ref_cod_cliente']);
         $det_cliente = $obj_cliente->detalhe();
         $ref_idpes = $det_cliente['ref_idpes'];
-        $obj_pessoa = new clsPessoa_($ref_idpes);
-        $det_pessoa = $obj_pessoa->detalhe();
-        $registro['ref_cod_cliente'] = $det_pessoa['nome'];
+        $registro['ref_cod_cliente'] = LegacyPerson::query()->whereKey($ref_idpes)->value('nome');
 
         if ($registro['ref_cod_cliente']) {
             $this->addDetalhe([ 'Cliente', "{$registro['ref_cod_cliente']}"]);

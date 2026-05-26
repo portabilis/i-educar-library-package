@@ -41,7 +41,11 @@ return new class extends clsCadastro {
         $this->cod_biblioteca=$_GET['cod_biblioteca'];
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        }
 
         $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
         if ($nivel_usuario <= 3) {
@@ -198,7 +202,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        $obj_permissoes->permissao_editar(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
 
         $this->valor_multa = str_replace('.', '', $this->valor_multa);
         $this->valor_multa = str_replace(',', '.', $this->valor_multa);

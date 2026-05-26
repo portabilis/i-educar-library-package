@@ -89,7 +89,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(608, $this->pessoa_logada, 11, 'educar_fonte_lst.php');
+        $obj_permissoes->permissao_editar(608, $this->pessoa_logada, 11, 'educar_fonte_lst.php');
 
         $obj = new clsPmieducarFonte($this->cod_fonte, $this->pessoa_logada, $this->pessoa_logada, $this->nm_fonte, $this->descricao, $this->data_cadastro, $this->data_exclusao, $this->ativo, $this->ref_cod_biblioteca);
         $editou = $obj->edita();

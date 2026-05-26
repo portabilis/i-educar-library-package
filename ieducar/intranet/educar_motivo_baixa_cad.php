@@ -25,7 +25,11 @@ return new class extends clsCadastro {
         $this->cod_motivo_baixa=$_GET['cod_motivo_baixa'];
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        }
 
         if (is_numeric($this->cod_motivo_baixa)) {
             $obj = new clsPmieducarMotivoBaixa($this->cod_motivo_baixa);
@@ -88,7 +92,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        $obj_permissoes->permissao_editar(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
 
         $obj = new clsPmieducarMotivoBaixa($this->cod_motivo_baixa, $this->pessoa_logada, null, $this->nm_motivo_baixa, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $editou = $obj->edita();

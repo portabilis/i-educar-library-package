@@ -27,7 +27,11 @@ return new class extends clsCadastro {
         $this->cod_acervo_autor=$_GET['cod_acervo_autor'];
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        }
 
         return $retorno;
     }

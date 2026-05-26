@@ -87,6 +87,8 @@ return new class extends clsDetalhe {
 
         if ($obj_permissoes->permissao_cadastra(591, $this->pessoa_logada, 3)) {
             $this->url_novo = 'educar_biblioteca_cad.php';
+        }
+        if ($obj_permissoes->permissao_editar(591, $this->pessoa_logada, 3)) {
             $this->url_editar = "educar_biblioteca_cad.php?cod_biblioteca={$registro['cod_biblioteca']}";
         }
 

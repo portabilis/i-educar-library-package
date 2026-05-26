@@ -157,7 +157,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(602, $this->pessoa_logada, 11, 'educar_situacao_lst.php');
+        $obj_permissoes->permissao_editar(602, $this->pessoa_logada, 11, 'educar_situacao_lst.php');
 
         $this->situacao_padrao = is_null($this->situacao_padrao) ? 0 : 1;
         $this->situacao_emprestada = is_null($this->situacao_emprestada) ? 0 : 1;

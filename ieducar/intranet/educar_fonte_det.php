@@ -44,6 +44,8 @@ return new class extends clsDetalhe {
         $obj_permissoes = new clsPermissoes();
         if ($obj_permissoes->permissao_cadastra(608, $this->pessoa_logada, 11)) {
             $this->url_novo = 'educar_fonte_cad.php';
+        }
+        if ($obj_permissoes->permissao_editar(608, $this->pessoa_logada, 11)) {
             $this->url_editar = "educar_fonte_cad.php?cod_fonte={$registro['cod_fonte']}";
         }
 

@@ -33,7 +33,11 @@ return new class extends clsCadastro {
         $retorno = 'Novo';
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        }
 
         return $retorno;
     }

@@ -122,6 +122,8 @@ return new class extends clsDetalhe {
         if ($obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11)) {
             $this->caption_novo = 'Pagar';
             $this->url_novo = "educar_pagamento_multa_cad.php?cod_cliente={$this->ref_cod_cliente}&cod_biblioteca={$det_tipo['ref_cod_biblioteca']}";
+        }
+        if ($obj_permissoes->permissao_editar(622, $this->pessoa_logada, 11)) {
             $this->url_editar = false;
         }
 

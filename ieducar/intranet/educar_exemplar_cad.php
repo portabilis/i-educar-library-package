@@ -36,7 +36,11 @@ return new class extends clsCadastro {
         $this->cod_exemplar=$_GET['cod_exemplar'];
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        }
 
         if (is_numeric($this->cod_exemplar)) {
             $obj = new clsPmieducarExemplar($this->cod_exemplar);
@@ -143,7 +147,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        $obj_permissoes->permissao_editar(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
 
         $this->preco = str_replace('.', '', $this->preco);
         $this->preco = str_replace(',', '.', $this->preco);

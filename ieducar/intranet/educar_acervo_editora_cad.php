@@ -127,7 +127,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        $obj_permissoes->permissao_editar(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
 
         $this->cep = idFederal2int($this->cep);
 

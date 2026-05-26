@@ -138,7 +138,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Data do Feriado', "{$tabela1}"]);
         }
 
-        if ($obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11)) {
+        if ($obj_permissoes->permissao_editar(629, $this->pessoa_logada, 11)) {
             $this->url_editar = "educar_biblioteca_dados_cad.php?cod_biblioteca={$registro['cod_biblioteca']}";
         }
 

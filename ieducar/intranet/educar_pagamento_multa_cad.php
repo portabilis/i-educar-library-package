@@ -33,7 +33,11 @@ return new class extends clsCadastro {
         }
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        }
 
         if (is_numeric($this->ref_cod_cliente)) {
             $obj_total_divida = new clsPmieducarExemplarEmprestimo();
@@ -126,7 +130,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        $obj_permissoes->permissao_editar(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
 
         $obj = new clsPmieducarPagamentoMulta($this->cod_pagamento_multa, null, $this->ref_cod_cliente, $this->valor_pago, null, $this->ref_cod_biblioteca);
         $editou = $obj->edita();

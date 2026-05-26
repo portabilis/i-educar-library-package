@@ -102,7 +102,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        $obj_permissoes->permissao_editar(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
 
         $this->preco = str_replace('.', '', $this->preco);
         $this->preco = str_replace(',', '.', $this->preco);

@@ -213,7 +213,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        $obj_permissoes->permissao_editar(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
 
         $this->valor_multa = str_replace('.', '', $this->valor_multa);
         $this->valor_multa = str_replace(',', '.', $this->valor_multa);

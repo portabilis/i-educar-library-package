@@ -36,7 +36,11 @@ return new class extends clsCadastro {
         $this->ref_cod_cliente_tipo_original = $_GET['cod_cliente_tipo'];
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        }
 
         if (is_numeric($this->cod_cliente) && is_numeric($this->ref_cod_cliente_tipo)) {
             $obj_cliente = new clsPmieducarCliente();
@@ -144,7 +148,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        $obj_permissoes->permissao_editar(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
 
         $obj_cliente_tipo = new clsPmieducarClienteTipoCliente($this->ref_cod_cliente_tipo, $this->cod_cliente, null, null, null, $this->pessoa_logada);
         if ($obj_cliente_tipo->existeCliente()) {

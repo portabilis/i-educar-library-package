@@ -70,7 +70,6 @@ return new class extends clsDetalhe {
         $obj_permissoes = new clsPermissoes();
         if ($obj_permissoes->permissao_cadastra(603, $this->pessoa_logada, 11)) {
             $this->url_novo        = 'educar_cliente_cad.php';
-            $this->url_editar      = "educar_cliente_cad.php?cod_cliente={$cliente['cod_cliente']}&ref_cod_biblioteca={$this->ref_cod_biblioteca}";
             if (is_numeric($this->suspenso)) {
                 $this->array_botao     = [ 'Liberar' ];
                 $this->array_botao_url = [ "educar_define_status_cliente_cad.php?cod_cliente={$cliente['cod_cliente']}&ref_cod_biblioteca={$this->ref_cod_biblioteca}&status=liberar" ];
@@ -78,6 +77,9 @@ return new class extends clsDetalhe {
                 $this->array_botao     = [ 'Suspender' ];
                 $this->array_botao_url = [ "educar_define_status_cliente_cad.php?cod_cliente={$cliente['cod_cliente']}&ref_cod_biblioteca={$this->ref_cod_biblioteca}&status=suspender" ];
             }
+        }
+        if ($obj_permissoes->permissao_editar(603, $this->pessoa_logada, 11)) {
+            $this->url_editar      = "educar_cliente_cad.php?cod_cliente={$cliente['cod_cliente']}&ref_cod_biblioteca={$this->ref_cod_biblioteca}";
         }
 
         $this->url_cancelar = 'educar_cliente_lst.php';

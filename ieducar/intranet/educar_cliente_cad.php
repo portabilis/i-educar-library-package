@@ -275,7 +275,7 @@ return new class extends clsCadastro {
     {
         $senha = md5($this->senha . 'asnk@#*&(23');
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(603, $this->pessoa_logada, 11, 'educar_cliente_lst.php');
+        $obj_permissoes->permissao_editar(603, $this->pessoa_logada, 11, 'educar_cliente_lst.php');
 
         $obj = new clsPmieducarCliente(
             $this->cod_cliente,

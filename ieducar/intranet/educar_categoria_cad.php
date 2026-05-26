@@ -19,7 +19,11 @@ return new class extends clsCadastro {
         $this->id = $_GET['id'];
 
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        if ($this->tipoacao == 'Editar') {
+            $obj_permissoes->permissao_editar(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        } else {
+            $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        }
 
         if (is_numeric($this->id)) {
             $obj = new clsPmieducarCategoriaObra($this->id);
@@ -78,7 +82,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        $obj_permissoes->permissao_editar(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
 
         $obj = new clsPmieducarCategoriaObra($this->id, $this->descricao, $this->observacoes);
         $editou = $obj->edita();

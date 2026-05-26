@@ -156,7 +156,7 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(597, $this->pessoa_logada, 11, 'educar_exemplar_tipo_lst.php');
+        $obj_permissoes->permissao_editar(597, $this->pessoa_logada, 11, 'educar_exemplar_tipo_lst.php');
 
         $array_tipos = [];
         foreach ($_POST as $key => $cliente_tipo) {

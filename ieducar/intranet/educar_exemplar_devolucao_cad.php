@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyPerson;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -147,9 +148,7 @@ return new class extends clsCadastro {
         $obj_cliente = new clsPmieducarCliente($this->ref_cod_cliente);
         $det_cliente = $obj_cliente->detalhe();
         $ref_idpes = $det_cliente['ref_idpes'];
-        $obj_pessoa = new clsPessoa_($ref_idpes);
-        $det_pessoa = $obj_pessoa->detalhe();
-        $nm_pessoa = $det_pessoa['nome'];
+        $nm_pessoa = LegacyPerson::query()->whereKey($ref_idpes)->value('nome');
 
         $this->campoTextoInv('nm_pessoa', 'Cliente', $nm_pessoa, 30, 255);
         $ref_cod_exemplar_ = $this->ref_cod_exemplar;

@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 return new class extends clsListagem {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -102,9 +104,9 @@ return new class extends clsListagem {
             foreach ($lst_exemplar_emprestimo as $registro) {
                 $obj_cliente = new clsPmieducarCliente($registro['ref_cod_cliente']);
                 $det_cliente = $obj_cliente->detalhe();
+                $nomeCliente = null;
                 if ($det_cliente) {
-                    $obj_pessoa = new clsPessoa_($det_cliente['ref_idpes']);
-                    $det_pessoa = $obj_pessoa->detalhe();
+                    $nomeCliente = LegacyPerson::query()->whereKey($det_cliente['ref_idpes'])->value('nome');
                     if ($det_tipo) {
                         $nm_tipo = $det_tipo['nm_tipo'];
                     }
@@ -129,18 +131,14 @@ return new class extends clsListagem {
                     $obj_escola = new clsPmieducarEscola($det_bib['ref_cod_escola']);
                     $det_escola = $obj_escola->detalhe();
                     if ($det_escola) {
-                        $obj_pes = new clsPessoa_($det_escola['ref_idpes']);
-                        $det_pes = $obj_pes->detalhe();
-                        if ($det_pes) {
-                            $nome_escola = $det_pes['nome'];
-                        }
+                        $nome_escola = LegacyPerson::query()->whereKey($det_escola['ref_idpes'])->value('nome');
                     }
                 }
 
                 $obj_tipo = new clsPmieducarCliente();
                 $det_tipo = $obj_tipo->retornaTipoCliente($registro['ref_cod_cliente'], $registro['ref_cod_biblioteca']);
                 $lista_busca = [
-                    $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">{$det_pessoa['nome']}</a>",
+                    $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">{$nomeCliente}</a>",
                     $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">".'R$'.number_format($registro['valor_multa'], 2, ',', '.').'</a>',
                     $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">".'R$'.number_format($multa_total, 2, ',', '.').'</a>',
                     $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">".'R$'.number_format($registro['valor_pago'], 2, ',', '.').'</a>'

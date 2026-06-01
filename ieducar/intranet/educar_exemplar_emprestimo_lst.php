@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyPerson;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsListagem {
@@ -144,9 +145,7 @@ return new class extends clsListagem {
                 $obj_cliente = new clsPmieducarCliente($registro['ref_cod_cliente']);
                 $det_cliente = $obj_cliente->detalhe();
                 $ref_idpes = $det_cliente['ref_idpes'];
-                $obj_pessoa = new clsPessoa_($ref_idpes);
-                $det_pessoa = $obj_pessoa->detalhe();
-                $registro['ref_cod_cliente'] = $det_pessoa['nome'];
+                $registro['ref_cod_cliente'] = LegacyPerson::query()->whereKey($ref_idpes)->value('nome');
 
                 $obj_ref_cod_biblioteca = new clsPmieducarBiblioteca($registro['ref_cod_biblioteca']);
                 $det_ref_cod_biblioteca = $obj_ref_cod_biblioteca->detalhe();

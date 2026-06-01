@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyOrganization;
+use App\Models\LegacyPerson;
 
 return new class extends clsDetalhe {
     /**
@@ -64,15 +65,18 @@ return new class extends clsDetalhe {
                            </TR>';
             $cont = 0;
 
+            $idsUsuarios = array_filter(array_column($lst, 'ref_cod_usuario'), 'is_numeric');
+            $nomesPorUsuario = $idsUsuarios
+                ? LegacyPerson::query()->whereIn('idpes', $idsUsuarios)->pluck('nome', 'idpes')
+                : collect();
+
             foreach ($lst as $valor) {
                 if (($cont % 2) == 0) {
                     $color = ' bgcolor=#f5f9fd ';
                 } else {
                     $color = ' bgcolor=#FFFFFF ';
                 }
-                $obj_cod_usuario = new clsPessoa_($valor['ref_cod_usuario']);
-                $obj_usuario_det = $obj_cod_usuario->detalhe();
-                $nome_usuario = $obj_usuario_det['nome'];
+                $nome_usuario = $nomesPorUsuario[$valor['ref_cod_usuario']] ?? null;
 
                 $tabela .= "<TR>
                                 <TD {$color} align=left>{$nome_usuario}</TD>

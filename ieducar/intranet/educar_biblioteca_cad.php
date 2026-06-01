@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyPerson;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -97,6 +98,11 @@ return new class extends clsCadastro {
         unset($aux);
 
         if ($this->biblioteca_usuario) {
+            $idsUsuariosFlat = collect($this->biblioteca_usuario)->flatten()->filter('is_numeric')->unique()->all();
+            $nomesPorUsuario = $idsUsuariosFlat
+                ? LegacyPerson::query()->whereIn('idpes', $idsUsuariosFlat)->pluck('nome', 'idpes')
+                : collect();
+
             foreach ($this->biblioteca_usuario as $key => $campo) {
                 if ($campo) {
                     foreach ($campo as $chave => $usuarios) {
@@ -104,9 +110,7 @@ return new class extends clsCadastro {
                             $this->biblioteca_usuario[$chave] = null;
                             $this->excluir_usuario = null;
                         } else {
-                            $obj_cod_usuario = new clsPessoa_($usuarios);
-                            $obj_usuario_det = $obj_cod_usuario->detalhe();
-                            $nome_usuario = $obj_usuario_det['nome'];
+                            $nome_usuario = $nomesPorUsuario[$usuarios] ?? null;
                             $this->campoTextoInv("ref_cod_usuario_{$usuarios}", '', $nome_usuario, 30, 255, false, false, false, '', "<a href='#' onclick=\"getElementById('excluir_usuario').value = '{$usuarios}'; getElementById('tipoacao').value = ''; {$this->__nome}.submit();\"><img src='imagens/nvp_bola_xis.gif' title='Excluir' border=0></a>");
                             $aux['ref_cod_usuario_'][] = $usuarios;
                         }
@@ -125,11 +129,13 @@ return new class extends clsCadastro {
             $objTemp->setOrderby('nivel ASC');
             $lista = $objTemp->lista(null, null, $this->ref_cod_instituicao, null, null, null, null, null, null, null, 1);
             if (is_array($lista) && count($lista)) {
+                $idsUsuariosLista = array_filter(array_column($lista, 'cod_usuario'), 'is_numeric');
+                $nomesPorUsuarioLista = $idsUsuariosLista
+                    ? LegacyPerson::query()->whereIn('idpes', $idsUsuariosLista)->pluck('nome', 'idpes')
+                    : collect();
+
                 foreach ($lista as $registro) {
-                    $obj_cod_usuario = new clsPessoa_($registro['cod_usuario']);
-                    $obj_usuario_det = $obj_cod_usuario->detalhe();
-                    $nome_usuario = $obj_usuario_det['nome'];
-                    $opcoes["{$registro['cod_usuario']}"] = "{$nome_usuario}";
+                    $opcoes["{$registro['cod_usuario']}"] = (string) ($nomesPorUsuarioLista[$registro['cod_usuario']] ?? '');
                 }
             }
         }

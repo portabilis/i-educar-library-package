@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyOrganization;
+use App\Models\LegacyPerson;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsDetalhe {
@@ -68,9 +69,7 @@ return new class extends clsDetalhe {
             $obj_cliente = new clsPmieducarCliente($registro['ref_cod_cliente']);
             $det_cliente = $obj_cliente->detalhe();
             $ref_idpes = $det_cliente['ref_idpes'];
-            $obj_pessoa = new clsPessoa_($ref_idpes);
-            $det_pessoa = $obj_pessoa->detalhe();
-            $registro['ref_cod_cliente'] = $det_pessoa['nome'];
+            $registro['ref_cod_cliente'] = LegacyPerson::query()->whereKey($ref_idpes)->value('nome');
         }
 
         $obj_permissoes = new clsPermissoes();

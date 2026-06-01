@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -76,10 +78,10 @@ return new class extends clsCadastro {
         $this->campoOculto('cod_cliente', $this->cod_cliente);
         $this->campoOculto('requisita_senha', '0');
         $opcoes = [ '' => 'Pesquise a pessoa clicando na lupa ao lado' ];
+        $nome = null;
         if ($this->ref_idpes) {
-            $objTemp = new clsPessoaFisica($this->ref_idpes);
-            $detalhe = $objTemp->detalhe();
-            $opcoes["{$detalhe['idpes']}"] = $detalhe['nome'];
+            $nome = LegacyPerson::query()->whereKey($this->ref_idpes)->value('nome');
+            $opcoes["{$this->ref_idpes}"] = $nome;
         }
 
         // Caso o cliente não exista, exibe um campo de pesquisa, senão, mostra um rótulo
@@ -114,7 +116,7 @@ return new class extends clsCadastro {
         } else {
             $this->campoTexto('codigo', 'Código', $this->cod_cliente, 9, 9, null, null, null, null, null, null, null, true);
             $this->campoOculto('ref_idpes', $this->ref_idpes);
-            $this->campoRotulo('nm_cliente', 'Cliente', $detalhe['nome']);
+            $this->campoRotulo('nm_cliente', 'Cliente', $nome);
         }
 
         // text

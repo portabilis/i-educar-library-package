@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 class EmprestimoApiController extends ApiCoreController
 {
     protected $_nivelAcessoOption = App_Model_NivelAcesso::SOMENTE_BIBLIOTECA;
@@ -150,10 +152,7 @@ class EmprestimoApiController extends ApiCoreController
             $cliente = Portabilis_Array_Utils::filter($cliente, ['cod_cliente' => 'id',
                                                                 'ref_idpes'   => 'pessoa_id']);
 
-            // load pessoa
-            $pessoa          = new clsPessoa_($cliente['pessoa_id']);
-            $pessoa          = $pessoa->detalhe();
-            $cliente['nome'] = $this->toUtf8($pessoa['nome']);
+            $cliente['nome'] = $this->toUtf8(LegacyPerson::query()->whereKey($cliente['pessoa_id'])->value('nome'));
 
             // load suspensao
             $sql = 'select 1 from pmieducar.cliente_suspensao where ref_cod_cliente = $1 and data_liberacao is null and data_suspensao + (dias||\' day\')::interval >= now()';

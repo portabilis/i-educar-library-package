@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 class OrdenacaoAlunosApiController extends ApiCoreController
 {
     protected $_nivelAcessoOption = App_Model_NivelAcesso::SOMENTE_BIBLIOTECA;
@@ -101,9 +103,7 @@ class OrdenacaoAlunosApiController extends ApiCoreController
                 'ref_idpes' => 'pessoa_id'
             ]);
 
-            $pessoa = new clsPessoa_($cliente['pessoa_id']);
-            $pessoa = $pessoa->detalhe();
-            $cliente['nome'] = $this->toUtf8($pessoa['nome']);
+            $cliente['nome'] = $this->toUtf8(LegacyPerson::query()->whereKey($cliente['pessoa_id'])->value('nome'));
 
             $sql = 'select 1 from pmieducar.cliente_suspensao where ref_cod_cliente = $1 and data_liberacao is null and data_suspensao + (dias||\' day\')::interval >= now()';
             $suspenso = $this->fetchPreparedQuery($sql, $params = [$id], true, 'first-field');

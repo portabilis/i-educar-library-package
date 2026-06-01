@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyOrganization;
 use App\Models\LegacyPerson;
 
 return new class extends clsDetalhe {
@@ -39,9 +40,7 @@ return new class extends clsDetalhe {
         $det_ref_cod_escola = $obj_ref_cod_escola->detalhe();
         $idpes = $det_ref_cod_escola['ref_idpes'];
 
-        $obj_escola = new clsPessoaJuridica($idpes);
-        $obj_escola_det = $obj_escola->detalhe();
-        $registro['ref_cod_escola'] = $obj_escola_det['fantasia'];
+        $registro['ref_cod_escola'] = LegacyOrganization::query()->whereKey($idpes)->value('fantasia');
 
         $obj_permissoes = new clsPermissoes();
         $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);

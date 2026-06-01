@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacySchool;
+
 return new class extends clsListagem {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -113,18 +115,18 @@ return new class extends clsListagem {
 
         // monta a lista
         if (is_array($lista) && count($lista)) {
+            $codEscolas = array_filter(array_column($lista, 'ref_cod_escola'), 'is_numeric');
+            $fantasias = LegacySchool::query()
+                ->whereIn('cod_escola', $codEscolas)
+                ->join('cadastro.juridica', 'cadastro.juridica.idpes', 'pmieducar.escola.ref_idpes')
+                ->pluck('cadastro.juridica.fantasia', 'pmieducar.escola.cod_escola');
+
             foreach ($lista as $registro) {
                 $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
                 $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
                 $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
 
-                $obj_ref_cod_escola = new clsPmieducarEscola($registro['ref_cod_escola']);
-                $det_ref_cod_escola = $obj_ref_cod_escola->detalhe();
-                $idpes = $det_ref_cod_escola['ref_idpes'];
-
-                $obj_escola = new clsPessoaJuridica($idpes);
-                $obj_escola_det = $obj_escola->detalhe();
-                $registro['ref_cod_escola'] = $obj_escola_det['fantasia'];
+                $registro['ref_cod_escola'] = $fantasias[$registro['ref_cod_escola']] ?? null;
 
                 $lista_busca = [
                     "<a href=\"educar_biblioteca_dados_det.php?cod_biblioteca={$registro['cod_biblioteca']}\">{$registro['nm_biblioteca']}</a>",

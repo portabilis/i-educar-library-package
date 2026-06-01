@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyPerson;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -70,10 +72,9 @@ return new class extends clsCadastro {
             $this->campoOculto('ref_cod_biblioteca', $this->ref_cod_biblioteca);
 
             if ($this->ref_idpes) {
-                $objTemp = new clsPessoaFisica($this->ref_idpes);
-                $detalhe = $objTemp->detalhe();
+                $nome = LegacyPerson::query()->whereKey($this->ref_idpes)->value('nome');
 
-                $this->campoRotulo('nm_cliente', 'Cliente', $detalhe['nome']);
+                $this->campoRotulo('nm_cliente', 'Cliente', $nome);
             }
             $this->campoNumero('dias', 'Dias', $this->dias, 9, 9, true);
             echo "<script> descricao = new Array();\n </script>";

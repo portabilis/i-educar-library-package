@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use App\Models\LegacyUser;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -98,7 +99,7 @@ return new class extends clsCadastro {
         unset($aux);
 
         if ($this->biblioteca_usuario) {
-            $idsUsuariosFlat = collect($this->biblioteca_usuario)->flatten()->filter('is_numeric')->unique()->all();
+            $idsUsuariosFlat = collect($this->biblioteca_usuario)->flatten()->filter(fn ($id) => is_numeric($id))->unique()->all();
             $nomesPorUsuario = $idsUsuariosFlat
                 ? LegacyPerson::query()->whereIn('idpes', $idsUsuariosFlat)->pluck('nome', 'idpes')
                 : collect();
@@ -125,18 +126,16 @@ return new class extends clsCadastro {
 
         $opcoes = [ '' => 'Selecione' ];
         if ($this->ref_cod_instituicao) {
-            $objTemp = new clsPmieducarUsuario();
-            $objTemp->setOrderby('nivel ASC');
-            $lista = $objTemp->lista(null, null, $this->ref_cod_instituicao, null, null, null, null, null, null, null, 1);
-            if (is_array($lista) && count($lista)) {
-                $idsUsuariosLista = array_filter(array_column($lista, 'cod_usuario'), 'is_numeric');
-                $nomesPorUsuarioLista = $idsUsuariosLista
-                    ? LegacyPerson::query()->whereIn('idpes', $idsUsuariosLista)->pluck('nome', 'idpes')
-                    : collect();
+            $lista = LegacyUser::query()
+                ->join('pmieducar.tipo_usuario', 'pmieducar.tipo_usuario.cod_tipo_usuario', 'pmieducar.usuario.ref_cod_tipo_usuario')
+                ->join('cadastro.pessoa', 'cadastro.pessoa.idpes', 'pmieducar.usuario.cod_usuario')
+                ->where('ref_cod_instituicao', $this->ref_cod_instituicao)
+                ->where('usuario.ativo', 1)
+                ->orderBy('nivel')
+                ->get(['cod_usuario', 'nome']);
 
-                foreach ($lista as $registro) {
-                    $opcoes["{$registro['cod_usuario']}"] = (string) ($nomesPorUsuarioLista[$registro['cod_usuario']] ?? '');
-                }
+            foreach ($lista as $registro) {
+                $opcoes["{$registro->cod_usuario}"] = $registro->nome;
             }
         }
 

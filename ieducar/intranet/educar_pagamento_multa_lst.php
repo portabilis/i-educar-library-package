@@ -67,12 +67,20 @@ return new class extends clsListagem {
 
         $this->addCabecalhos($lista_busca);
 
-        $parametros = new clsParametrosPesquisas();
-        $parametros->setSubmit(0);
-        $parametros->adicionaCampoSelect('ref_idpes', 'idpes', 'nome');
-        $parametros->setPessoa('F');
-        $parametros->setPessoaCPF('N');
-        $parametros->setCodSistema(1);
+        $parametros = [
+            'submit' => 0,
+            'campo_nome' => ['ref_idpes'],
+            'campo_tipo' => ['select'],
+            'campo_indice' => ['idpes'],
+            'campo_valor' => ['nome'],
+            'pessoa' => 'F',
+            'pessoa_novo' => null,
+            'pessoa_tela' => null,
+            'pessoa_campo' => null,
+            'pessoa_editar' => null,
+            'ref_cod_sistema' => 1,
+            'pessoa_cpf' => 'N',
+        ];
 
         $dados = [
       'nome' => 'Cliente',
@@ -87,7 +95,7 @@ return new class extends clsListagem {
       'pag_cadastro' => null,
       'disabled' => '',
       'div' => false,
-      'serializedcampos' => $parametros->serializaCampos(),
+      'serializedcampos' => urlencode(serialize($parametros)),
       'duplo' => false,
       'obrigatorio' => true
     ];

@@ -69,14 +69,21 @@ return new class extends clsListagem {
 
         $opcoes = [ '' => 'Pesquise a pessoa clicando na lupa ao lado' ];
 
-        $parametros = new clsParametrosPesquisas();
-        $parametros->setSubmit(0);
-        $parametros->adicionaCampoSelect('ref_idpes', 'idpes', 'nome');
-        $parametros->setCodSistema(1);
-        $parametros->setPessoa('F');
-        $parametros->setPessoaEditar('N');
-        $parametros->setPessoaNovo('N');
-        $this->campoListaPesq('ref_idpes', 'Cliente', $opcoes, $this->ref_idpes, 'pesquisa_pessoa_lst.php', '', false, '', '', null, null, '', false, $parametros->serializaCampos());
+        $parametros = [
+            'submit' => 0,
+            'campo_nome' => ['ref_idpes'],
+            'campo_tipo' => ['select'],
+            'campo_indice' => ['idpes'],
+            'campo_valor' => ['nome'],
+            'pessoa' => 'F',
+            'pessoa_novo' => 'N',
+            'pessoa_tela' => null,
+            'pessoa_campo' => null,
+            'pessoa_editar' => 'N',
+            'ref_cod_sistema' => 1,
+            'pessoa_cpf' => null,
+        ];
+        $this->campoListaPesq('ref_idpes', 'Cliente', $opcoes, $this->ref_idpes, 'pesquisa_pessoa_lst.php', '', false, '', '', null, null, '', false, urlencode(serialize($parametros)));
 
         // Paginador
         $this->limite = 20;

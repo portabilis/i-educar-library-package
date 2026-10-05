@@ -2,7 +2,7 @@
 
 use App\Models\LegacyPerson;
 
-class OrdenacaoAlunosApiController extends ApiCoreController
+class OrdenacaoAlunos_Views_OrdenacaoAlunosApiController extends ApiCoreController
 {
     protected $_nivelAcessoOption = App_Model_NivelAcesso::SOMENTE_BIBLIOTECA;
 

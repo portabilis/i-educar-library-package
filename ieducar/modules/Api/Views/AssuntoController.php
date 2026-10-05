@@ -1,6 +1,6 @@
 <?php
 
-class AssuntoController extends ApiCoreController
+class Api_Views_AssuntoController extends ApiCoreController
 {
 
     // search options

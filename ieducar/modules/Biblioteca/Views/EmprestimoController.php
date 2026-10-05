@@ -1,6 +1,6 @@
 <?php
 
-class EmprestimoController extends Portabilis_Controller_Page_ListController
+class Biblioteca_Views_EmprestimoController extends Portabilis_Controller_Page_ListController
 {
     protected $_dataMapper = '';
     protected $_titulo     = 'Emprestimo';

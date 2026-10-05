@@ -1,6 +1,6 @@
 <?php
 
-class BibliotecaController extends ApiCoreController
+class DynamicInput_Views_BibliotecaController extends ApiCoreController
 {
     protected function canGetBibliotecas()
     {

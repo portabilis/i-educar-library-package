@@ -4,7 +4,7 @@ use App\Models\LegacyPerson;
 
 // TODO migrar novo padrao api controller
 
-class ReservaApiController extends ApiCoreController
+class Biblioteca_Views_ReservaApiController extends ApiCoreController
 {
     protected $_nivelAcessoOption = App_Model_NivelAcesso::SOMENTE_BIBLIOTECA;
 

@@ -1,6 +1,6 @@
 <?php
 
-class CategoriaController extends ApiCoreController
+class Api_Views_CategoriaController extends ApiCoreController
 {
     protected function getCategorias()
     {

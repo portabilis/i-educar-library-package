@@ -1,6 +1,6 @@
 <?php
 
-class ClienteController extends ApiCoreController
+class Api_Views_ClienteController extends ApiCoreController
 {
 
     // search options

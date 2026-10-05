@@ -2,7 +2,7 @@
 
 use App\Models\LegacyPerson;
 
-class EmprestimoApiController extends ApiCoreController
+class Biblioteca_Views_EmprestimoApiController extends ApiCoreController
 {
     protected $_nivelAcessoOption = App_Model_NivelAcesso::SOMENTE_BIBLIOTECA;
 

@@ -1,6 +1,6 @@
 <?php
 
-class AcervoController extends ApiCoreController
+class Api_Views_AcervoController extends ApiCoreController
 {
     protected function searchOptions()
     {

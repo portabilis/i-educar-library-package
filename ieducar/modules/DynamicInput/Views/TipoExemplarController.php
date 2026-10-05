@@ -1,6 +1,6 @@
 <?php
 
-class TipoExemplarController extends ApiCoreController
+class DynamicInput_Views_TipoExemplarController extends ApiCoreController
 {
     protected $_dataMapper  = 'Biblioteca_Model_TipoExemplarDataMapper';
 

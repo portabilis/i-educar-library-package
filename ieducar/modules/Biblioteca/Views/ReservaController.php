@@ -1,6 +1,6 @@
 <?php
 
-class ReservaController extends Portabilis_Controller_Page_ListController
+class Biblioteca_Views_ReservaController extends Portabilis_Controller_Page_ListController
 {
     protected $_dataMapper = ''; #Avaliacao_Model_NotaAlunoDataMapper';
     protected $_titulo     = 'Reserva';

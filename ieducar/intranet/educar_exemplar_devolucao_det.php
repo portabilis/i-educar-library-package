@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\LegacyOrganization;
 use App\Models\LegacyPerson;
+use App\Models\LegacySchool;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsDetalhe {
@@ -52,11 +52,10 @@ return new class extends clsDetalhe {
             $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
             $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
 
-            $obj_ref_cod_escola = new clsPmieducarEscola($registro['ref_cod_escola']);
-            $det_ref_cod_escola = $obj_ref_cod_escola->detalhe();
-            $idpes = $det_ref_cod_escola['ref_idpes'];
-
-            $registro['ref_cod_escola'] = LegacyOrganization::query()->whereKey($idpes)->value('fantasia');
+            $registro['ref_cod_escola'] = LegacySchool::query()
+                ->joinOrganization()
+                ->whereKey($registro['ref_cod_escola'])
+                ->value('fantasia');
 
             $obj_ref_cod_exemplar = new clsPmieducarExemplar($registro['ref_cod_exemplar']);
             $det_ref_cod_exemplar = $obj_ref_cod_exemplar->detalhe();

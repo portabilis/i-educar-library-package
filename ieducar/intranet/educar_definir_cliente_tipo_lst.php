@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacySchool;
+
 return new class extends clsListagem {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -130,9 +132,10 @@ return new class extends clsListagem {
                     $registro['cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
                 }
                 if ($registro['cod_escola']) {
-                    $obj_ref_cod_escola = new clsPmieducarEscola();
-                    $det_ref_cod_escola = array_shift($obj_ref_cod_escola->lista($registro['cod_escola']));
-                    $registro['cod_escola'] = $det_ref_cod_escola['nome'];
+                    $registro['cod_escola'] = LegacySchool::query()
+                        ->joinOrganization()
+                        ->whereKey($registro['cod_escola'])
+                        ->value('fantasia');
                 }
 
                 $lista_busca = [

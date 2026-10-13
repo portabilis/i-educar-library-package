@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use App\Models\LegacySchool;
 
 return new class extends clsListagem {
     /**
@@ -136,10 +137,12 @@ return new class extends clsListagem {
                 if ($det_bib) {
                     $obj_inst = new clsPmieducarInstituicao($det_bib['ref_cod_instituicao']);
                     $det_inst = $obj_inst->detalhe();
-                    $obj_escola = new clsPmieducarEscola($det_bib['ref_cod_escola']);
-                    $det_escola = $obj_escola->detalhe();
-                    if ($det_escola) {
-                        $nome_escola = LegacyPerson::query()->whereKey($det_escola['ref_idpes'])->value('nome');
+                    $idpes_escola = LegacySchool::query()
+                        ->joinOrganization()
+                        ->whereKey($det_bib['ref_cod_escola'])
+                        ->value('ref_idpes');
+                    if ($idpes_escola) {
+                        $nome_escola = LegacyPerson::query()->whereKey($idpes_escola)->value('nome');
                     }
                 }
 

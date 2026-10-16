@@ -64,6 +64,9 @@ return new class extends clsListagem {
             $this->$var = ($val === '') ? null: $val;
         }
 
+        // Data fora de dd/mm/aaaa é ignorada no filtro.
+        $this->data_reserva = \iEducar\Packages\Library\Support\Data::brOuNulo($this->data_reserva);
+
         $lista_busca = [
             'Cliente',
             'Obra',
@@ -108,7 +111,7 @@ return new class extends clsListagem {
 
         // Paginador
         $this->limite = 20;
-        $this->offset = ($_GET["pagina_{$this->nome}"]) ? $_GET["pagina_{$this->nome}"]*$this->limite-$this->limite: 0;
+        $this->offset = (min(max(1, request()->integer("pagina_{$this->nome}", 1)), 100000) - 1) * $this->limite;
 
         $obj_reservas = new clsPmieducarReservas();
         $obj_reservas->setOrderby('data_reserva ASC');

@@ -103,7 +103,7 @@ return new class extends clsListagem {
 
         // Paginador
         $this->limite = 20;
-        $this->offset = ($_GET["pagina_{$this->nome}"]) ? $_GET["pagina_{$this->nome}"]*$this->limite-$this->limite: 0;
+        $this->offset = (min(max(1, request()->integer("pagina_{$this->nome}", 1)), 100000) - 1) * $this->limite;
         $obj_exemplar_emprestimo = new clsPmieducarExemplarEmprestimo();
         $lst_exemplar_emprestimo = $obj_exemplar_emprestimo->listaDividaPagamentoCliente($this->ref_cod_cliente, $this->ref_idpes, $this->ref_cod_cliente_tipo, $this->pessoa_logada, $this->ref_cod_biblioteca, $this->ref_cod_escola, $this->ref_cod_instituicao);
 

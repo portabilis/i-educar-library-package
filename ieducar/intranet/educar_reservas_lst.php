@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacyPerson;
 use Illuminate\Support\Facades\Session;
 
@@ -137,6 +138,10 @@ return new class extends clsListagem {
 
         // monta a lista
         if (is_array($lista) && count($lista)) {
+            $nomesInstituicoes = LegacyInstitution::query()
+                ->whereIn('cod_instituicao', array_column($lista, 'ref_cod_instituicao'))
+                ->pluck('nm_instituicao', 'cod_instituicao');
+
             foreach ($lista as $registro) {
                 // muda os campos data
                 $registro['data_reserva_time'] = strtotime(substr($registro['data_reserva'], 0, 16));
@@ -159,10 +164,9 @@ return new class extends clsListagem {
                 $det_ref_cod_biblioteca = $obj_ref_cod_biblioteca->detalhe();
                 $registro['ref_cod_biblioteca'] = $det_ref_cod_biblioteca['nm_biblioteca'];
 
+                $nm_instituicao = null;
                 if ($registro['ref_cod_instituicao']) {
-                    $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-                    $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-                    $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+                    $nm_instituicao = $nomesInstituicoes[$registro['ref_cod_instituicao']] ?? null;
                 }
                 if ($registro['ref_cod_escola']) {
                     $obj_ref_cod_escola = new clsPmieducarEscola();
@@ -186,7 +190,7 @@ return new class extends clsListagem {
                     $lista_busca[] = "{$registro['ref_cod_escola']}";
                 }
                 if ($nivel_usuario == 1) {
-                    $lista_busca[] = "{$registro['ref_cod_instituicao']}";
+                    $lista_busca[] = "{$nm_instituicao}";
                 }
 
                 $this->addLinhas($lista_busca);

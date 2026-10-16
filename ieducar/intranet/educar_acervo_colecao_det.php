@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacyOrganization;
 
 return new class extends clsDetalhe {
@@ -33,9 +34,9 @@ return new class extends clsDetalhe {
         $registro['ref_cod_biblioteca'] = $det_ref_cod_biblioteca['nm_biblioteca'];
 
         $registro['ref_cod_instituicao'] = $det_ref_cod_biblioteca['ref_cod_instituicao'];
-        $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-        $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-        $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+        $nm_instituicao = LegacyInstitution::query()
+            ->whereKey($registro['ref_cod_instituicao'])
+            ->value('nm_instituicao');
 
         $registro['ref_cod_escola'] = $det_ref_cod_biblioteca['ref_cod_escola'];
         $obj_ref_cod_escola = new clsPmieducarEscola($registro['ref_cod_escola']);
@@ -52,8 +53,8 @@ return new class extends clsDetalhe {
         }
 
         if ($nivel_usuario == 1) {
-            if ($registro['ref_cod_instituicao']) {
-                $this->addDetalhe([ 'Instituição', "{$registro['ref_cod_instituicao']}"]);
+            if ($nm_instituicao) {
+                $this->addDetalhe([ 'Instituição', "{$nm_instituicao}"]);
             }
         }
 

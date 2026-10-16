@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyInstitution;
+
 return new class extends clsListagem {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -235,10 +237,11 @@ return new class extends clsListagem {
                 $registro['ref_cod_biblioteca'] = $det_ref_cod_biblioteca['nm_biblioteca'];
                 $registro['ref_cod_instituicao'] = $det_ref_cod_biblioteca['ref_cod_instituicao'];
                 $registro['ref_cod_escola'] = $det_ref_cod_biblioteca['ref_cod_escola'];
+                $nm_instituicao = null;
                 if ($registro['ref_cod_instituicao']) {
-                    $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-                    $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-                    $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+                    $nm_instituicao = LegacyInstitution::query()
+                        ->whereKey($registro['ref_cod_instituicao'])
+                        ->value('nm_instituicao');
                 }
                 if ($registro['ref_cod_escola']) {
                     $obj_ref_cod_escola = new clsPmieducarEscola();
@@ -261,7 +264,7 @@ return new class extends clsListagem {
                     $lista_busca[] = "<a href=\"educar_exemplar_det.php?cod_exemplar={$registro['cod_exemplar']}\">{$registro['ref_cod_escola']}</a>";
                 }
                 if ($nivel_usuario == 1) {
-                    $lista_busca[] = "<a href=\"educar_exemplar_det.php?cod_exemplar={$registro['cod_exemplar']}\">{$registro['ref_cod_instituicao']}</a>";
+                    $lista_busca[] = "<a href=\"educar_exemplar_det.php?cod_exemplar={$registro['cod_exemplar']}\">{$nm_instituicao}</a>";
                 }
 
                 $this->addLinhas($lista_busca);

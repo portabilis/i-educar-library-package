@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarPagamentoMulta extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_pagamento_multa;
     public $ref_usuario_cad;
     public $ref_cod_cliente;
@@ -56,17 +58,17 @@ class clsPmieducarPagamentoMulta extends Model
 
             if (is_numeric($this->ref_usuario_cad)) {
                 $campos .= "{$gruda}ref_usuario_cad";
-                $valores .= "{$gruda}'{$this->ref_usuario_cad}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_cliente)) {
                 $campos .= "{$gruda}ref_cod_cliente";
-                $valores .= "{$gruda}'{$this->ref_cod_cliente}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_cliente)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->valor_pago)) {
                 $campos .= "{$gruda}valor_pago";
-                $valores .= "{$gruda}'{$this->valor_pago}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->valor_pago)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}data_cadastro";
@@ -74,7 +76,7 @@ class clsPmieducarPagamentoMulta extends Model
             $gruda = ', ';
             if (is_numeric($this->ref_cod_biblioteca)) {
                 $campos .= "{$gruda}ref_cod_biblioteca";
-                $valores .= "{$gruda}'{$this->ref_cod_biblioteca}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
 
@@ -98,28 +100,28 @@ class clsPmieducarPagamentoMulta extends Model
             $set = '';
 
             if (is_numeric($this->ref_usuario_cad)) {
-                $set .= "{$gruda}ref_usuario_cad = '{$this->ref_usuario_cad}'";
+                $set .= "{$gruda}ref_usuario_cad = '{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_cliente)) {
-                $set .= "{$gruda}ref_cod_cliente = '{$this->ref_cod_cliente}'";
+                $set .= "{$gruda}ref_cod_cliente = '{$this->sqlTexto($this->ref_cod_cliente)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->valor_pago)) {
-                $set .= "{$gruda}valor_pago = '{$this->valor_pago}'";
+                $set .= "{$gruda}valor_pago = '{$this->sqlTexto($this->valor_pago)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_cadastro)) {
-                $set .= "{$gruda}data_cadastro = '{$this->data_cadastro}'";
+                $set .= "{$gruda}data_cadastro = '{$this->sqlTexto($this->data_cadastro)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_biblioteca)) {
-                $set .= "{$gruda}ref_cod_biblioteca = '{$this->ref_cod_biblioteca}'";
+                $set .= "{$gruda}ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_pagamento_multa = '{$this->cod_pagamento_multa}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_pagamento_multa = '{$this->sqlTexto($this->cod_pagamento_multa)}'");
 
                 return true;
             }
@@ -141,31 +143,31 @@ class clsPmieducarPagamentoMulta extends Model
         $whereAnd = ' WHERE ';
 
         if (is_numeric($int_cod_pagamento_multa)) {
-            $filtros .= "{$whereAnd} cod_pagamento_multa = '{$int_cod_pagamento_multa}'";
+            $filtros .= "{$whereAnd} cod_pagamento_multa = '{$this->sqlTexto($int_cod_pagamento_multa)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_cliente)) {
-            $filtros .= "{$whereAnd} ref_cod_cliente = '{$int_ref_cod_cliente}'";
+            $filtros .= "{$whereAnd} ref_cod_cliente = '{$this->sqlTexto($int_ref_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_valor_pago)) {
-            $filtros .= "{$whereAnd} valor_pago = '{$int_valor_pago}'";
+            $filtros .= "{$whereAnd} valor_pago = '{$this->sqlTexto($int_valor_pago)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
 
@@ -208,7 +210,7 @@ class clsPmieducarPagamentoMulta extends Model
     {
         if (is_numeric($this->cod_pagamento_multa)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_pagamento_multa = '{$this->cod_pagamento_multa}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_pagamento_multa = '{$this->sqlTexto($this->cod_pagamento_multa)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -226,7 +228,7 @@ class clsPmieducarPagamentoMulta extends Model
     {
         if (is_numeric($this->cod_pagamento_multa)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_pagamento_multa = '{$this->cod_pagamento_multa}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_pagamento_multa = '{$this->sqlTexto($this->cod_pagamento_multa)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -252,7 +254,7 @@ class clsPmieducarPagamentoMulta extends Model
     {
         if (is_numeric($this->ref_cod_cliente) && is_numeric($this->ref_cod_biblioteca)) {
             $db = new clsBanco();
-            $total_pago = $db->CampoUnico("SELECT SUM( valor_pago ) FROM {$this->_tabela} WHERE ref_cod_cliente = '{$this->ref_cod_cliente}' AND ref_cod_biblioteca = '{$this->ref_cod_biblioteca}'");
+            $total_pago = $db->CampoUnico("SELECT SUM( valor_pago ) FROM {$this->_tabela} WHERE ref_cod_cliente = '{$this->sqlTexto($this->ref_cod_cliente)}' AND ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}'");
             if (!is_numeric($total_pago)) {
                 $total_pago = 0;
             }

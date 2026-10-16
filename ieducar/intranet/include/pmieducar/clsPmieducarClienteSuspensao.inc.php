@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarClienteSuspensao extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $sequencial;
     public $ref_cod_cliente;
     public $ref_cod_motivo_suspensao;
@@ -62,35 +64,35 @@ class clsPmieducarClienteSuspensao extends Model
             $valores = '';
             $gruda = '';
 
-            $sequencial = $db->CampoUnico("SELECT COUNT(*)+1 FROM pmieducar.cliente_suspensao WHERE ref_cod_cliente = {$this->ref_cod_cliente}");
+            $sequencial = $db->CampoUnico("SELECT COUNT(*)+1 FROM pmieducar.cliente_suspensao WHERE ref_cod_cliente = {$this->sqlNumero($this->ref_cod_cliente)}");
             if (is_numeric($sequencial)) {
                 $campos .= "{$gruda}sequencial";
-                $valores .= "{$gruda}'{$sequencial}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($sequencial)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_cliente)) {
                 $campos .= "{$gruda}ref_cod_cliente";
-                $valores .= "{$gruda}'{$this->ref_cod_cliente}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_cliente)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_motivo_suspensao)) {
                 $campos .= "{$gruda}ref_cod_motivo_suspensao";
-                $valores .= "{$gruda}'{$this->ref_cod_motivo_suspensao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_motivo_suspensao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_libera)) {
                 $campos .= "{$gruda}ref_usuario_libera";
-                $valores .= "{$gruda}'{$this->ref_usuario_libera}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_libera)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_suspende)) {
                 $campos .= "{$gruda}ref_usuario_suspende";
-                $valores .= "{$gruda}'{$this->ref_usuario_suspende}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_suspende)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->dias)) {
                 $campos .= "{$gruda}dias";
-                $valores .= "{$gruda}'{$this->dias}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->dias)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}data_suspensao";
@@ -98,7 +100,7 @@ class clsPmieducarClienteSuspensao extends Model
             $gruda = ', ';
             if (is_string($this->data_liberacao)) {
                 $campos .= "{$gruda}data_liberacao";
-                $valores .= "{$gruda}'{$this->data_liberacao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->data_liberacao)}'";
                 $gruda = ', ';
             }
 
@@ -122,26 +124,26 @@ class clsPmieducarClienteSuspensao extends Model
             $set = '';
 
             if (is_numeric($this->ref_usuario_libera)) {
-                $set .= "{$gruda}ref_usuario_libera = '{$this->ref_usuario_libera}'";
+                $set .= "{$gruda}ref_usuario_libera = '{$this->sqlTexto($this->ref_usuario_libera)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_suspende)) {
-                $set .= "{$gruda}ref_usuario_suspende = '{$this->ref_usuario_suspende}'";
+                $set .= "{$gruda}ref_usuario_suspende = '{$this->sqlTexto($this->ref_usuario_suspende)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->dias)) {
-                $set .= "{$gruda}dias = '{$this->dias}'";
+                $set .= "{$gruda}dias = '{$this->sqlTexto($this->dias)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_suspensao)) {
-                $set .= "{$gruda}data_suspensao = '{$this->data_suspensao}'";
+                $set .= "{$gruda}data_suspensao = '{$this->sqlTexto($this->data_suspensao)}'";
                 $gruda = ', ';
             }
             $set .= "{$gruda}data_liberacao = NOW()";
             $gruda = ', ';
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE sequencial = '{$this->sequencial}' AND ref_cod_cliente = '{$this->ref_cod_cliente}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE sequencial = '{$this->sqlTexto($this->sequencial)}' AND ref_cod_cliente = '{$this->sqlTexto($this->ref_cod_cliente)}'");
 
                 return true;
             }
@@ -163,43 +165,43 @@ class clsPmieducarClienteSuspensao extends Model
         $whereAnd = ' WHERE ';
 
         if (is_numeric($int_sequencial)) {
-            $filtros .= "{$whereAnd} sequencial = '{$int_sequencial}'";
+            $filtros .= "{$whereAnd} sequencial = '{$this->sqlTexto($int_sequencial)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_cliente)) {
-            $filtros .= "{$whereAnd} ref_cod_cliente = '{$int_ref_cod_cliente}'";
+            $filtros .= "{$whereAnd} ref_cod_cliente = '{$this->sqlTexto($int_ref_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_motivo_suspensao)) {
-            $filtros .= "{$whereAnd} ref_cod_motivo_suspensao = '{$int_ref_cod_motivo_suspensao}'";
+            $filtros .= "{$whereAnd} ref_cod_motivo_suspensao = '{$this->sqlTexto($int_ref_cod_motivo_suspensao)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_libera)) {
-            $filtros .= "{$whereAnd} ref_usuario_libera = '{$int_ref_usuario_libera}'";
+            $filtros .= "{$whereAnd} ref_usuario_libera = '{$this->sqlTexto($int_ref_usuario_libera)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_suspende)) {
-            $filtros .= "{$whereAnd} ref_usuario_suspende = '{$int_ref_usuario_suspende}'";
+            $filtros .= "{$whereAnd} ref_usuario_suspende = '{$this->sqlTexto($int_ref_usuario_suspende)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_dias)) {
-            $filtros .= "{$whereAnd} dias = '{$int_dias}'";
+            $filtros .= "{$whereAnd} dias = '{$this->sqlTexto($int_dias)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_suspensao_ini)) {
-            $filtros .= "{$whereAnd} data_suspensao >= '{$date_data_suspensao_ini}'";
+            $filtros .= "{$whereAnd} data_suspensao >= '{$this->sqlTexto($date_data_suspensao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_suspensao_fim)) {
-            $filtros .= "{$whereAnd} data_suspensao <= '{$date_data_suspensao_fim}'";
+            $filtros .= "{$whereAnd} data_suspensao <= '{$this->sqlTexto($date_data_suspensao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_liberacao_ini)) {
-            $filtros .= "{$whereAnd} data_liberacao >= '{$date_data_liberacao_ini}'";
+            $filtros .= "{$whereAnd} data_liberacao >= '{$this->sqlTexto($date_data_liberacao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_liberacao_fim)) {
-            $filtros .= "{$whereAnd} data_liberacao <= '{$date_data_liberacao_fim}'";
+            $filtros .= "{$whereAnd} data_liberacao <= '{$this->sqlTexto($date_data_liberacao_fim)}'";
             $whereAnd = ' AND ';
         }
 
@@ -242,7 +244,7 @@ class clsPmieducarClienteSuspensao extends Model
     {
         if (is_numeric($this->sequencial) && is_numeric($this->ref_cod_cliente) && is_numeric($this->ref_cod_motivo_suspensao)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE sequencial = '{$this->sequencial}' AND ref_cod_cliente = '{$this->ref_cod_cliente}' AND ref_cod_motivo_suspensao = '{$this->ref_cod_motivo_suspensao}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE sequencial = '{$this->sqlTexto($this->sequencial)}' AND ref_cod_cliente = '{$this->sqlTexto($this->ref_cod_cliente)}' AND ref_cod_motivo_suspensao = '{$this->sqlTexto($this->ref_cod_motivo_suspensao)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -260,7 +262,7 @@ class clsPmieducarClienteSuspensao extends Model
     {
         if (is_numeric($this->sequencial) && is_numeric($this->ref_cod_cliente) && is_numeric($this->ref_cod_motivo_suspensao)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE sequencial = '{$this->sequencial}' AND ref_cod_cliente = '{$this->ref_cod_cliente}' AND ref_cod_motivo_suspensao = '{$this->ref_cod_motivo_suspensao}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE sequencial = '{$this->sqlTexto($this->sequencial)}' AND ref_cod_cliente = '{$this->sqlTexto($this->ref_cod_cliente)}' AND ref_cod_motivo_suspensao = '{$this->sqlTexto($this->ref_cod_motivo_suspensao)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();

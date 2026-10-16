@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarExemplarEmprestimo extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_emprestimo;
     public $ref_usuario_devolucao;
     public $ref_usuario_cad;
@@ -69,12 +71,12 @@ class clsPmieducarExemplarEmprestimo extends Model
 
             if (is_numeric($this->ref_usuario_devolucao)) {
                 $campos .= "{$gruda}ref_usuario_devolucao";
-                $valores .= "{$gruda}'{$this->ref_usuario_devolucao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_devolucao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
                 $campos .= "{$gruda}ref_usuario_cad";
-                $valores .= "{$gruda}'{$this->ref_usuario_cad}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
 
                 $campos .= "{$gruda}data_retirada";
@@ -83,17 +85,17 @@ class clsPmieducarExemplarEmprestimo extends Model
             }
             if (is_numeric($this->ref_cod_cliente)) {
                 $campos .= "{$gruda}ref_cod_cliente";
-                $valores .= "{$gruda}'{$this->ref_cod_cliente}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_cliente)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_exemplar)) {
                 $campos .= "{$gruda}ref_cod_exemplar";
-                $valores .= "{$gruda}'{$this->ref_cod_exemplar}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_exemplar)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_devolucao)) {
                 $campos .= "{$gruda}data_devolucao";
-                $valores .= "{$gruda}'{$this->data_devolucao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->data_devolucao)}'";
                 $gruda = ', ';
 
                 $campos .= "{$gruda}data_cadastro";
@@ -102,7 +104,7 @@ class clsPmieducarExemplarEmprestimo extends Model
             }
             if (is_numeric($this->valor_multa)) {
                 $campos .= "{$gruda}valor_multa";
-                $valores .= "{$gruda}'{$this->valor_multa}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->valor_multa)}'";
                 $gruda = ', ';
             }
 
@@ -126,36 +128,36 @@ class clsPmieducarExemplarEmprestimo extends Model
             $set = '';
 
             if (is_numeric($this->ref_usuario_devolucao)) {
-                $set .= "{$gruda}ref_usuario_devolucao = '{$this->ref_usuario_devolucao}'";
+                $set .= "{$gruda}ref_usuario_devolucao = '{$this->sqlTexto($this->ref_usuario_devolucao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
-                $set .= "{$gruda}ref_usuario_cad = '{$this->ref_usuario_cad}'";
+                $set .= "{$gruda}ref_usuario_cad = '{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_cliente)) {
-                $set .= "{$gruda}ref_cod_cliente = '{$this->ref_cod_cliente}'";
+                $set .= "{$gruda}ref_cod_cliente = '{$this->sqlTexto($this->ref_cod_cliente)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_exemplar)) {
-                $set .= "{$gruda}ref_cod_exemplar = '{$this->ref_cod_exemplar}'";
+                $set .= "{$gruda}ref_cod_exemplar = '{$this->sqlTexto($this->ref_cod_exemplar)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_retirada)) {
-                $set .= "{$gruda}data_retirada = '{$this->data_retirada}'";
+                $set .= "{$gruda}data_retirada = '{$this->sqlTexto($this->data_retirada)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_devolucao)) {
-                $set .= "{$gruda}data_devolucao = '{$this->data_devolucao}'";
+                $set .= "{$gruda}data_devolucao = '{$this->sqlTexto($this->data_devolucao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->valor_multa)) {
-                $set .= "{$gruda}valor_multa = '{$this->valor_multa}'";
+                $set .= "{$gruda}valor_multa = '{$this->sqlTexto($this->valor_multa)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_emprestimo = '{$this->cod_emprestimo}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_emprestimo = '{$this->sqlTexto($this->cod_emprestimo)}'");
 
                 return true;
             }
@@ -208,43 +210,43 @@ class clsPmieducarExemplarEmprestimo extends Model
                                  AND ctet.ref_cod_exemplar_tipo = a.ref_cod_exemplar_tipo';
 
         if (is_numeric($int_cod_emprestimo)) {
-            $filtros .= "{$whereAnd} ee.cod_emprestimo = '{$int_cod_emprestimo}'";
+            $filtros .= "{$whereAnd} ee.cod_emprestimo = '{$this->sqlTexto($int_cod_emprestimo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_devolucao)) {
-            $filtros .= "{$whereAnd} ee.ref_usuario_devolucao = '{$int_ref_usuario_devolucao}'";
+            $filtros .= "{$whereAnd} ee.ref_usuario_devolucao = '{$this->sqlTexto($int_ref_usuario_devolucao)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} ee.ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} ee.ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_cliente)) {
-            $filtros .= "{$whereAnd} ee.ref_cod_cliente = '{$int_ref_cod_cliente}'";
+            $filtros .= "{$whereAnd} ee.ref_cod_cliente = '{$this->sqlTexto($int_ref_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_exemplar)) {
-            $filtros .= "{$whereAnd} ee.ref_cod_exemplar = '{$int_ref_cod_exemplar}'";
+            $filtros .= "{$whereAnd} ee.ref_cod_exemplar = '{$this->sqlTexto($int_ref_cod_exemplar)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_retirada_ini)) {
-            $filtros .= "{$whereAnd} ee.data_retirada >= '{$date_data_retirada_ini}'";
+            $filtros .= "{$whereAnd} ee.data_retirada >= '{$this->sqlTexto($date_data_retirada_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_retirada_fim)) {
-            $filtros .= "{$whereAnd} ee.data_retirada <= '{$date_data_retirada_fim}'";
+            $filtros .= "{$whereAnd} ee.data_retirada <= '{$this->sqlTexto($date_data_retirada_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_devolucao_ini)) {
-            $filtros .= "{$whereAnd} ee.data_devolucao >= '{$date_data_devolucao_ini}'";
+            $filtros .= "{$whereAnd} ee.data_devolucao >= '{$this->sqlTexto($date_data_devolucao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_devolucao_fim)) {
-            $filtros .= "{$whereAnd} ee.data_devolucao <= '{$date_data_devolucao_fim}'";
+            $filtros .= "{$whereAnd} ee.data_devolucao <= '{$this->sqlTexto($date_data_devolucao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_valor_multa)) {
-            $filtros .= "{$whereAnd} ee.valor_multa = '{$int_valor_multa}'";
+            $filtros .= "{$whereAnd} ee.valor_multa = '{$this->sqlTexto($int_valor_multa)}'";
             $whereAnd = ' AND ';
         }
         if (!is_null($devolvido)) {
@@ -256,7 +258,7 @@ class clsPmieducarExemplarEmprestimo extends Model
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (!is_null($multa)) {
@@ -266,15 +268,15 @@ class clsPmieducarExemplarEmprestimo extends Model
             }
         }
         if (is_numeric($int_ref_cod_instituicao)) {
-            $filtros .= "{$whereAnd} b.ref_cod_instituicao = '{$int_ref_cod_instituicao}'";
+            $filtros .= "{$whereAnd} b.ref_cod_instituicao = '{$this->sqlTexto($int_ref_cod_instituicao)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_escola)) {
-            $filtros .= "{$whereAnd} b.ref_cod_escola = '{$int_ref_cod_escola}'";
+            $filtros .= "{$whereAnd} b.ref_cod_escola = '{$this->sqlTexto($int_ref_cod_escola)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_titulo_exemplar)) {
-            $filtros .= "{$whereAnd} a.titulo LIKE '%{$str_titulo_exemplar}%'";
+            $filtros .= "{$whereAnd} a.titulo LIKE '%{$this->sqlTexto($str_titulo_exemplar)}%'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($tombo)) {
@@ -333,7 +335,7 @@ class clsPmieducarExemplarEmprestimo extends Model
     {
         if (is_numeric($this->cod_emprestimo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} ee WHERE ee.cod_emprestimo = '{$this->cod_emprestimo}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} ee WHERE ee.cod_emprestimo = '{$this->sqlTexto($this->cod_emprestimo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -351,7 +353,7 @@ class clsPmieducarExemplarEmprestimo extends Model
     {
         if (is_numeric($this->cod_emprestimo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_emprestimo = '{$this->cod_emprestimo}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_emprestimo = '{$this->sqlTexto($this->cod_emprestimo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -418,28 +420,28 @@ class clsPmieducarExemplarEmprestimo extends Model
                    AND b.ref_cod_instituicao    = i.cod_instituicao
                    AND e.ref_cod_instituicao    = i.cod_instituicao';
         if (is_numeric($int_idpes)) {
-            $sql .= " AND c.ref_idpes = {$int_idpes}";
-            $sql2 .= " AND c.ref_idpes = {$int_idpes}";
+            $sql .= " AND c.ref_idpes = {$this->sqlNumero($int_idpes)}";
+            $sql2 .= " AND c.ref_idpes = {$this->sqlNumero($int_idpes)}";
         }
         if (is_numeric($int_cod_cliente)) {
-            $sql .= " AND c.cod_cliente = {$int_cod_cliente}";
-            $sql2 .= " AND c.cod_cliente = {$int_cod_cliente}";
+            $sql .= " AND c.cod_cliente = {$this->sqlNumero($int_cod_cliente)}";
+            $sql2 .= " AND c.cod_cliente = {$this->sqlNumero($int_cod_cliente)}";
         }
         if (is_numeric($int_cod_cliente_tipo)) {
-            $sql .= " AND ct.cod_cliente_tipo = {$int_cod_cliente_tipo}";
-            $sql2 .= " AND ct.cod_cliente_tipo = {$int_cod_cliente_tipo}";
+            $sql .= " AND ct.cod_cliente_tipo = {$this->sqlNumero($int_cod_cliente_tipo)}";
+            $sql2 .= " AND ct.cod_cliente_tipo = {$this->sqlNumero($int_cod_cliente_tipo)}";
         }
         if (is_numeric($int_cod_biblioteca)) {
-            $sql .= " AND b.cod_biblioteca = {$int_cod_biblioteca}";
-            $sql2 .= " AND b.cod_biblioteca = {$int_cod_biblioteca}";
+            $sql .= " AND b.cod_biblioteca = {$this->sqlNumero($int_cod_biblioteca)}";
+            $sql2 .= " AND b.cod_biblioteca = {$this->sqlNumero($int_cod_biblioteca)}";
         }
         if (is_numeric($int_cod_escola)) {
-            $sql .= " AND e.cod_escola = {$int_cod_escola}";
-            $sql2 .= " AND e.cod_escola = {$int_cod_escola}";
+            $sql .= " AND e.cod_escola = {$this->sqlNumero($int_cod_escola)}";
+            $sql2 .= " AND e.cod_escola = {$this->sqlNumero($int_cod_escola)}";
         }
         if (is_numeric($int_cod_instituicao)) {
-            $sql .= " AND i.cod_instituicao = {$int_cod_instituicao}";
-            $sql2 .= " AND i.cod_instituicao = {$int_cod_instituicao}";
+            $sql .= " AND i.cod_instituicao = {$this->sqlNumero($int_cod_instituicao)}";
+            $sql2 .= " AND i.cod_instituicao = {$this->sqlNumero($int_cod_instituicao)}";
         }
         if (is_numeric($int_valor)) {
             $sql .= ' AND ee.valor_multa IS NOT NULL';
@@ -479,40 +481,40 @@ class clsPmieducarExemplarEmprestimo extends Model
         if (is_numeric($int_cod_cliente) || is_numeric($int_idpes)) {
             $tabelas .= ', pmieducar.cliente c';
             if (is_numeric($int_cod_cliente)) {
-                $condicoes .= " AND ee.ref_cod_cliente = c.cod_cliente AND c.cod_cliente = {$int_cod_cliente}";
+                $condicoes .= " AND ee.ref_cod_cliente = c.cod_cliente AND c.cod_cliente = {$this->sqlNumero($int_cod_cliente)}";
             }
             if (is_numeric($int_idpes) && is_numeric($int_cod_cliente)) {
-                $condicoes .= " AND c.ref_idpes = {$int_idpes}";
+                $condicoes .= " AND c.ref_idpes = {$this->sqlNumero($int_idpes)}";
             } elseif (is_numeric($int_idpes)) {
-                $condicoes .= " AND ee.ref_cod_cliente = c.cod_cliente AND c.ref_idpes = {$int_idpes}";
+                $condicoes .= " AND ee.ref_cod_cliente = c.cod_cliente AND c.ref_idpes = {$this->sqlNumero($int_idpes)}";
             }
         }
         if (is_numeric($int_cod_cliente_tipo) && is_numeric($int_cod_cliente)) {
             $tabelas .= ', pmieducar.cliente_tipo ct, pmieducar.cliente_tipo_cliente ctc';
-            $condicoes .= " AND ctc.ref_cod_cliente = c.cod_cliente AND ctc.ref_cod_cliente_tipo = ct.cod_cliente_tipo AND ct.cod_cliente_tipo = {$int_cod_cliente_tipo}";
+            $condicoes .= " AND ctc.ref_cod_cliente = c.cod_cliente AND ctc.ref_cod_cliente_tipo = ct.cod_cliente_tipo AND ct.cod_cliente_tipo = {$this->sqlNumero($int_cod_cliente_tipo)}";
         } elseif (is_numeric($int_cod_cliente_tipo)) {
             $tabelas .= ', pmieducar.cliente c, pmieducar.cliente_tipo ct, pmieducar.cliente_tipo_cliente ctc';
-            $condicoes .= " AND ee.ref_cod_cliente = c.cod_cliente AND ctc.ref_cod_cliente = c.cod_cliente AND ctc.ref_cod_cliente_tipo = ct.cod_cliente_tipo AND ct.cod_cliente_tipo = {$int_cod_cliente_tipo}";
+            $condicoes .= " AND ee.ref_cod_cliente = c.cod_cliente AND ctc.ref_cod_cliente = c.cod_cliente AND ctc.ref_cod_cliente_tipo = ct.cod_cliente_tipo AND ct.cod_cliente_tipo = {$this->sqlNumero($int_cod_cliente_tipo)}";
         }
         if (is_numeric($int_cod_biblioteca)) {
             $tabelas .= ', pmieducar.biblioteca b';
-            $condicoes .= " AND a.ref_cod_biblioteca = b.cod_biblioteca AND b.cod_biblioteca = {$int_cod_biblioteca}";
+            $condicoes .= " AND a.ref_cod_biblioteca = b.cod_biblioteca AND b.cod_biblioteca = {$this->sqlNumero($int_cod_biblioteca)}";
         }
         if ($nivel == 2 || $nivel == 1) {
             if (is_numeric($int_cod_escola) && is_numeric($int_cod_biblioteca)) {
                 $tabelas .= ', pmieducar.escola es';
-                $condicoes .= " AND b.ref_cod_escola = es.cod_escola AND es.cod_escola = {$int_cod_escola}";
+                $condicoes .= " AND b.ref_cod_escola = es.cod_escola AND es.cod_escola = {$this->sqlNumero($int_cod_escola)}";
             } elseif (is_numeric($int_cod_escola)) {
                 $tabelas .= ', pmieducar.biblioteca b, pmieducar.escola es';
-                $condicoes .= " AND a.ref_cod_biblioteca = b.cod_biblioteca AND b.ref_cod_escola = es.cod_escola AND es.cod_escola = {$int_cod_escola}";
+                $condicoes .= " AND a.ref_cod_biblioteca = b.cod_biblioteca AND b.ref_cod_escola = es.cod_escola AND es.cod_escola = {$this->sqlNumero($int_cod_escola)}";
             }
         }
         if ($nivel == 1) {
             if (is_numeric($int_cod_instituicao) && (is_numeric($int_cod_biblioteca) || is_numeric($int_cod_escola))) {
-                $condicoes .= " AND b.ref_cod_instituicao = {$int_cod_instituicao} ";
+                $condicoes .= " AND b.ref_cod_instituicao = {$this->sqlNumero($int_cod_instituicao)} ";
             } elseif (is_numeric($int_cod_instituicao)) {
                 $tabelas .= ', pmieducar.biblioteca b';
-                $condicoes .= " AND a.ref_cod_biblioteca = b.cod_biblioteca AND b.ref_cod_instituicao = {$int_cod_instituicao} ";
+                $condicoes .= " AND a.ref_cod_biblioteca = b.cod_biblioteca AND b.ref_cod_instituicao = {$this->sqlNumero($int_cod_instituicao)} ";
             }
         }
         if (!$pago) {
@@ -523,7 +525,7 @@ class clsPmieducarExemplarEmprestimo extends Model
         }
         if ($nivel == 8) {
             $tabelas .= ', pmieducar.biblioteca_usuario bu';
-            $condicoes .= " AND a.ref_cod_biblioteca = bu.ref_cod_biblioteca AND bu.ref_cod_usuario = {$int_cod_usuario} ";
+            $condicoes .= " AND a.ref_cod_biblioteca = bu.ref_cod_biblioteca AND bu.ref_cod_usuario = {$this->sqlNumero($int_cod_usuario)} ";
         }
         if ($nivel == 2) {
             if (!(is_numeric($int_cod_biblioteca) || is_numeric($int_cod_escola) || (is_numeric($int_cod_instituicao) && $nivel == 1))) {
@@ -531,7 +533,7 @@ class clsPmieducarExemplarEmprestimo extends Model
             } else {
                 $tabelas .= ', pmieducar.usuario u';
             }
-            $condicoes .= " AND b.ref_cod_instituicao = u.ref_cod_instituicao AND a.ref_cod_biblioteca = b.cod_biblioteca AND u.cod_usuario = {$int_cod_usuario} ";
+            $condicoes .= " AND b.ref_cod_instituicao = u.ref_cod_instituicao AND a.ref_cod_biblioteca = b.cod_biblioteca AND u.cod_usuario = {$this->sqlNumero($int_cod_usuario)} ";
         }
 
         $sql = "  SELECT ee.ref_cod_cliente,
@@ -595,7 +597,7 @@ class clsPmieducarExemplarEmprestimo extends Model
         $tabela = '';
         $condicao = '';
         if (is_numeric($int_cod_cliente)) {
-            $condicao .= " AND c.cod_cliente = {$int_cod_cliente}";
+            $condicao .= " AND c.cod_cliente = {$this->sqlNumero($int_cod_cliente)}";
         }
         $sql = "SELECT   c.cod_cliente,
                          c.ref_idpes,
@@ -633,12 +635,12 @@ class clsPmieducarExemplarEmprestimo extends Model
         $filtros = ' WHERE ee.ref_cod_exemplar = e.cod_exemplar AND e.ref_cod_acervo = a.cod_acervo AND a.ref_cod_biblioteca = b.cod_biblioteca ';
 
         if (is_numeric($int_ref_cod_cliente)) {
-            $filtros .= "{$whereAnd} ee.ref_cod_cliente = '{$int_ref_cod_cliente}'";
+            $filtros .= "{$whereAnd} ee.ref_cod_cliente = '{$this->sqlTexto($int_ref_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (!is_null($multa)) {

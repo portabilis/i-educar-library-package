@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarCliente extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_cliente;
     public $ref_usuario_exc;
     public $ref_usuario_cad;
@@ -82,22 +84,22 @@ class clsPmieducarCliente extends Model
 
             if (is_numeric($this->ref_usuario_cad)) {
                 $campos .= "{$gruda}ref_usuario_cad";
-                $valores .= "{$gruda}'{$this->ref_usuario_cad}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_idpes)) {
                 $campos .= "{$gruda}ref_idpes";
-                $valores .= "{$gruda}'{$this->ref_idpes}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_idpes)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->login)) {
                 $campos .= "{$gruda}login";
-                $valores .= "{$gruda}'{$this->login}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->login)}'";
                 $gruda = ', ';
             }
             if (is_string($this->senha)) {
                 $campos .= "{$gruda}senha";
-                $valores .= "{$gruda}'{$this->senha}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->senha)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}data_cadastro";
@@ -108,7 +110,7 @@ class clsPmieducarCliente extends Model
             $gruda = ', ';
             if (is_string($this->observacoes)) {
                 $campos .= "{$gruda}observacoes";
-                $valores .= "{$gruda}'{$this->observacoes}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->observacoes)}'";
                 $gruda = ', ';
             }
 
@@ -134,42 +136,42 @@ class clsPmieducarCliente extends Model
             $set = '';
 
             if (is_numeric($this->ref_usuario_exc)) {
-                $set .= "{$gruda}ref_usuario_exc = '{$this->ref_usuario_exc}'";
+                $set .= "{$gruda}ref_usuario_exc = '{$this->sqlTexto($this->ref_usuario_exc)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
-                $set .= "{$gruda}ref_usuario_cad = '{$this->ref_usuario_cad}'";
+                $set .= "{$gruda}ref_usuario_cad = '{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_idpes)) {
-                $set .= "{$gruda}ref_idpes = '{$this->ref_idpes}'";
+                $set .= "{$gruda}ref_idpes = '{$this->sqlTexto($this->ref_idpes)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->login)) {
-                $set .= "{$gruda}login = '{$this->login}'";
+                $set .= "{$gruda}login = '{$this->sqlTexto($this->login)}'";
                 $gruda = ', ';
             }
             if (is_string($this->senha)) {
-                $set .= "{$gruda}senha = '{$this->senha}'";
+                $set .= "{$gruda}senha = '{$this->sqlTexto($this->senha)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_cadastro)) {
-                $set .= "{$gruda}data_cadastro = '{$this->data_cadastro}'";
+                $set .= "{$gruda}data_cadastro = '{$this->sqlTexto($this->data_cadastro)}'";
                 $gruda = ', ';
             }
             $set .= "{$gruda}data_exclusao = NOW()";
             $gruda = ', ';
             if (is_numeric($this->ativo)) {
-                $set .= "{$gruda}ativo = '{$this->ativo}'";
+                $set .= "{$gruda}ativo = '{$this->sqlTexto($this->ativo)}'";
                 $gruda = ', ';
             }
             if (is_string($this->observacoes)) {
-                $set .= "{$gruda}observacoes = '{$this->observacoes}'";
+                $set .= "{$gruda}observacoes = '{$this->sqlTexto($this->observacoes)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_cliente = '{$this->cod_cliente}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_cliente = '{$this->sqlTexto($this->cod_cliente)}'");
 
                 return true;
             }
@@ -202,43 +204,43 @@ class clsPmieducarCliente extends Model
         $filtros = "WHERE c.ref_idpes = p.idpes {$condicao}";
 
         if (is_numeric($int_cod_cliente)) {
-            $filtros .= "{$whereAnd} c.cod_cliente = '{$int_cod_cliente}'";
+            $filtros .= "{$whereAnd} c.cod_cliente = '{$this->sqlTexto($int_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_exc)) {
-            $filtros .= "{$whereAnd} c.ref_usuario_exc = '{$int_ref_usuario_exc}'";
+            $filtros .= "{$whereAnd} c.ref_usuario_exc = '{$this->sqlTexto($int_ref_usuario_exc)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} c.ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} c.ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_idpes)) {
-            $filtros .= "{$whereAnd} c.ref_idpes = '{$int_ref_idpes}'";
+            $filtros .= "{$whereAnd} c.ref_idpes = '{$this->sqlTexto($int_ref_idpes)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_login)) {
-            $filtros .= "{$whereAnd} c.login = '{$int_login}'";
+            $filtros .= "{$whereAnd} c.login = '{$this->sqlTexto($int_login)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_senha)) {
-            $filtros .= "{$whereAnd} c.senha = '{$str_senha}'";
+            $filtros .= "{$whereAnd} c.senha = '{$this->sqlTexto($str_senha)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} c.data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} c.data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} c.data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} c.data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_ini)) {
-            $filtros .= "{$whereAnd} c.data_exclusao >= '{$date_data_exclusao_ini}'";
+            $filtros .= "{$whereAnd} c.data_exclusao >= '{$this->sqlTexto($date_data_exclusao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_fim)) {
-            $filtros .= "{$whereAnd} c.data_exclusao <= '{$date_data_exclusao_fim}'";
+            $filtros .= "{$whereAnd} c.data_exclusao <= '{$this->sqlTexto($date_data_exclusao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_null($int_ativo) || $int_ativo) {
@@ -249,7 +251,7 @@ class clsPmieducarCliente extends Model
             $whereAnd = ' AND ';
         }
         if (is_string($str_nm_cliente)) {
-            $filtros .= "{$whereAnd} translate(upper(p.nome),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN') LIKE translate(upper('%{$str_nm_cliente}%'),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN')";
+            $filtros .= "{$whereAnd} translate(upper(p.nome),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN') LIKE translate(upper('%{$this->sqlTexto($str_nm_cliente)}%'),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN')";
             $whereAnd = ' AND ';
         }
         if (is_array($int_ref_cod_biblioteca)) {
@@ -322,52 +324,52 @@ class clsPmieducarCliente extends Model
         $whereAnd = ' AND ';
 
         if (is_numeric($int_cod_cliente)) {
-            $filtros .= "{$whereAnd} c.cod_cliente = '{$int_cod_cliente}'";
+            $filtros .= "{$whereAnd} c.cod_cliente = '{$this->sqlTexto($int_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_ref_usuario_exc)) {
-            $filtros .= "{$whereAnd} c.ref_usuario_exc = '{$int_ref_usuario_exc}'";
+            $filtros .= "{$whereAnd} c.ref_usuario_exc = '{$this->sqlTexto($int_ref_usuario_exc)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} c.ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} c.ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_ref_idpes)) {
-            $filtros .= "{$whereAnd} c.ref_idpes = '{$int_ref_idpes}'";
+            $filtros .= "{$whereAnd} c.ref_idpes = '{$this->sqlTexto($int_ref_idpes)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_login)) {
-            $filtros .= "{$whereAnd} c.login = '{$int_login}'";
+            $filtros .= "{$whereAnd} c.login = '{$this->sqlTexto($int_login)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_string($str_senha)) {
-            $filtros .= "{$whereAnd} c.senha = '{$str_senha}'";
+            $filtros .= "{$whereAnd} c.senha = '{$this->sqlTexto($str_senha)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} c.data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} c.data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} c.data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} c.data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_string($date_data_exclusao_ini)) {
-            $filtros .= "{$whereAnd} c.data_exclusao >= '{$date_data_exclusao_ini}'";
+            $filtros .= "{$whereAnd} c.data_exclusao >= '{$this->sqlTexto($date_data_exclusao_ini)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_string($date_data_exclusao_fim)) {
-            $filtros .= "{$whereAnd} c.data_exclusao <= '{$date_data_exclusao_fim}'";
+            $filtros .= "{$whereAnd} c.data_exclusao <= '{$this->sqlTexto($date_data_exclusao_fim)}'";
             $whereAnd = ' AND ';
         }
 
@@ -380,12 +382,12 @@ class clsPmieducarCliente extends Model
         }
 
         if (is_string($str_nm_cliente)) {
-            $filtros .= "{$whereAnd} translate(upper(p.nome),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN') LIKE translate(upper('%{$str_nm_cliente}%'),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN')";
+            $filtros .= "{$whereAnd} translate(upper(p.nome),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN') LIKE translate(upper('%{$this->sqlTexto($str_nm_cliente)}%'),'ÅÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝÑ','AAAAAAEEEEIIIIOOOOOUUUUCYN')";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_cod_cliente_tipo)) {
-            $filtros .= "{$whereAnd} ct.cod_cliente_tipo = '{$int_cod_cliente_tipo}'";
+            $filtros .= "{$whereAnd} ct.cod_cliente_tipo = '{$this->sqlTexto($int_cod_cliente_tipo)}'";
             $whereAnd = ' AND ';
         }
 
@@ -396,17 +398,17 @@ class clsPmieducarCliente extends Model
         }
 
         if (is_numeric($int_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} b.cod_biblioteca = '{$int_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} b.cod_biblioteca = '{$this->sqlTexto($int_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_cod_escola)) {
-            $filtros .= "{$whereAnd} e.cod_escola = '{$int_cod_escola}'";
+            $filtros .= "{$whereAnd} e.cod_escola = '{$this->sqlTexto($int_cod_escola)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($int_cod_instituicao)) {
-            $filtros .= "{$whereAnd} i.cod_instituicao = '{$int_cod_instituicao}'";
+            $filtros .= "{$whereAnd} i.cod_instituicao = '{$this->sqlTexto($int_cod_instituicao)}'";
             $whereAnd = ' AND ';
         }
 
@@ -453,8 +455,8 @@ class clsPmieducarCliente extends Model
               AND i.cod_instituicao     = b.ref_cod_instituicao
               AND e.ref_cod_instituicao = i.cod_instituicao{$condicaoSuspenso}
               AND p.idpes               = c.ref_idpes
-              AND c.ativo               = '{$int_ativo}'
-              AND ctc.ativo             = '{$int_ativo}'
+              AND c.ativo               = '{$this->sqlTexto($int_ativo)}'
+              AND ctc.ativo             = '{$this->sqlTexto($int_ativo)}'
               $filtros";
 
         $this->_total = $db->CampoUnico('SELECT COUNT(0) ' . $sql);
@@ -487,43 +489,43 @@ class clsPmieducarCliente extends Model
         $whereAnd = ' WHERE c.cod_cliente = ctc.ref_cod_cliente AND ctc.ref_cod_cliente_tipo = ct.cod_cliente_tipo AND c.ref_idpes = p.idpes AND';
 
         if (is_numeric($int_cod_cliente)) {
-            $filtros .= "{$whereAnd} c.cod_cliente = '{$int_cod_cliente}'";
+            $filtros .= "{$whereAnd} c.cod_cliente = '{$this->sqlTexto($int_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_exc)) {
-            $filtros .= "{$whereAnd} c.ref_usuario_exc = '{$int_ref_usuario_exc}'";
+            $filtros .= "{$whereAnd} c.ref_usuario_exc = '{$this->sqlTexto($int_ref_usuario_exc)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} c.ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} c.ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_idpes)) {
-            $filtros .= "{$whereAnd} c.ref_idpes = '{$int_ref_idpes}'";
+            $filtros .= "{$whereAnd} c.ref_idpes = '{$this->sqlTexto($int_ref_idpes)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_login)) {
-            $filtros .= "{$whereAnd} c.login = '{$int_login}'";
+            $filtros .= "{$whereAnd} c.login = '{$this->sqlTexto($int_login)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_senha)) {
-            $filtros .= "{$whereAnd} c.senha = '{$str_senha}'";
+            $filtros .= "{$whereAnd} c.senha = '{$this->sqlTexto($str_senha)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} c.data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} c.data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} c.data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} c.data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_ini)) {
-            $filtros .= "{$whereAnd} c.data_exclusao >= '{$date_data_exclusao_ini}'";
+            $filtros .= "{$whereAnd} c.data_exclusao >= '{$this->sqlTexto($date_data_exclusao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_fim)) {
-            $filtros .= "{$whereAnd} c.data_exclusao <= '{$date_data_exclusao_fim}'";
+            $filtros .= "{$whereAnd} c.data_exclusao <= '{$this->sqlTexto($date_data_exclusao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_null($int_ativo) || $int_ativo) {
@@ -534,11 +536,11 @@ class clsPmieducarCliente extends Model
             $whereAnd = ' AND ';
         }
         if (is_string($str_nm_cliente)) {
-            $filtros .= "{$whereAnd} p.nome LIKE '%{$str_nm_cliente}%'";
+            $filtros .= "{$whereAnd} p.nome LIKE '%{$this->sqlTexto($str_nm_cliente)}%'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} ct.ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} ct.ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
 
@@ -581,13 +583,13 @@ class clsPmieducarCliente extends Model
     {
         if (is_numeric($this->cod_cliente)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} c WHERE c.cod_cliente = '{$this->cod_cliente}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} c WHERE c.cod_cliente = '{$this->sqlTexto($this->cod_cliente)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
         } elseif (is_numeric($this->ref_idpes)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} c WHERE c.ref_idpes = '{$this->ref_idpes}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} c WHERE c.ref_idpes = '{$this->sqlTexto($this->ref_idpes)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -605,7 +607,7 @@ class clsPmieducarCliente extends Model
     {
         if (is_numeric($this->cod_cliente)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_cliente = '{$this->cod_cliente}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_cliente = '{$this->sqlTexto($this->cod_cliente)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -646,8 +648,8 @@ class clsPmieducarCliente extends Model
                                    pmieducar.cliente_tipo          ct
                              WHERE c.cod_cliente         = ctc.ref_cod_cliente
                                AND ct.cod_cliente_tipo   = ctc.ref_cod_cliente_tipo
-                               AND c.cod_cliente         = '{$int_cod_cliente}'
-                               AND ct.ref_cod_biblioteca = '{$int_cod_biblioteca}'");
+                               AND c.cod_cliente         = '{$this->sqlTexto($int_cod_cliente)}'
+                               AND ct.ref_cod_biblioteca = '{$this->sqlTexto($int_cod_biblioteca)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();

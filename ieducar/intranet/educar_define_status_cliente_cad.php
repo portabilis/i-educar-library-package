@@ -123,7 +123,7 @@ return new class extends clsCadastro {
             }
         } elseif ($this->acao_status == 'liberar') {
             $db               = new clsBanco();
-            $this->sequencial = $db->CampoUnico("SELECT MAX( sequencial ) FROM pmieducar.cliente_suspensao WHERE ref_cod_cliente = {$this->cod_cliente} AND data_liberacao IS NULL");
+            $this->sequencial = $db->CampoUnico("SELECT MAX( sequencial ) FROM pmieducar.cliente_suspensao WHERE ref_cod_cliente = " . (int) $this->cod_cliente . " AND data_liberacao IS NULL");
             $this->campoOculto('sequencial', $this->sequencial);
 
             $this->Editar();

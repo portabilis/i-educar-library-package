@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyInstitution;
+
 return new class extends clsDetalhe {
     public $titulo;
     public $cod_situacao;
@@ -35,10 +37,11 @@ return new class extends clsDetalhe {
         $registro['ref_cod_biblioteca'] = $det_ref_cod_biblioteca['nm_biblioteca'];
         $registro['ref_cod_instituicao'] = $det_ref_cod_biblioteca['ref_cod_instituicao'];
         $registro['ref_cod_escola'] = $det_ref_cod_biblioteca['ref_cod_escola'];
+        $nm_instituicao = null;
         if ($registro['ref_cod_instituicao']) {
-            $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-            $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-            $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+            $nm_instituicao = LegacyInstitution::query()
+                ->whereKey($registro['ref_cod_instituicao'])
+                ->value('nm_instituicao');
         }
         if ($registro['ref_cod_escola']) {
             $obj_ref_cod_escola = new clsPmieducarEscola();
@@ -49,8 +52,8 @@ return new class extends clsDetalhe {
         $obj_permissoes = new clsPermissoes();
         $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
 
-        if ($registro['ref_cod_instituicao'] && $nivel_usuario == 1) {
-            $this->addDetalhe([ 'Instituição', "{$registro['ref_cod_instituicao']}"]);
+        if ($nm_instituicao && $nivel_usuario == 1) {
+            $this->addDetalhe([ 'Instituição', "{$nm_instituicao}"]);
         }
         if ($registro['ref_cod_escola'] && ($nivel_usuario == 1 || $nivel_usuario == 2)) {
             $this->addDetalhe([ 'Escola', "{$registro['ref_cod_escola']}"]);

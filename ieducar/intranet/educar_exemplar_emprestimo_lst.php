@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacyPerson;
 use Illuminate\Support\Facades\Session;
 
@@ -130,6 +131,10 @@ return new class extends clsListagem {
 
         // monta a lista
         if (is_array($lista) && count($lista)) {
+            $nomesInstituicoes = LegacyInstitution::query()
+                ->whereIn('cod_instituicao', array_column($lista, 'ref_cod_instituicao'))
+                ->pluck('nm_instituicao', 'cod_instituicao');
+
             foreach ($lista as $registro) {
                 // muda os campos data
                 $registro['data_retirada_time'] = strtotime(substr($registro['data_retirada'], 0, 16));
@@ -151,10 +156,9 @@ return new class extends clsListagem {
                 $det_ref_cod_biblioteca = $obj_ref_cod_biblioteca->detalhe();
                 $registro['ref_cod_biblioteca'] = $det_ref_cod_biblioteca['nm_biblioteca'];
 
+                $nm_instituicao = null;
                 if ($registro['ref_cod_instituicao']) {
-                    $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-                    $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-                    $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+                    $nm_instituicao = $nomesInstituicoes[$registro['ref_cod_instituicao']] ?? null;
                 }
                 if ($registro['ref_cod_escola']) {
                     $obj_ref_cod_escola = new clsPmieducarEscola();
@@ -178,7 +182,7 @@ return new class extends clsListagem {
                     $lista_busca[] = "<a href=\"educar_exemplar_emprestimo_det.php?cod_emprestimo={$registro['cod_emprestimo']}\">{$registro['ref_cod_escola']}</a>";
                 }
                 if ($nivel_usuario == 1) {
-                    $lista_busca[] = "<a href=\"educar_exemplar_emprestimo_det.php?cod_emprestimo={$registro['cod_emprestimo']}\">{$registro['ref_cod_instituicao']}</a>";
+                    $lista_busca[] = "<a href=\"educar_exemplar_emprestimo_det.php?cod_emprestimo={$registro['cod_emprestimo']}\">{$nm_instituicao}</a>";
                 }
 
                 $this->addLinhas($lista_busca);

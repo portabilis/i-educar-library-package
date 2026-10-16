@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\LegacyInstitution;
+
 return new class extends clsListagem {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -129,15 +131,15 @@ return new class extends clsListagem {
                         $det_ref_cod_escola = $obj_ref_cod_escola->detalhe();
                         $registro['ref_cod_instituicao'] = $det_ref_cod_escola['ref_cod_instituicao'];
 
-                        $obj_ref_cod_intituicao = new clsPmieducarInstituicao($det_biblioteca['ref_cod_instituicao']);
-                        $det_ref_cod_intituicao = $obj_ref_cod_intituicao->detalhe();
-                        $registro['ref_cod_instituicao'] = $det_ref_cod_intituicao['nm_instituicao'];
+                        $nm_instituicao = LegacyInstitution::query()
+                            ->whereKey($det_biblioteca['ref_cod_instituicao'])
+                            ->value('nm_instituicao');
 
                         $this->addLinhas([
                             "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$registro['nm_autor']}</a>",
                             "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$det_biblioteca['nm_biblioteca']}</a>",
                             "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$registro['ref_cod_escola']}</a>",
-                            "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$registro['ref_cod_instituicao']}</a>"
+                            "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$nm_instituicao}</a>"
                         ]);
 
                         break;

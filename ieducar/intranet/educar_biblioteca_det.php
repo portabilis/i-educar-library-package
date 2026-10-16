@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacyOrganization;
 use App\Models\LegacyPerson;
 
@@ -32,9 +33,9 @@ return new class extends clsDetalhe {
             $this->simpleRedirect('educar_biblioteca_lst.php');
         }
 
-        $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-        $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-        $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+        $nm_instituicao = LegacyInstitution::query()
+            ->whereKey($registro['ref_cod_instituicao'])
+            ->value('nm_instituicao');
 
         $obj_ref_cod_escola = new clsPmieducarEscola($registro['ref_cod_escola']);
         $det_ref_cod_escola = $obj_ref_cod_escola->detalhe();
@@ -45,8 +46,8 @@ return new class extends clsDetalhe {
         $obj_permissoes = new clsPermissoes();
         $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
         if ($nivel_usuario == 1) {
-            if ($registro['ref_cod_instituicao']) {
-                $this->addDetalhe([ 'Instituição', "{$registro['ref_cod_instituicao']}"]);
+            if ($nm_instituicao) {
+                $this->addDetalhe([ 'Instituição', "{$nm_instituicao}"]);
             }
         }
         if ($registro['ref_cod_escola']) {

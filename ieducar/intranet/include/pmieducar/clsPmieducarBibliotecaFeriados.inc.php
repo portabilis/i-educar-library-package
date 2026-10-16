@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarBibliotecaFeriados extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_feriado;
     public $ref_cod_biblioteca;
     public $nm_feriado;
@@ -64,22 +66,22 @@ class clsPmieducarBibliotecaFeriados extends Model
 
             if (is_numeric($this->ref_cod_biblioteca)) {
                 $campos .= "{$gruda}ref_cod_biblioteca";
-                $valores .= "{$gruda}'{$this->ref_cod_biblioteca}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
             if (is_string($this->nm_feriado)) {
                 $campos .= "{$gruda}nm_feriado";
-                $valores .= "{$gruda}'{$this->nm_feriado}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->nm_feriado)}'";
                 $gruda = ', ';
             }
             if (is_string($this->descricao)) {
                 $campos .= "{$gruda}descricao";
-                $valores .= "{$gruda}'{$this->descricao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->descricao)}'";
                 $gruda = ', ';
             }
             if (($this->data_feriado)) {
                 $campos .= "{$gruda}data_feriado";
-                $valores .= "{$gruda}'{$this->data_feriado}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->data_feriado)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}data_cadastro";
@@ -109,34 +111,34 @@ class clsPmieducarBibliotecaFeriados extends Model
             $set = '';
 
             if (is_numeric($this->ref_cod_biblioteca)) {
-                $set .= "{$gruda}ref_cod_biblioteca = '{$this->ref_cod_biblioteca}'";
+                $set .= "{$gruda}ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
             if (is_string($this->nm_feriado)) {
-                $set .= "{$gruda}nm_feriado = '{$this->nm_feriado}'";
+                $set .= "{$gruda}nm_feriado = '{$this->sqlTexto($this->nm_feriado)}'";
                 $gruda = ', ';
             }
             if (is_string($this->descricao)) {
-                $set .= "{$gruda}descricao = '{$this->descricao}'";
+                $set .= "{$gruda}descricao = '{$this->sqlTexto($this->descricao)}'";
                 $gruda = ', ';
             }
             if (($this->data_feriado)) {
-                $set .= "{$gruda}data_feriado = '{$this->data_feriado}'";
+                $set .= "{$gruda}data_feriado = '{$this->sqlTexto($this->data_feriado)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_cadastro)) {
-                $set .= "{$gruda}data_cadastro = '{$this->data_cadastro}'";
+                $set .= "{$gruda}data_cadastro = '{$this->sqlTexto($this->data_cadastro)}'";
                 $gruda = ', ';
             }
             $set .= "{$gruda}data_exclusao = NOW()";
             $gruda = ', ';
             if (is_numeric($this->ativo)) {
-                $set .= "{$gruda}ativo = '{$this->ativo}'";
+                $set .= "{$gruda}ativo = '{$this->sqlTexto($this->ativo)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_feriado = '{$this->cod_feriado}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_feriado = '{$this->sqlTexto($this->cod_feriado)}'");
 
                 return true;
             }
@@ -158,43 +160,43 @@ class clsPmieducarBibliotecaFeriados extends Model
         $whereAnd = ' WHERE ';
 
         if (is_numeric($int_cod_feriado)) {
-            $filtros .= "{$whereAnd} cod_feriado = '{$int_cod_feriado}'";
+            $filtros .= "{$whereAnd} cod_feriado = '{$this->sqlTexto($int_cod_feriado)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_nm_feriado)) {
-            $filtros .= "{$whereAnd} nm_feriado LIKE '%{$str_nm_feriado}%'";
+            $filtros .= "{$whereAnd} nm_feriado LIKE '%{$this->sqlTexto($str_nm_feriado)}%'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_descricao)) {
-            $filtros .= "{$whereAnd} descricao LIKE '%{$str_descricao}%'";
+            $filtros .= "{$whereAnd} descricao LIKE '%{$this->sqlTexto($str_descricao)}%'";
             $whereAnd = ' AND ';
         }
         if (($time_data_feriado_ini)) {
-            $filtros .= "{$whereAnd} data_feriado >= '{$time_data_feriado_ini}'";
+            $filtros .= "{$whereAnd} data_feriado >= '{$this->sqlTexto($time_data_feriado_ini)}'";
             $whereAnd = ' AND ';
         }
         if (($time_data_feriado_fim)) {
-            $filtros .= "{$whereAnd} data_feriado <= '{$time_data_feriado_fim}'";
+            $filtros .= "{$whereAnd} data_feriado <= '{$this->sqlTexto($time_data_feriado_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_ini)) {
-            $filtros .= "{$whereAnd} data_exclusao >= '{$date_data_exclusao_ini}'";
+            $filtros .= "{$whereAnd} data_exclusao >= '{$this->sqlTexto($date_data_exclusao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_fim)) {
-            $filtros .= "{$whereAnd} data_exclusao <= '{$date_data_exclusao_fim}'";
+            $filtros .= "{$whereAnd} data_exclusao <= '{$this->sqlTexto($date_data_exclusao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_null($int_ativo) || $int_ativo) {
@@ -244,7 +246,7 @@ class clsPmieducarBibliotecaFeriados extends Model
     {
         if (is_numeric($this->cod_feriado)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_feriado = '{$this->cod_feriado}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_feriado = '{$this->sqlTexto($this->cod_feriado)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -262,7 +264,7 @@ class clsPmieducarBibliotecaFeriados extends Model
     {
         if (is_numeric($this->cod_feriado)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_feriado = '{$this->cod_feriado}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_feriado = '{$this->sqlTexto($this->cod_feriado)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -294,7 +296,7 @@ class clsPmieducarBibliotecaFeriados extends Model
     {
         if (is_numeric($ref_cod_biblioteca)) {
             $db = new clsBanco();
-            $db->Consulta("DELETE FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$ref_cod_biblioteca}'");
+            $db->Consulta("DELETE FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$this->sqlTexto($ref_cod_biblioteca)}'");
 
             return true;
         }

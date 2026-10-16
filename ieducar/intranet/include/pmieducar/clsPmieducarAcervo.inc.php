@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarAcervo extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_acervo;
     public $ref_cod_exemplar_tipo;
     public $ref_cod_acervo;
@@ -235,77 +237,77 @@ class clsPmieducarAcervo extends Model
 
             if (is_numeric($this->ref_cod_exemplar_tipo)) {
                 $campos .= "{$gruda}ref_cod_exemplar_tipo";
-                $valores .= "{$gruda}'{$this->ref_cod_exemplar_tipo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_exemplar_tipo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo) || $this->ref_cod_acervo == 'NULL') {
                 $campos .= "{$gruda}ref_cod_acervo";
-                $valores .= "{$gruda}{$this->ref_cod_acervo}";
+                $valores .= "{$gruda}{$this->sqlNumero($this->ref_cod_acervo)}";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
                 $campos .= "{$gruda}ref_usuario_cad";
-                $valores .= "{$gruda}'{$this->ref_usuario_cad}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo_colecao)) {
                 $campos .= "{$gruda}ref_cod_acervo_colecao";
-                $valores .= "{$gruda}'{$this->ref_cod_acervo_colecao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_acervo_colecao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo_idioma)) {
                 $campos .= "{$gruda}ref_cod_acervo_idioma";
-                $valores .= "{$gruda}'{$this->ref_cod_acervo_idioma}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_acervo_idioma)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo_editora)) {
                 $campos .= "{$gruda}ref_cod_acervo_editora";
-                $valores .= "{$gruda}'{$this->ref_cod_acervo_editora}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_acervo_editora)}'";
                 $gruda = ', ';
             }
             if (is_string($this->titulo)) {
                 $campos .= "{$gruda}titulo";
-                $valores .= "{$gruda}E'{$this->titulo}'";
+                $valores .= "{$gruda}E'{$this->sqlTexto($this->titulo)}'";
                 $gruda = ', ';
             }
             if (is_string($this->sub_titulo)) {
                 $campos .= "{$gruda}sub_titulo";
-                $valores .= "{$gruda}E'{$this->sub_titulo}'";
+                $valores .= "{$gruda}E'{$this->sqlTexto($this->sub_titulo)}'";
                 $gruda = ', ';
             }
             if (is_string($this->cdu)) {
                 $campos .= "{$gruda}cdu";
-                $valores .= "{$gruda}'{$this->cdu}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->cdu)}'";
                 $gruda = ', ';
             }
             if (is_string($this->cutter)) {
                 $campos .= "{$gruda}cutter";
-                $valores .= "{$gruda}'{$this->cutter}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->cutter)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->volume)) {
                 $campos .= "{$gruda}volume";
-                $valores .= "{$gruda}'{$this->volume}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->volume)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->num_edicao)) {
                 $campos .= "{$gruda}num_edicao";
-                $valores .= "{$gruda}'{$this->num_edicao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->num_edicao)}'";
                 $gruda = ', ';
             }
             if (is_string($this->ano)) {
                 $campos .= "{$gruda}ano";
-                $valores .= "{$gruda}'{$this->ano}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ano)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->num_paginas)) {
                 $campos .= "{$gruda}num_paginas";
-                $valores .= "{$gruda}'{$this->num_paginas}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->num_paginas)}'";
                 $gruda = ', ';
             }
             if (is_string($this->isbn)) {
                 $campos .= "{$gruda}isbn";
-                $valores .= "{$gruda}'{$this->isbn}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->isbn)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}data_cadastro";
@@ -317,55 +319,55 @@ class clsPmieducarAcervo extends Model
 
             if (is_numeric($this->ref_cod_biblioteca)) {
                 $campos .= "{$gruda}ref_cod_biblioteca";
-                $valores .= "{$gruda}'{$this->ref_cod_biblioteca}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->cdd)) {
                 $campos .= "{$gruda}cdd";
-                $valores .= "{$gruda}'{$this->cdd}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->cdd)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->estante)) {
                 $campos .= "{$gruda}estante";
-                $valores .= "{$gruda}'{$this->estante}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->estante)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->dimencao)) {
                 $campos .= "{$gruda}dimencao";
-                $valores .= "{$gruda}'{$this->dimencao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->dimencao)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->material_ilustrativo)) {
                 $campos .= "{$gruda}material_ilustrativo";
-                $valores .= "{$gruda}'{$this->material_ilustrativo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->material_ilustrativo)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->dimencao_ilustrativo)) {
                 $campos .= "{$gruda}dimencao_ilustrativo";
-                $valores .= "{$gruda}'{$this->dimencao_ilustrativo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->dimencao_ilustrativo)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->local)) {
                 $campos .= "{$gruda}local";
-                $valores .= "{$gruda}'{$this->local}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->local)}'";
                 $gruda = ', ';
             }
 
             if (is_numeric($this->ref_cod_tipo_autor)) {
                 $campos .= "{$gruda}ref_cod_tipo_autor";
-                $valores .= "{$gruda}'{$this->ref_cod_tipo_autor}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_tipo_autor)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->tipo_autor)) {
                 $campos .= "{$gruda}tipo_autor";
-                $valores .= "{$gruda}'{$this->tipo_autor}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->tipo_autor)}'";
                 $gruda = ', ';
             }
 
@@ -389,121 +391,121 @@ class clsPmieducarAcervo extends Model
             $set = '';
 
             if (is_numeric($this->ref_cod_exemplar_tipo)) {
-                $set .= "{$gruda}ref_cod_exemplar_tipo = '{$this->ref_cod_exemplar_tipo}'";
+                $set .= "{$gruda}ref_cod_exemplar_tipo = '{$this->sqlTexto($this->ref_cod_exemplar_tipo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo) || $this->ref_cod_acervo == 'NULL') {
-                $set .= "{$gruda}ref_cod_acervo = {$this->ref_cod_acervo}";
+                $set .= "{$gruda}ref_cod_acervo = {$this->sqlNumero($this->ref_cod_acervo)}";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_exc)) {
-                $set .= "{$gruda}ref_usuario_exc = '{$this->ref_usuario_exc}'";
+                $set .= "{$gruda}ref_usuario_exc = '{$this->sqlTexto($this->ref_usuario_exc)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
-                $set .= "{$gruda}ref_usuario_cad = '{$this->ref_usuario_cad}'";
+                $set .= "{$gruda}ref_usuario_cad = '{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo_colecao)) {
-                $set .= "{$gruda}ref_cod_acervo_colecao = '{$this->ref_cod_acervo_colecao}'";
+                $set .= "{$gruda}ref_cod_acervo_colecao = '{$this->sqlTexto($this->ref_cod_acervo_colecao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo_idioma)) {
-                $set .= "{$gruda}ref_cod_acervo_idioma = '{$this->ref_cod_acervo_idioma}'";
+                $set .= "{$gruda}ref_cod_acervo_idioma = '{$this->sqlTexto($this->ref_cod_acervo_idioma)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo_editora)) {
-                $set .= "{$gruda}ref_cod_acervo_editora = '{$this->ref_cod_acervo_editora}'";
+                $set .= "{$gruda}ref_cod_acervo_editora = '{$this->sqlTexto($this->ref_cod_acervo_editora)}'";
                 $gruda = ', ';
             }
             if (is_string($this->titulo)) {
-                $set .= "{$gruda}titulo = '{$this->titulo}'";
+                $set .= "{$gruda}titulo = '{$this->sqlTexto($this->titulo)}'";
                 $gruda = ', ';
             }
             if (is_string($this->sub_titulo)) {
-                $set .= "{$gruda}sub_titulo = '{$this->sub_titulo}'";
+                $set .= "{$gruda}sub_titulo = '{$this->sqlTexto($this->sub_titulo)}'";
                 $gruda = ', ';
             }
             if (is_string($this->cdu)) {
-                $set .= "{$gruda}cdu = '{$this->cdu}'";
+                $set .= "{$gruda}cdu = '{$this->sqlTexto($this->cdu)}'";
                 $gruda = ', ';
             }
             if (is_string($this->cutter)) {
-                $set .= "{$gruda}cutter = '{$this->cutter}'";
+                $set .= "{$gruda}cutter = '{$this->sqlTexto($this->cutter)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->volume) || $this->volume == 'null') {
-                $set .= "{$gruda}volume = {$this->volume}";
+                $set .= "{$gruda}volume = {$this->sqlNumero($this->volume)}";
                 $gruda = ', ';
             }
             if (is_numeric($this->num_edicao) || $this->num_edicao == 'null') {
-                $set .= "{$gruda}num_edicao = {$this->num_edicao}";
+                $set .= "{$gruda}num_edicao = {$this->sqlNumero($this->num_edicao)}";
                 $gruda = ', ';
             }
             if (is_string($this->ano) || $this->ano == 'null') {
-                $set .= "{$gruda}ano = '{$this->ano}'";
+                $set .= "{$gruda}ano = '{$this->sqlTexto($this->ano)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->num_paginas) || $this->num_paginas == 'null') {
-                $set .= "{$gruda}num_paginas = {$this->num_paginas}";
+                $set .= "{$gruda}num_paginas = {$this->sqlNumero($this->num_paginas)}";
                 $gruda = ', ';
             }
             if (is_string($this->isbn)) {
-                $set .= "{$gruda}isbn = '{$this->isbn}'";
+                $set .= "{$gruda}isbn = '{$this->sqlTexto($this->isbn)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_cadastro)) {
-                $set .= "{$gruda}data_cadastro = '{$this->data_cadastro}'";
+                $set .= "{$gruda}data_cadastro = '{$this->sqlTexto($this->data_cadastro)}'";
                 $gruda = ', ';
             }
             $set .= "{$gruda}data_exclusao = NOW()";
             $gruda = ', ';
             if (is_numeric($this->ativo)) {
-                $set .= "{$gruda}ativo = '{$this->ativo}'";
+                $set .= "{$gruda}ativo = '{$this->sqlTexto($this->ativo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_biblioteca)) {
-                $set .= "{$gruda}ref_cod_biblioteca = '{$this->ref_cod_biblioteca}'";
+                $set .= "{$gruda}ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->cdd)) {
-                $set .= "{$gruda}cdd = '{$this->cdd}'";
+                $set .= "{$gruda}cdd = '{$this->sqlTexto($this->cdd)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->dimencao)) {
-                $set .= "{$gruda}dimencao = '{$this->dimencao}'";
+                $set .= "{$gruda}dimencao = '{$this->sqlTexto($this->dimencao)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->material_ilustrativo)) {
-                $set .= "{$gruda}material_ilustrativo = '{$this->material_ilustrativo}'";
+                $set .= "{$gruda}material_ilustrativo = '{$this->sqlTexto($this->material_ilustrativo)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->dimencao_ilustrativo)) {
-                $set .= "{$gruda}dimencao_ilustrativo = '{$this->dimencao_ilustrativo}'";
+                $set .= "{$gruda}dimencao_ilustrativo = '{$this->sqlTexto($this->dimencao_ilustrativo)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->local)) {
-                $set .= "{$gruda}local = '{$this->local}'";
+                $set .= "{$gruda}local = '{$this->sqlTexto($this->local)}'";
                 $gruda = ', ';
             }
 
             if (is_numeric($this->ref_cod_tipo_autor)) {
-                $set .= "{$gruda}ref_cod_tipo_autor = '{$this->ref_cod_tipo_autor}'";
+                $set .= "{$gruda}ref_cod_tipo_autor = '{$this->sqlTexto($this->ref_cod_tipo_autor)}'";
                 $gruda = ', ';
             }
 
             if (is_string($this->tipo_autor)) {
-                $set .= "{$gruda}tipo_autor = '{$this->tipo_autor}'";
+                $set .= "{$gruda}tipo_autor = '{$this->sqlTexto($this->tipo_autor)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_acervo = '{$this->cod_acervo}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_acervo = '{$this->sqlTexto($this->cod_acervo)}'");
 
                 return true;
             }
@@ -552,35 +554,35 @@ class clsPmieducarAcervo extends Model
         $filtros = ' WHERE a.ref_cod_biblioteca = b.cod_biblioteca';
 
         if (is_numeric($int_cod_acervo)) {
-            $filtros .= "{$whereAnd} a.cod_acervo = '{$int_cod_acervo}'";
+            $filtros .= "{$whereAnd} a.cod_acervo = '{$this->sqlTexto($int_cod_acervo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_exemplar_tipo)) {
-            $filtros .= "{$whereAnd} a.ref_cod_exemplar_tipo = '{$int_ref_cod_exemplar_tipo}'";
+            $filtros .= "{$whereAnd} a.ref_cod_exemplar_tipo = '{$this->sqlTexto($int_ref_cod_exemplar_tipo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_acervo)) {
-            $filtros .= "{$whereAnd} a.ref_cod_acervo = '{$int_ref_cod_acervo}'";
+            $filtros .= "{$whereAnd} a.ref_cod_acervo = '{$this->sqlTexto($int_ref_cod_acervo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_exc)) {
-            $filtros .= "{$whereAnd} a.ref_usuario_exc = '{$int_ref_usuario_exc}'";
+            $filtros .= "{$whereAnd} a.ref_usuario_exc = '{$this->sqlTexto($int_ref_usuario_exc)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} a.ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} a.ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_acervo_colecao)) {
-            $filtros .= "{$whereAnd} a.ref_cod_acervo_colecao = '{$int_ref_cod_acervo_colecao}'";
+            $filtros .= "{$whereAnd} a.ref_cod_acervo_colecao = '{$this->sqlTexto($int_ref_cod_acervo_colecao)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_acervo_idioma)) {
-            $filtros .= "{$whereAnd} a.ref_cod_acervo_idioma = '{$int_ref_cod_acervo_idioma}'";
+            $filtros .= "{$whereAnd} a.ref_cod_acervo_idioma = '{$this->sqlTexto($int_ref_cod_acervo_idioma)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_acervo_editora)) {
-            $filtros .= "{$whereAnd} a.ref_cod_acervo_editora = '{$int_ref_cod_acervo_editora}'";
+            $filtros .= "{$whereAnd} a.ref_cod_acervo_editora = '{$this->sqlTexto($int_ref_cod_acervo_editora)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_titulo)) {
@@ -604,39 +606,39 @@ class clsPmieducarAcervo extends Model
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_volume)) {
-            $filtros .= "{$whereAnd} a.volume = '{$int_volume}'";
+            $filtros .= "{$whereAnd} a.volume = '{$this->sqlTexto($int_volume)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_num_edicao)) {
-            $filtros .= "{$whereAnd} a.num_edicao = '{$int_num_edicao}'";
+            $filtros .= "{$whereAnd} a.num_edicao = '{$this->sqlTexto($int_num_edicao)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_ano)) {
-            $filtros .= "{$whereAnd} a.ano = '{$str_ano}'";
+            $filtros .= "{$whereAnd} a.ano = '{$this->sqlTexto($str_ano)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_num_paginas)) {
-            $filtros .= "{$whereAnd} a.num_paginas = '{$int_num_paginas}'";
+            $filtros .= "{$whereAnd} a.num_paginas = '{$this->sqlTexto($int_num_paginas)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_isbn)) {
-            $filtros .= "{$whereAnd} a.isbn = '{$str_isbn}'";
+            $filtros .= "{$whereAnd} a.isbn = '{$this->sqlTexto($str_isbn)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} a.data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} a.data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} a.data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} a.data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_ini)) {
-            $filtros .= "{$whereAnd} a.data_exclusao >= '{$date_data_exclusao_ini}'";
+            $filtros .= "{$whereAnd} a.data_exclusao >= '{$this->sqlTexto($date_data_exclusao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_fim)) {
-            $filtros .= "{$whereAnd} a.data_exclusao <= '{$date_data_exclusao_fim}'";
+            $filtros .= "{$whereAnd} a.data_exclusao <= '{$this->sqlTexto($date_data_exclusao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_null($int_ativo) || $int_ativo) {
@@ -651,15 +653,15 @@ class clsPmieducarAcervo extends Model
             $filtros .= "{$whereAnd} (a.ref_cod_biblioteca IN ($bibs) OR a.ref_cod_biblioteca IS NULL)";
             $whereAnd = ' AND ';
         } elseif (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_instituicao)) {
-            $filtro .= "{$whereAnd} b.ref_cod_instituicao = '{$int_ref_cod_instituicao}'";
+            $filtro .= "{$whereAnd} b.ref_cod_instituicao = '{$this->sqlTexto($int_ref_cod_instituicao)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_escola)) {
-            $filtro .= "{$whereAnd} b.ref_cod_escola = '{$int_ref_cod_escola}'";
+            $filtro .= "{$whereAnd} b.ref_cod_escola = '{$this->sqlTexto($int_ref_cod_escola)}'";
             $whereAnd = ' AND ';
         }
         if (!empty($str_nm_autor)) {
@@ -733,12 +735,12 @@ class clsPmieducarAcervo extends Model
             $filtros .= "{$whereAnd} (a.ref_cod_biblioteca IN ($bibs) OR a.ref_cod_biblioteca IS NULL)";
             $whereAnd = ' AND ';
         } elseif (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
 
         if (is_numeric($this->ref_cod_acervo_assunto)) {
-            $filtros .= "{$whereAnd} (SELECT 1 FROM pmieducar.acervo_acervo_assunto WHERE ref_cod_acervo = cod_acervo AND ref_cod_acervo_assunto = {$this->ref_cod_acervo_assunto} ) IS NOT NULL";
+            $filtros .= "{$whereAnd} (SELECT 1 FROM pmieducar.acervo_acervo_assunto WHERE ref_cod_acervo = cod_acervo AND ref_cod_acervo_assunto = {$this->sqlNumero($this->ref_cod_acervo_assunto)} ) IS NOT NULL";
             $whereAnd = ' AND ';
         }
         if (is_string($str_cdd)) {
@@ -762,15 +764,15 @@ class clsPmieducarAcervo extends Model
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_acervo_colecao)) {
-            $filtros .= "{$whereAnd} ref_cod_acervo_colecao = {$int_ref_cod_acervo_colecao}";
+            $filtros .= "{$whereAnd} ref_cod_acervo_colecao = {$this->sqlNumero($int_ref_cod_acervo_colecao)}";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_exemplar_tipo)) {
-            $filtros .= "{$whereAnd} ref_cod_exemplar_tipo = {$int_ref_cod_exemplar_tipo}";
+            $filtros .= "{$whereAnd} ref_cod_exemplar_tipo = {$this->sqlNumero($int_ref_cod_exemplar_tipo)}";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_acervo_editora)) {
-            $filtros .= "{$whereAnd} ref_cod_acervo_editora = {$int_ref_cod_acervo_editora}";
+            $filtros .= "{$whereAnd} ref_cod_acervo_editora = {$this->sqlNumero($int_ref_cod_acervo_editora)}";
             $whereAnd = ' AND ';
         }
         if (is_string($str_sub_titulo)) {
@@ -825,7 +827,7 @@ class clsPmieducarAcervo extends Model
     {
         if (is_numeric($this->cod_acervo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} a WHERE a.cod_acervo = '{$this->cod_acervo}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} a WHERE a.cod_acervo = '{$this->sqlTexto($this->cod_acervo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -843,7 +845,7 @@ class clsPmieducarAcervo extends Model
     {
         if (is_numeric($this->cod_acervo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_acervo = '{$this->cod_acervo}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_acervo = '{$this->sqlTexto($this->cod_acervo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();

@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarBiblioteca extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_biblioteca;
     public $ref_cod_instituicao;
     public $ref_cod_escola;
@@ -121,12 +123,12 @@ class clsPmieducarBiblioteca extends Model
 
             if (is_numeric($this->ref_cod_instituicao)) {
                 $campos .= "{$gruda}ref_cod_instituicao";
-                $valores .= "{$gruda}'{$this->ref_cod_instituicao}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_instituicao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_escola)) {
                 $campos .= "{$gruda}ref_cod_escola";
-                $valores .= "{$gruda}'{$this->ref_cod_escola}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_escola)}'";
                 $gruda = ', ';
             }
             if (is_string($this->nm_biblioteca)) {
@@ -137,17 +139,17 @@ class clsPmieducarBiblioteca extends Model
             }
             if (is_numeric($this->valor_multa)) {
                 $campos .= "{$gruda}valor_multa";
-                $valores .= "{$gruda}'{$this->valor_multa}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->valor_multa)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->max_emprestimo)) {
                 $campos .= "{$gruda}max_emprestimo";
-                $valores .= "{$gruda}'{$this->max_emprestimo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->max_emprestimo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->valor_maximo_multa)) {
                 $campos .= "{$gruda}valor_maximo_multa";
-                $valores .= "{$gruda}'{$this->valor_maximo_multa}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->valor_maximo_multa)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}data_cadastro";
@@ -155,7 +157,7 @@ class clsPmieducarBiblioteca extends Model
             $gruda = ', ';
             if (is_numeric($this->requisita_senha)) {
                 $campos .= "{$gruda}requisita_senha";
-                $valores .= "{$gruda}'{$this->requisita_senha}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->requisita_senha)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}ativo";
@@ -163,11 +165,11 @@ class clsPmieducarBiblioteca extends Model
             $gruda = ', ';
             if (is_numeric($this->dias_espera)) {
                 $campos .= "{$gruda}dias_espera";
-                $valores .= "{$gruda}'{$this->dias_espera}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->dias_espera)}'";
                 $gruda = ', ';
             }
             if (!is_null($this->tombo_automatico)) {
-                $campos .= "{$gruda}tombo_automatico";// = {$this->tombo_automatico}";
+                $campos .= "{$gruda}tombo_automatico";// = {$this->sqlNumero($this->tombo_automatico)}";
                 $aux = dbBool($this->tombo_automatico) ? 'TRUE' : 'FALSE';
                 $valores .= "{$gruda}{$aux}";
                 $gruda = ', ';
@@ -199,11 +201,11 @@ class clsPmieducarBiblioteca extends Model
             $set = '';
 
             if (is_numeric($this->ref_cod_instituicao)) {
-                $set .= "{$gruda}ref_cod_instituicao = '{$this->ref_cod_instituicao}'";
+                $set .= "{$gruda}ref_cod_instituicao = '{$this->sqlTexto($this->ref_cod_instituicao)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_escola)) {
-                $set .= "{$gruda}ref_cod_escola = '{$this->ref_cod_escola}'";
+                $set .= "{$gruda}ref_cod_escola = '{$this->sqlTexto($this->ref_cod_escola)}'";
                 $gruda = ', ';
             }
             if (is_string($this->nm_biblioteca)) {
@@ -212,48 +214,48 @@ class clsPmieducarBiblioteca extends Model
                 $gruda = ', ';
             }
             if (is_numeric($this->valor_multa)) {
-                $set .= "{$gruda}valor_multa = '{$this->valor_multa}'";
+                $set .= "{$gruda}valor_multa = '{$this->sqlTexto($this->valor_multa)}'";
                 $gruda = ', ';
             } elseif ($this->valor_multa == 'NULL') {
-                $set .= "{$gruda}valor_multa = {$this->valor_multa}";
+                $set .= "{$gruda}valor_multa = {$this->sqlNumero($this->valor_multa)}";
                 $gruda = ', ';
             }
             if (is_numeric($this->max_emprestimo)) {
-                $set .= "{$gruda}max_emprestimo = '{$this->max_emprestimo}'";
+                $set .= "{$gruda}max_emprestimo = '{$this->sqlTexto($this->max_emprestimo)}'";
                 $gruda = ', ';
             } elseif ($this->max_emprestimo == 'NULL') {
-                $set .= "{$gruda}max_emprestimo = {$this->max_emprestimo}";
+                $set .= "{$gruda}max_emprestimo = {$this->sqlNumero($this->max_emprestimo)}";
                 $gruda = ', ';
             }
             if (is_numeric($this->valor_maximo_multa)) {
-                $set .= "{$gruda}valor_maximo_multa = '{$this->valor_maximo_multa}'";
+                $set .= "{$gruda}valor_maximo_multa = '{$this->sqlTexto($this->valor_maximo_multa)}'";
                 $gruda = ', ';
             } elseif ($this->valor_maximo_multa == 'NULL') {
-                $set .= "{$gruda}valor_maximo_multa = {$this->valor_maximo_multa}";
+                $set .= "{$gruda}valor_maximo_multa = {$this->sqlNumero($this->valor_maximo_multa)}";
                 $gruda = ', ';
             }
             if (is_string($this->data_cadastro)) {
-                $set .= "{$gruda}data_cadastro = '{$this->data_cadastro}'";
+                $set .= "{$gruda}data_cadastro = '{$this->sqlTexto($this->data_cadastro)}'";
                 $gruda = ', ';
             }
             $set .= "{$gruda}data_exclusao = NOW()";
             $gruda = ', ';
             if (is_numeric($this->requisita_senha)) {
-                $set .= "{$gruda}requisita_senha = '{$this->requisita_senha}'";
+                $set .= "{$gruda}requisita_senha = '{$this->sqlTexto($this->requisita_senha)}'";
                 $gruda = ', ';
             } elseif ($this->requisita_senha == 'NULL') {
-                $set .= "{$gruda}requisita_senha = {$this->requisita_senha}";
+                $set .= "{$gruda}requisita_senha = {$this->sqlNumero($this->requisita_senha)}";
                 $gruda = ', ';
             }
             if (is_numeric($this->ativo)) {
-                $set .= "{$gruda}ativo = '{$this->ativo}'";
+                $set .= "{$gruda}ativo = '{$this->sqlTexto($this->ativo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->dias_espera)) {
-                $set .= "{$gruda}dias_espera = '{$this->dias_espera}'";
+                $set .= "{$gruda}dias_espera = '{$this->sqlTexto($this->dias_espera)}'";
                 $gruda = ', ';
             } elseif ($this->dias_espera == 'NULL') {
-                $set .= "{$gruda}dias_espera = {$this->dias_espera}";
+                $set .= "{$gruda}dias_espera = {$this->sqlNumero($this->dias_espera)}";
                 $gruda = ', ';
             }
             if (!is_null($this->tombo_automatico)) {
@@ -267,7 +269,7 @@ class clsPmieducarBiblioteca extends Model
                 $gruda = ', ';
             }
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_biblioteca = '{$this->cod_biblioteca}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_biblioteca = '{$this->sqlTexto($this->cod_biblioteca)}'");
 
                 return true;
             }
@@ -291,21 +293,21 @@ class clsPmieducarBiblioteca extends Model
         $whereAnd = ' WHERE ';
 
         if (is_numeric($int_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} cod_biblioteca = '{$int_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} cod_biblioteca = '{$this->sqlTexto($int_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_instituicao)) {
-            $filtros .= "{$whereAnd} ref_cod_instituicao = '{$int_ref_cod_instituicao}'";
+            $filtros .= "{$whereAnd} ref_cod_instituicao = '{$this->sqlTexto($int_ref_cod_instituicao)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_escola)) {
-            $filtros .= "{$whereAnd} ref_cod_escola = '{$int_ref_cod_escola}'";
+            $filtros .= "{$whereAnd} ref_cod_escola = '{$this->sqlTexto($int_ref_cod_escola)}'";
             $whereAnd = ' AND ';
         } elseif ($this->codUsuario) {
             $filtros .= "{$whereAnd} EXISTS (SELECT 1
                                                FROM pmieducar.escola_usuario
                                               WHERE escola_usuario.ref_cod_escola = biblioteca.ref_cod_escola
-                                                AND escola_usuario.ref_cod_usuario = '{$this->codUsuario}')";
+                                                AND escola_usuario.ref_cod_usuario = '{$this->sqlTexto($this->codUsuario)}')";
             $whereAnd = ' AND ';
         }
         if (is_string($str_nm_biblioteca)) {
@@ -314,35 +316,35 @@ class clsPmieducarBiblioteca extends Model
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_valor_multa)) {
-            $filtros .= "{$whereAnd} valor_multa = '{$int_valor_multa}'";
+            $filtros .= "{$whereAnd} valor_multa = '{$this->sqlTexto($int_valor_multa)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_max_emprestimo)) {
-            $filtros .= "{$whereAnd} max_emprestimo = '{$int_max_emprestimo}'";
+            $filtros .= "{$whereAnd} max_emprestimo = '{$this->sqlTexto($int_max_emprestimo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_valor_maximo_multa)) {
-            $filtros .= "{$whereAnd} valor_maximo_multa = '{$int_valor_maximo_multa}'";
+            $filtros .= "{$whereAnd} valor_maximo_multa = '{$this->sqlTexto($int_valor_maximo_multa)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_ini)) {
-            $filtros .= "{$whereAnd} data_exclusao >= '{$date_data_exclusao_ini}'";
+            $filtros .= "{$whereAnd} data_exclusao >= '{$this->sqlTexto($date_data_exclusao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_fim)) {
-            $filtros .= "{$whereAnd} data_exclusao <= '{$date_data_exclusao_fim}'";
+            $filtros .= "{$whereAnd} data_exclusao <= '{$this->sqlTexto($date_data_exclusao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_requisita_senha)) {
-            $filtros .= "{$whereAnd} requisita_senha = '{$int_requisita_senha}'";
+            $filtros .= "{$whereAnd} requisita_senha = '{$this->sqlTexto($int_requisita_senha)}'";
             $whereAnd = ' AND ';
         }
         if (is_null($int_ativo) || $int_ativo) {
@@ -353,7 +355,7 @@ class clsPmieducarBiblioteca extends Model
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_dias_espera)) {
-            $filtros .= "{$whereAnd} dias_espera = '{$int_dias_espera}'";
+            $filtros .= "{$whereAnd} dias_espera = '{$this->sqlTexto($int_dias_espera)}'";
             $whereAnd = ' AND ';
         }
 
@@ -400,7 +402,7 @@ class clsPmieducarBiblioteca extends Model
     {
         if (is_numeric($this->cod_biblioteca)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_biblioteca = '{$this->cod_biblioteca}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_biblioteca = '{$this->sqlTexto($this->cod_biblioteca)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -418,7 +420,7 @@ class clsPmieducarBiblioteca extends Model
     {
         if (is_numeric($this->cod_biblioteca)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_biblioteca = '{$this->cod_biblioteca}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_biblioteca = '{$this->sqlTexto($this->cod_biblioteca)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();

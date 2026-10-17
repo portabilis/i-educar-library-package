@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsDetalhe {
     /**
      * Titulo no topo da pagina
@@ -37,8 +39,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Descrição', "{$registro['descricao']}"]);
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(600, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 600)) {
             $this->url_novo = 'educar_motivo_baixa_cad.php';
             $this->url_editar = "educar_motivo_baixa_cad.php?cod_motivo_baixa={$registro['cod_motivo_baixa']}";
         }

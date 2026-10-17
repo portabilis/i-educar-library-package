@@ -2,6 +2,7 @@
 
 use App\Models\LegacyPerson;
 use App\Models\LegacyUser;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -25,8 +26,9 @@ return new class extends clsCadastro {
 
         $this->cod_biblioteca=$_GET['cod_biblioteca'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(591, $this->pessoa_logada, 3, 'educar_biblioteca_lst.php');
+        if (!Gate::allows('modify', 591)) {
+            $this->simpleRedirect('educar_biblioteca_lst.php');
+        }
 
         if (is_numeric($this->cod_biblioteca)) {
             $obj = new clsPmieducarBiblioteca($this->cod_biblioteca);
@@ -36,8 +38,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                $obj_permissoes = new clsPermissoes();
-                if ($obj_permissoes->permissao_excluir(591, $this->pessoa_logada, 3)) {
+                if (Gate::allows('remove', 591)) {
                     $this->fexcluir = true;
                 }
                 $retorno = 'Editar';
@@ -155,8 +156,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(591, $this->pessoa_logada, 3, 'educar_biblioteca_lst.php');
+        if (!Gate::allows('modify', 591)) {
+            $this->simpleRedirect('educar_biblioteca_lst.php');
+        }
         $obj = new clsPmieducarBiblioteca(null, $this->ref_cod_instituicao, $this->ref_cod_escola, $this->nm_biblioteca, null, null, null, null, null, null, 1, null);
         $this->cod_biblioteca = $cadastrou = $obj->cadastra();
         if ($cadastrou) {
@@ -190,8 +192,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(591, $this->pessoa_logada, 3, 'educar_biblioteca_lst.php');
+        if (!Gate::allows('modify', 591)) {
+            $this->simpleRedirect('educar_biblioteca_lst.php');
+        }
         $obj = new clsPmieducarBiblioteca($this->cod_biblioteca, $this->ref_cod_instituicao, $this->ref_cod_escola, $this->nm_biblioteca, null, null, null, null, null, null, 1, null);
         $editou = $obj->edita();
         if ($editou) {
@@ -227,8 +230,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(591, $this->pessoa_logada, 3, 'educar_biblioteca_lst.php');
+        if (!Gate::allows('remove', 591)) {
+            $this->simpleRedirect('educar_biblioteca_lst.php');
+        }
 
         $obj = new clsPmieducarBiblioteca($this->cod_biblioteca, null, null, null, null, null, null, null, null, null, 0);
         $excluiu = $obj->excluir();

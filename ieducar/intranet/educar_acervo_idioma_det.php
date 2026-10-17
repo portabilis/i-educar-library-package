@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsDetalhe {
     /**
      * Titulo no topo da pagina
@@ -36,8 +38,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Idioma', "{$registro['nm_idioma']}"]);
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(590, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 590)) {
             $this->url_novo = 'educar_acervo_idioma_cad.php';
             $this->url_editar = "educar_acervo_idioma_cad.php?cod_acervo_idioma={$registro['cod_acervo_idioma']}";
         }

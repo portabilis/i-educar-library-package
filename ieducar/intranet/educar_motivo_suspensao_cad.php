@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -24,8 +26,9 @@ return new class extends clsCadastro {
 
         $this->cod_motivo_suspensao=$_GET['cod_motivo_suspensao'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(607, $this->pessoa_logada, 11, 'educar_motivo_suspensao_lst.php');
+        if (!Gate::allows('modify', 607)) {
+            $this->simpleRedirect('educar_motivo_suspensao_lst.php');
+        }
 
         if (is_numeric($this->cod_motivo_suspensao)) {
             $obj = new clsPmieducarMotivoSuspensao($this->cod_motivo_suspensao);
@@ -35,7 +38,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                if ($obj_permissoes->permissao_excluir(607, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 607)) {
                     $this->fexcluir = true;
                 }
                 $retorno = 'Editar';
@@ -68,8 +71,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(607, $this->pessoa_logada, 11, 'educar_motivo_suspensao_lst.php');
+        if (!Gate::allows('modify', 607)) {
+            $this->simpleRedirect('educar_motivo_suspensao_lst.php');
+        }
 
         $obj = new clsPmieducarMotivoSuspensao(null, null, $this->pessoa_logada, $this->nm_motivo, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $this->cod_motivo_suspensao = $cadastrou = $obj->cadastra();
@@ -86,8 +90,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(607, $this->pessoa_logada, 11, 'educar_motivo_suspensao_lst.php');
+        if (!Gate::allows('modify', 607)) {
+            $this->simpleRedirect('educar_motivo_suspensao_lst.php');
+        }
 
         $obj = new clsPmieducarMotivoSuspensao($this->cod_motivo_suspensao, $this->pessoa_logada, null, $this->nm_motivo, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $editou = $obj->edita();
@@ -103,8 +108,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(607, $this->pessoa_logada, 11, 'educar_motivo_suspensao_lst.php');
+        if (!Gate::allows('remove', 607)) {
+            $this->simpleRedirect('educar_motivo_suspensao_lst.php');
+        }
 
         $obj = new clsPmieducarMotivoSuspensao($this->cod_motivo_suspensao, $this->pessoa_logada, null, null, null, null, null, 0);
         $excluiu = $obj->excluir();

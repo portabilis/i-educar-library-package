@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -26,8 +28,9 @@ return new class extends clsCadastro {
 
         $this->cod_acervo_autor=$_GET['cod_acervo_autor'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        if (!Gate::allows('modify', 594)) {
+            $this->simpleRedirect('educar_acervo_autor_lst.php');
+        }
 
         return $retorno;
     }
@@ -43,14 +46,13 @@ return new class extends clsCadastro {
         // text
         $this->campoTexto('nm_autor', 'Autor', $this->nm_autor, 30, 255, true);
         $this->campoMemo('descricao', 'Descrição', $this->descricao, 60, 5, false);
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->nivel_acesso($this->pessoa_logada);
     }
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        if (!Gate::allows('modify', 594)) {
+            $this->simpleRedirect('educar_acervo_autor_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoAutor(null, null, $this->pessoa_logada, $this->nm_autor, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $cadastrou = $obj->cadastra();

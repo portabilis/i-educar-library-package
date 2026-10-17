@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsCadastro {
     /**
@@ -35,8 +36,9 @@ return new class extends clsCadastro {
         $this->cod_cliente   = $_GET['cod_cliente'];
         $this->ref_cod_biblioteca = $_GET['ref_cod_biblioteca'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(603, $this->pessoa_logada, 11, 'educar_cliente_lst.php');
+        if (!Gate::allows('modify', 603)) {
+            $this->simpleRedirect('educar_cliente_lst.php');
+        }
         if (is_numeric($this->cod_cliente) && is_numeric($this->ref_cod_biblioteca)) {
             $obj = new clsPmieducarCliente($this->cod_cliente);
             $registro  = $obj->detalhe();
@@ -52,8 +54,7 @@ return new class extends clsCadastro {
 
                 $observacoes =  $this->observacoes;
 
-                $obj_permissoes = new clsPermissoes();
-                if ($obj_permissoes->permissao_excluir(603, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 603)) {
                     $this->fexcluir = true;
                 }
 
@@ -162,8 +163,9 @@ return new class extends clsCadastro {
     {
         $senha = md5($this->senha . 'asnk@#*&(23');
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(603, $this->pessoa_logada, 11, 'educar_cliente_lst.php');
+        if (!Gate::allows('modify', 603)) {
+            $this->simpleRedirect('educar_cliente_lst.php');
+        }
 
         $obj = new clsPmieducarCliente();
         $lista = $obj->lista(null, null, null, $this->ref_idpes, null, null, null, null, null, null, 1);
@@ -282,8 +284,9 @@ return new class extends clsCadastro {
     public function Editar()
     {
         $senha = md5($this->senha . 'asnk@#*&(23');
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(603, $this->pessoa_logada, 11, 'educar_cliente_lst.php');
+        if (!Gate::allows('modify', 603)) {
+            $this->simpleRedirect('educar_cliente_lst.php');
+        }
 
         $obj = new clsPmieducarCliente(
             $this->cod_cliente,
@@ -345,8 +348,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(603, $this->pessoa_logada, 11, 'educar_cliente_lst.php');
+        if (!Gate::allows('remove', 603)) {
+            $this->simpleRedirect('educar_cliente_lst.php');
+        }
 
         $obj = new clsPmieducarCliente($this->cod_cliente, $this->pessoa_logada, null, $this->ref_idpes, null, null, null, null, 0);
         $excluiu = $obj->excluir();

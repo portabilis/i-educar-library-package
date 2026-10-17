@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -9,8 +10,9 @@ return new class extends clsCadastro {
     {
         $retorno = 'Novo';
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(591, $this->pessoa_logada, 3, 'educar_biblioteca_lst.php');
+        if (!Gate::allows('modify', 591)) {
+            $this->simpleRedirect('educar_biblioteca_lst.php');
+        }
 
         $this->url_cancelar = 'educar_biblioteca_lst.php';
         $this->nome_url_cancelar = 'Cancelar';
@@ -27,8 +29,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(591, $this->pessoa_logada, 3, 'educar_biblioteca_lst.php');
+        if (!Gate::allows('modify', 591)) {
+            $this->simpleRedirect('educar_biblioteca_lst.php');
+        }
 
         Session::put('biblioteca.tipo_biblioteca', $this->tipo_biblioteca);
 

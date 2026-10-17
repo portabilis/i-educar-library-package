@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyUserType;
 use iEducar\Legacy\Model;
 
 class clsPmieducarExemplarEmprestimo extends Model
@@ -473,8 +474,9 @@ class clsPmieducarExemplarEmprestimo extends Model
      */
     public function listaDividaPagamentoCliente($int_cod_cliente, $int_idpes, $int_cod_cliente_tipo, $int_cod_usuario, $int_cod_biblioteca = null, $int_cod_escola = null, $int_cod_instituicao = null, $pago = false)
     {
-        $obj_nivel = new clsPermissoes();
-        $nivel = $obj_nivel->nivel_acesso($int_cod_usuario);
+        $nivel = LegacyUserType::query()
+            ->whereHas('users', fn ($q) => $q->whereKey($int_cod_usuario))
+            ->value('nivel');
         $db = new clsBanco();
         $tabelas = '';
         $condicoes = '';

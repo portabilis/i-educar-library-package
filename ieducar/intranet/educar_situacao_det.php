@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsDetalhe {
     public $titulo;
@@ -49,8 +51,7 @@ return new class extends clsDetalhe {
                 ->value('fantasia');
         }
 
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
 
         if ($registro['ref_cod_instituicao'] && $nivel_usuario == 1) {
             $this->addDetalhe([ 'Instituição', "{$registro['ref_cod_instituicao']}"]);
@@ -92,8 +93,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Situação Emprestada', "{$registro['situacao_emprestada']}"]);
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(602, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 602)) {
             $this->url_novo = 'educar_situacao_cad.php';
             $this->url_editar = "educar_situacao_cad.php?cod_situacao={$registro['cod_situacao']}";
         }

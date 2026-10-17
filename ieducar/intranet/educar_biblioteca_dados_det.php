@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsDetalhe {
     /**
      * Titulo no topo da pagina
@@ -32,8 +35,7 @@ return new class extends clsDetalhe {
         $tmp_obj = new clsPmieducarBiblioteca($this->cod_biblioteca);
         $registro = $tmp_obj->detalhe();
 
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
         if ($nivel_usuario <= 3) {
             $permitido = true;
         } else {
@@ -138,7 +140,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Data do Feriado', "{$tabela1}"]);
         }
 
-        if ($obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 629)) {
             $this->url_editar = "educar_biblioteca_dados_cad.php?cod_biblioteca={$registro['cod_biblioteca']}";
         }
 

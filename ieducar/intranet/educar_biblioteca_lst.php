@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsListagem {
     /**
@@ -52,8 +54,7 @@ return new class extends clsListagem {
             'Escola'
         ];
 
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
         if ($nivel_usuario == 1) {
             $lista_busca[] = 'Instituição';
         }
@@ -126,8 +127,7 @@ return new class extends clsListagem {
         }
 
         $this->addPaginador2('educar_biblioteca_lst.php', $total, $_GET, $this->nome, $this->limite);
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(591, $this->pessoa_logada, 3)) {
+        if (Gate::allows('modify', 591)) {
             $this->acao = 'go("educar_biblioteca_cad.php")';
             $this->nome_acao = 'Novo';
         }

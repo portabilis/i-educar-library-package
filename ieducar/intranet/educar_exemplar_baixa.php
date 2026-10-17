@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -33,8 +35,9 @@ return new class extends clsCadastro {
     {
         $this->cod_exemplar=$_GET['cod_exemplar'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        if (!Gate::allows('modify', 606)) {
+            $this->simpleRedirect('educar_exemplar_lst.php');
+        }
 
         if (is_numeric($this->cod_exemplar)) {
             $obj = new clsPmieducarExemplar($this->cod_exemplar);
@@ -101,8 +104,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        if (!Gate::allows('modify', 606)) {
+            $this->simpleRedirect('educar_exemplar_lst.php');
+        }
 
         $this->preco = str_replace('.', '', $this->preco);
         $this->preco = str_replace(',', '.', $this->preco);

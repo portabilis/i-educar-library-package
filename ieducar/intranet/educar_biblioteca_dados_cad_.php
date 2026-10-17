@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -37,10 +40,11 @@ return new class extends clsCadastro {
     {
         $this->cod_biblioteca=$_GET['cod_biblioteca'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        if (!Gate::allows('modify', 629)) {
+            $this->simpleRedirect('educar_biblioteca_dados_lst.php');
+        }
 
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
         if ($nivel_usuario <= 3) {
             $permitido = true;
         } else {
@@ -67,7 +71,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                if ($obj_permissoes->permissao_excluir(629, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 629)) {
                     $this->fexcluir = true;
                 }
                 $retorno = 'Editar';
@@ -212,8 +216,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        if (!Gate::allows('modify', 629)) {
+            $this->simpleRedirect('educar_biblioteca_dados_lst.php');
+        }
 
         $this->valor_multa = str_replace('.', '', $this->valor_multa);
         $this->valor_multa = str_replace(',', '.', $this->valor_multa);
@@ -283,8 +288,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(629, $this->pessoa_logada, 11, 'educar_biblioteca_dados_lst.php');
+        if (!Gate::allows('remove', 629)) {
+            $this->simpleRedirect('educar_biblioteca_dados_lst.php');
+        }
 
         $obj = new clsPmieducarBiblioteca($this->cod_biblioteca, null, null, null, 'NULL', 'NULL', 'NULL', null, null, 'NULL', 1, 'NULL');
         $editou = $obj->edita();

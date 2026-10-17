@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 class Biblioteca_Views_EmprestimoController extends Portabilis_Controller_Page_ListController
 {
     protected $_dataMapper = '';
@@ -11,8 +13,9 @@ class Biblioteca_Views_EmprestimoController extends Portabilis_Controller_Page_L
     {
         $pessoa_logada = $this->pessoa_logada;
 
-        $obj_permissao = new clsPermissoes();
-        $obj_permissao->permissao_cadastra(610, $pessoa_logada, 7, '/intranet/educar_biblioteca_index.php');
+        if (!Gate::allows('modify', 610)) {
+            $this->simpleRedirect('/intranet/educar_biblioteca_index.php');
+        }
 
         parent::_preRender();
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Auth;
 
 return new class extends clsListagem {
     /**
@@ -57,8 +58,7 @@ return new class extends clsListagem {
             'Escola'
         ];
 
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
         if ($nivel_usuario == 1) {
             $lista_busca[] = 'Instituição';
         }

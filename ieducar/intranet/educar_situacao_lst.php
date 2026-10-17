@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsListagem {
     public $pessoa_logada;
@@ -124,8 +125,7 @@ return new class extends clsListagem {
             }
         }
         $this->addPaginador2('educar_situacao_lst.php', $total, $_GET, $this->nome, $this->limite);
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(602, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 602)) {
             $this->acao = 'go("educar_situacao_cad.php")';
             $this->nome_acao = 'Novo';
         }

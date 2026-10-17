@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsDetalhe {
     /**
@@ -43,8 +45,7 @@ return new class extends clsDetalhe {
             ->whereKey($registro['ref_cod_escola'])
             ->value('fantasia');
 
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
 
         if (! $registro) {
             $this->simpleRedirect('educar_acervo_colecao_lst.php');
@@ -75,8 +76,7 @@ return new class extends clsDetalhe {
         if ($registro['descricao']) {
             $this->addDetalhe([ 'Descrição', "{$registro['descricao']}"]);
         }
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(593, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 593)) {
             $this->url_novo = 'educar_acervo_colecao_cad.php';
             $this->url_editar = "educar_acervo_colecao_cad.php?cod_acervo_colecao={$registro['cod_acervo_colecao']}";
         }

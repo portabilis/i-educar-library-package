@@ -2,6 +2,7 @@
 
 use App\Models\LegacyPerson;
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsListagem {
@@ -198,8 +199,7 @@ return new class extends clsListagem {
             }
         }
         $this->addPaginador2('educar_reservas_lst.php', $total, $_GET, $this->nome, $this->limite);
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(609, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 609)) {
             $this->acao = 'go("/module/Biblioteca/Reserva")';
             $this->nome_acao = 'Novo';
         }

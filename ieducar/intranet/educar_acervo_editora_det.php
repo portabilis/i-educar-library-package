@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\State;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsDetalhe {
     /**
@@ -74,8 +75,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Telefone', "{$registro['telefone']}"]);
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 595)) {
             $this->url_novo = 'educar_acervo_editora_cad.php';
             $this->url_editar = "educar_acervo_editora_cad.php?cod_acervo_editora={$registro['cod_acervo_editora']}";
         }

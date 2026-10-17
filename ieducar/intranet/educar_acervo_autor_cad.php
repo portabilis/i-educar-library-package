@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -26,8 +28,9 @@ return new class extends clsCadastro {
 
         $this->cod_acervo_autor=$_GET['cod_acervo_autor'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        if (!Gate::allows('modify', 594)) {
+            $this->simpleRedirect('educar_acervo_autor_lst.php');
+        }
 
         if (is_numeric($this->cod_acervo_autor)) {
             $obj = new clsPmieducarAcervoAutor($this->cod_acervo_autor);
@@ -40,8 +43,7 @@ return new class extends clsCadastro {
                 $this->nm_autor = stripslashes($this->nm_autor);
                 $this->nm_autor = htmlspecialchars($this->nm_autor);
 
-                $obj_permissoes = new clsPermissoes();
-                if ($obj_permissoes->permissao_excluir(594, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 594)) {
                     $this->fexcluir = true;
                 }
 
@@ -81,14 +83,13 @@ return new class extends clsCadastro {
         // text
         $this->campoTexto('nm_autor', 'Autor', $this->nm_autor, 30, 255, true);
         $this->campoMemo('descricao', 'Descrição', $this->descricao, 60, 5, false);
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->nivel_acesso($this->pessoa_logada);
     }
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        if (!Gate::allows('modify', 594)) {
+            $this->simpleRedirect('educar_acervo_autor_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoAutor(null, null, $this->pessoa_logada, $this->nm_autor, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $this->cod_acervo_autor = $cadastrou = $obj->cadastra();
@@ -106,8 +107,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        if (!Gate::allows('modify', 594)) {
+            $this->simpleRedirect('educar_acervo_autor_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoAutor($this->cod_acervo_autor, $this->pessoa_logada, null, $this->nm_autor, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $editou = $obj->edita();
@@ -125,8 +127,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(594, $this->pessoa_logada, 11, 'educar_acervo_autor_lst.php');
+        if (!Gate::allows('remove', 594)) {
+            $this->simpleRedirect('educar_acervo_autor_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoAutor($this->cod_acervo_autor, $this->pessoa_logada, null, null, null, null, null, 0, $this->ref_cod_biblioteca);
         $excluiu = $obj->excluir();

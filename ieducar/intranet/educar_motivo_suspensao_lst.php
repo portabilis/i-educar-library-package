@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsListagem {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -102,8 +104,7 @@ return new class extends clsListagem {
             }
         }
         $this->addPaginador2('educar_motivo_suspensao_lst.php', $total, $_GET, $this->nome, $this->limite);
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(607, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 607)) {
             $this->acao = 'go("educar_motivo_suspensao_cad.php")';
             $this->nome_acao = 'Novo';
         }

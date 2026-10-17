@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 
@@ -56,8 +57,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(610, $this->pessoa_logada, 11, 'educar_reservas_lst.php');
+        if (!Gate::allows('modify', 610)) {
+            $this->simpleRedirect('educar_reservas_lst.php');
+        }
 
         if ($this->ref_cod_cliente) {
             Session::put([

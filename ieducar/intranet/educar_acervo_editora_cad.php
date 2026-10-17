@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\State;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsCadastro {
     /**
@@ -34,8 +35,9 @@ return new class extends clsCadastro {
 
         $this->cod_acervo_editora=$_GET['cod_acervo_editora'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        if (!Gate::allows('modify', 595)) {
+            $this->simpleRedirect('educar_acervo_editora_lst.php');
+        }
 
         if (is_numeric($this->cod_acervo_editora)) {
             $obj = new clsPmieducarAcervoEditora($this->cod_acervo_editora);
@@ -45,7 +47,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                if ($obj_permissoes->permissao_excluir(595, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 595)) {
                     $this->fexcluir = true;
                 }
 
@@ -105,8 +107,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        if (!Gate::allows('modify', 595)) {
+            $this->simpleRedirect('educar_acervo_editora_lst.php');
+        }
 
         $this->cep = idFederal2int($this->cep);
 
@@ -126,8 +129,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        if (!Gate::allows('modify', 595)) {
+            $this->simpleRedirect('educar_acervo_editora_lst.php');
+        }
 
         $this->cep = idFederal2int($this->cep);
 
@@ -145,8 +149,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        if (!Gate::allows('remove', 595)) {
+            $this->simpleRedirect('educar_acervo_editora_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoEditora($this->cod_acervo_editora, null, $this->pessoa_logada, null, null, null, null, null, null, null, null, null, null, null, null, 0);
         $excluiu = $obj->excluir();

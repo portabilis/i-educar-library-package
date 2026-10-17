@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -24,8 +26,9 @@ return new class extends clsCadastro {
 
         $this->cod_motivo_baixa=$_GET['cod_motivo_baixa'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        if (!Gate::allows('modify', 600)) {
+            $this->simpleRedirect('educar_motivo_baixa_lst.php');
+        }
 
         if (is_numeric($this->cod_motivo_baixa)) {
             $obj = new clsPmieducarMotivoBaixa($this->cod_motivo_baixa);
@@ -35,7 +38,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                if ($obj_permissoes->permissao_excluir(600, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 600)) {
                     $this->fexcluir = true;
                 }
 
@@ -69,8 +72,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        if (!Gate::allows('modify', 600)) {
+            $this->simpleRedirect('educar_motivo_baixa_lst.php');
+        }
 
         $obj = new clsPmieducarMotivoBaixa(null, null, $this->pessoa_logada, $this->nm_motivo_baixa, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $this->cod_motivo_baixa = $cadastrou = $obj->cadastra();
@@ -87,8 +91,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        if (!Gate::allows('modify', 600)) {
+            $this->simpleRedirect('educar_motivo_baixa_lst.php');
+        }
 
         $obj = new clsPmieducarMotivoBaixa($this->cod_motivo_baixa, $this->pessoa_logada, null, $this->nm_motivo_baixa, $this->descricao, null, null, 1, $this->ref_cod_biblioteca);
         $editou = $obj->edita();
@@ -104,8 +109,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(600, $this->pessoa_logada, 11, 'educar_motivo_baixa_lst.php');
+        if (!Gate::allows('remove', 600)) {
+            $this->simpleRedirect('educar_motivo_baixa_lst.php');
+        }
 
         $obj = new clsPmieducarMotivoBaixa($this->cod_motivo_baixa, $this->pessoa_logada, null, null, null, null, null, 0);
         $excluiu = $obj->excluir();

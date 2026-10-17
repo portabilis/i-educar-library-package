@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyInstitution;
+use App\Models\LegacySchool;
 
 return new class extends clsListagem {
     /**
@@ -91,7 +92,7 @@ return new class extends clsListagem {
 
         // Paginador
         $this->limite = 20;
-        $this->offset = ($_GET["pagina_{$this->nome}"]) ? $_GET["pagina_{$this->nome}"]*$this->limite-$this->limite: 0;
+        $this->offset = (min(max(1, request()->integer("pagina_{$this->nome}", 1)), 100000) - 1) * $this->limite;
 
         $obj_acervo_autor = new clsPmieducarAcervoAutor();
         $obj_acervo_autor->setOrderby('nm_autor ASC');
@@ -121,16 +122,13 @@ return new class extends clsListagem {
                 $obj_biblioteca = new clsPmieducarBiblioteca($registro['ref_cod_biblioteca']);
                 $det_biblioteca = $obj_biblioteca->detalhe();
 
-                $obj_ref_cod_escola = new clsPmieducarEscola($det_biblioteca['ref_cod_escola']);
-                $det_ref_cod_escola = $obj_ref_cod_escola->detalhe();
-                $registro['ref_cod_escola'] = $det_ref_cod_escola['nome'];
+                $registro['ref_cod_escola'] = LegacySchool::query()
+                    ->joinOrganization()
+                    ->whereKey($det_biblioteca['ref_cod_escola'])
+                    ->value('fantasia');
 
                 switch ($nivel_usuario) {
                     case 1:
-                        $obj_ref_cod_escola = new clsPmieducarEscola($det_biblioteca['ref_cod_escola']);
-                        $det_ref_cod_escola = $obj_ref_cod_escola->detalhe();
-                        $registro['ref_cod_instituicao'] = $det_ref_cod_escola['ref_cod_instituicao'];
-
                         $nm_instituicao = LegacyInstitution::query()
                             ->whereKey($det_biblioteca['ref_cod_instituicao'])
                             ->value('nm_instituicao');

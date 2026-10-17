@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarBibliotecaDia extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $ref_cod_biblioteca;
     public $dia;
 
@@ -40,12 +42,12 @@ class clsPmieducarBibliotecaDia extends Model
 
             if (is_numeric($this->ref_cod_biblioteca)) {
                 $campos .= "{$gruda}ref_cod_biblioteca";
-                $valores .= "{$gruda}'{$this->ref_cod_biblioteca}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->dia)) {
                 $campos .= "{$gruda}dia";
-                $valores .= "{$gruda}'{$this->dia}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->dia)}'";
                 $gruda = ', ';
             }
 
@@ -69,7 +71,7 @@ class clsPmieducarBibliotecaDia extends Model
             $set = '';
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE ref_cod_biblioteca = '{$this->ref_cod_biblioteca}' AND dia = '{$this->dia}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}' AND dia = '{$this->sqlTexto($this->dia)}'");
 
                 return true;
             }
@@ -91,11 +93,11 @@ class clsPmieducarBibliotecaDia extends Model
         $whereAnd = ' WHERE ';
 
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_dia)) {
-            $filtros .= "{$whereAnd} dia = '{$int_dia}'";
+            $filtros .= "{$whereAnd} dia = '{$this->sqlTexto($int_dia)}'";
             $whereAnd = ' AND ';
         }
 
@@ -138,7 +140,7 @@ class clsPmieducarBibliotecaDia extends Model
     {
         if (is_numeric($this->ref_cod_biblioteca) && is_numeric($this->dia)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$this->ref_cod_biblioteca}' AND dia = '{$this->dia}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}' AND dia = '{$this->sqlTexto($this->dia)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -156,7 +158,7 @@ class clsPmieducarBibliotecaDia extends Model
     {
         if (is_numeric($this->ref_cod_biblioteca) && is_numeric($this->dia)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$this->ref_cod_biblioteca}' AND dia = '{$this->dia}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}' AND dia = '{$this->sqlTexto($this->dia)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -185,7 +187,7 @@ class clsPmieducarBibliotecaDia extends Model
     {
         if (is_numeric($this->ref_cod_biblioteca)) {
             $db = new clsBanco();
-            $db->Consulta("DELETE FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$this->ref_cod_biblioteca}'");
+            $db->Consulta("DELETE FROM {$this->_tabela} WHERE ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}'");
 
             return true;
         }

@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarClienteTipo extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_cliente_tipo;
     public $ref_cod_biblioteca;
     public $ref_usuario_exc;
@@ -68,12 +70,12 @@ class clsPmieducarClienteTipo extends Model
 
             if (is_numeric($this->ref_cod_biblioteca)) {
                 $campos .= "{$gruda}ref_cod_biblioteca";
-                $valores .= "{$gruda}'{$this->ref_cod_biblioteca}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
                 $campos .= "{$gruda}ref_usuario_cad";
-                $valores .= "{$gruda}'{$this->ref_usuario_cad}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_string($this->nm_tipo)) {
@@ -115,15 +117,15 @@ class clsPmieducarClienteTipo extends Model
             $set = '';
 
             if (is_numeric($this->ref_cod_biblioteca)) {
-                $set .= "{$gruda}ref_cod_biblioteca = '{$this->ref_cod_biblioteca}'";
+                $set .= "{$gruda}ref_cod_biblioteca = '{$this->sqlTexto($this->ref_cod_biblioteca)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_exc)) {
-                $set .= "{$gruda}ref_usuario_exc = '{$this->ref_usuario_exc}'";
+                $set .= "{$gruda}ref_usuario_exc = '{$this->sqlTexto($this->ref_usuario_exc)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
-                $set .= "{$gruda}ref_usuario_cad = '{$this->ref_usuario_cad}'";
+                $set .= "{$gruda}ref_usuario_cad = '{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_string($this->nm_tipo)) {
@@ -137,18 +139,18 @@ class clsPmieducarClienteTipo extends Model
                 $gruda = ', ';
             }
             if (is_string($this->data_cadastro)) {
-                $set .= "{$gruda}data_cadastro = '{$this->data_cadastro}'";
+                $set .= "{$gruda}data_cadastro = '{$this->sqlTexto($this->data_cadastro)}'";
                 $gruda = ', ';
             }
             $set .= "{$gruda}data_exclusao = NOW()";
             $gruda = ', ';
             if (is_numeric($this->ativo)) {
-                $set .= "{$gruda}ativo = '{$this->ativo}'";
+                $set .= "{$gruda}ativo = '{$this->sqlTexto($this->ativo)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_cliente_tipo = '{$this->cod_cliente_tipo}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_cliente_tipo = '{$this->sqlTexto($this->cod_cliente_tipo)}'");
 
                 return true;
             }
@@ -172,19 +174,19 @@ class clsPmieducarClienteTipo extends Model
         $whereAnd = ' WHERE ';
 
         if (is_numeric($int_cod_cliente_tipo)) {
-            $filtros .= "{$whereAnd} cod_cliente_tipo = '{$int_cod_cliente_tipo}'";
+            $filtros .= "{$whereAnd} cod_cliente_tipo = '{$this->sqlTexto($int_cod_cliente_tipo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_exc)) {
-            $filtros .= "{$whereAnd} ref_usuario_exc = '{$int_ref_usuario_exc}'";
+            $filtros .= "{$whereAnd} ref_usuario_exc = '{$this->sqlTexto($int_ref_usuario_exc)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($str_nm_tipo)) {
@@ -193,23 +195,23 @@ class clsPmieducarClienteTipo extends Model
             $whereAnd = ' AND ';
         }
         if (is_string($str_descricao)) {
-            $filtros .= "{$whereAnd} descricao LIKE '%{$str_descricao}%'";
+            $filtros .= "{$whereAnd} descricao LIKE '%{$this->sqlTexto($str_descricao)}%'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_ini)) {
-            $filtros .= "{$whereAnd} data_cadastro >= '{$date_data_cadastro_ini}'";
+            $filtros .= "{$whereAnd} data_cadastro >= '{$this->sqlTexto($date_data_cadastro_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_cadastro_fim)) {
-            $filtros .= "{$whereAnd} data_cadastro <= '{$date_data_cadastro_fim}'";
+            $filtros .= "{$whereAnd} data_cadastro <= '{$this->sqlTexto($date_data_cadastro_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_ini)) {
-            $filtros .= "{$whereAnd} data_exclusao >= '{$date_data_exclusao_ini}'";
+            $filtros .= "{$whereAnd} data_exclusao >= '{$this->sqlTexto($date_data_exclusao_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_exclusao_fim)) {
-            $filtros .= "{$whereAnd} data_exclusao <= '{$date_data_exclusao_fim}'";
+            $filtros .= "{$whereAnd} data_exclusao <= '{$this->sqlTexto($date_data_exclusao_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_null($int_ativo) || $int_ativo) {
@@ -224,12 +226,12 @@ class clsPmieducarClienteTipo extends Model
             $filtro_biblioteca = null;
 
             if (is_numeric($int_ref_cod_instituicao)) {
-                $filtro_biblioteca .= "{$whereAnd} ref_cod_instituicao = '{$int_ref_cod_instituicao}'";
+                $filtro_biblioteca .= "{$whereAnd} ref_cod_instituicao = '{$this->sqlTexto($int_ref_cod_instituicao)}'";
                 $whereAnd = ' AND ';
             }
 
             if (is_numeric($int_ref_cod_escola)) {
-                $filtro_biblioteca .= "{$whereAnd} ref_cod_escola = '{$int_ref_cod_escola}'";
+                $filtro_biblioteca .= "{$whereAnd} ref_cod_escola = '{$this->sqlTexto($int_ref_cod_escola)}'";
                 $whereAnd = ' AND ';
             }
 
@@ -275,7 +277,7 @@ class clsPmieducarClienteTipo extends Model
     {
         if (is_numeric($this->cod_cliente_tipo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_cliente_tipo = '{$this->cod_cliente_tipo}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE cod_cliente_tipo = '{$this->sqlTexto($this->cod_cliente_tipo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -293,7 +295,7 @@ class clsPmieducarClienteTipo extends Model
     {
         if (is_numeric($this->cod_cliente_tipo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_cliente_tipo = '{$this->cod_cliente_tipo}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_cliente_tipo = '{$this->sqlTexto($this->cod_cliente_tipo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();

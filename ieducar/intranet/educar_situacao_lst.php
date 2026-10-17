@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyInstitution;
+use App\Models\LegacySchool;
 
 return new class extends clsListagem {
     public $pessoa_logada;
@@ -50,7 +51,7 @@ return new class extends clsListagem {
 
         // Paginador
         $this->limite = 20;
-        $this->offset = ($_GET["pagina_{$this->nome}"]) ? $_GET["pagina_{$this->nome}"]*$this->limite-$this->limite: 0;
+        $this->offset = (min(max(1, request()->integer("pagina_{$this->nome}", 1)), 100000) - 1) * $this->limite;
 
         $obj_situacao = new clsPmieducarSituacao();
         $obj_situacao->setOrderby('nm_situacao ASC');
@@ -92,9 +93,10 @@ return new class extends clsListagem {
                         ->value('nm_instituicao');
                 }
                 if ($registro['ref_cod_escola']) {
-                    $obj_ref_cod_escola = new clsPmieducarEscola();
-                    $det_ref_cod_escola = array_shift($obj_ref_cod_escola->lista($registro['ref_cod_escola']));
-                    $registro['ref_cod_escola'] = $det_ref_cod_escola['nome'];
+                    $registro['ref_cod_escola'] = LegacySchool::query()
+                        ->joinOrganization()
+                        ->whereKey($registro['ref_cod_escola'])
+                        ->value('fantasia');
                 }
 
                 if ($registro['permite_emprestimo'] == 1) {

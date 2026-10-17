@@ -137,7 +137,7 @@ return new class extends clsCadastro {
             $this->campoOculto('ref_cod_biblioteca_atual', $this->ref_cod_biblioteca_atual);
 
             // obtem o codigo do tipo de cliente, apartir da tabela cliente_tipo_cliente
-            $this->ref_cod_cliente_tipo = $db->CampoUnico("SELECT ref_cod_cliente_tipo FROM pmieducar.cliente_tipo_cliente WHERE ref_cod_cliente = '$this->cod_cliente'");
+            $this->ref_cod_cliente_tipo = $db->CampoUnico("SELECT ref_cod_cliente_tipo FROM pmieducar.cliente_tipo_cliente WHERE ref_cod_cliente = '" . (int) $this->cod_cliente . "'");
         }
 
         $this->inputsHelper()->dynamic(['instituicao', 'escola', 'biblioteca', 'bibliotecaTipoCliente']);
@@ -239,8 +239,8 @@ return new class extends clsCadastro {
 
             $this->ativo = 1;
 
-            $sql = "SELECT COUNT(0) FROM pmieducar.cliente_tipo_cliente WHERE ref_cod_cliente = {$this->cod_cliente}
-        AND ref_cod_biblioteca = {$this->ref_cod_biblioteca} AND ativo = 1";
+            $sql = "SELECT COUNT(0) FROM pmieducar.cliente_tipo_cliente WHERE ref_cod_cliente = " . (int) $this->cod_cliente . "
+        AND ref_cod_biblioteca = " . (int) $this->ref_cod_biblioteca . " AND ativo = 1";
 
             $db = new clsBanco();
             $possui_biblio = $db->CampoUnico($sql);

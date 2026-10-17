@@ -2,6 +2,7 @@
 
 use App\Models\LegacyInstitution;
 use App\Models\LegacyPerson;
+use App\Models\LegacySchool;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsListagem {
@@ -65,6 +66,9 @@ return new class extends clsListagem {
             $this->$var = ($val === '') ? null: $val;
         }
 
+        // Data fora de dd/mm/aaaa é ignorada no filtro.
+        $this->data_retirada = \iEducar\Packages\Library\Support\Data::brOuNulo($this->data_retirada);
+
         $lista_busca = [
             'Cliente',
             'Tombo',
@@ -102,7 +106,7 @@ return new class extends clsListagem {
 
         // Paginador
         $this->limite = 20;
-        $this->offset = ($_GET["pagina_{$this->nome}"]) ? $_GET["pagina_{$this->nome}"]*$this->limite-$this->limite: 0;
+        $this->offset = (min(max(1, request()->integer("pagina_{$this->nome}", 1)), 100000) - 1) * $this->limite;
 
         $obj_exemplar_emprestimo = new clsPmieducarExemplarEmprestimo();
         $obj_exemplar_emprestimo->setOrderby('data_retirada ASC');
@@ -161,9 +165,10 @@ return new class extends clsListagem {
                     $nm_instituicao = $nomesInstituicoes[$registro['ref_cod_instituicao']] ?? null;
                 }
                 if ($registro['ref_cod_escola']) {
-                    $obj_ref_cod_escola = new clsPmieducarEscola();
-                    $det_ref_cod_escola = array_shift($obj_ref_cod_escola->lista($registro['ref_cod_escola']));
-                    $registro['ref_cod_escola'] = $det_ref_cod_escola['nome'];
+                    $registro['ref_cod_escola'] = LegacySchool::query()
+                        ->joinOrganization()
+                        ->whereKey($registro['ref_cod_escola'])
+                        ->value('fantasia');
                 }
 
                 $lista_busca = [

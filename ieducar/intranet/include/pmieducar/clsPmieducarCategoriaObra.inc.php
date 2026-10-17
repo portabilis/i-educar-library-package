@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarCategoriaObra extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $id;
     public $descricao;
     public $observacoes;
@@ -75,7 +77,7 @@ class clsPmieducarCategoriaObra extends Model
     {
         if (is_numeric($this->id)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE id = '{$this->id}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE id = '{$this->sqlTexto($this->id)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -128,7 +130,7 @@ class clsPmieducarCategoriaObra extends Model
                 $gruda = ', ';
             }
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE id = '{$this->id}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE id = '{$this->sqlTexto($this->id)}'");
 
                 return true;
             }
@@ -143,12 +145,12 @@ class clsPmieducarCategoriaObra extends Model
             $db = new clsBanco();
             $vinculoObra = $db->Consulta("SELECT *
                                                FROM relacao_categoria_acervo
-                                              WHERE categoria_id = {$this->id}");
+                                              WHERE categoria_id = {$this->sqlNumero($this->id)}");
             if (is_array($vinculoObra) && count($vinculoObra) > 0) {
                 return false;
             }
 
-            $db->Consulta("DELETE FROM {$this->_tabela} WHERE id = '{$this->id}'");
+            $db->Consulta("DELETE FROM {$this->_tabela} WHERE id = '{$this->sqlTexto($this->id)}'");
             return true;
         }
     }

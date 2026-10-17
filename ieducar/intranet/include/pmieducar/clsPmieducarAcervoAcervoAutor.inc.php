@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarAcervoAcervoAutor extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $ref_cod_acervo_autor;
     public $ref_cod_acervo;
     public $principal;
@@ -44,17 +46,17 @@ class clsPmieducarAcervoAcervoAutor extends Model
 
             if (is_numeric($this->ref_cod_acervo_autor)) {
                 $campos .= "{$gruda}ref_cod_acervo_autor";
-                $valores .= "{$gruda}'{$this->ref_cod_acervo_autor}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_acervo_autor)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_acervo)) {
                 $campos .= "{$gruda}ref_cod_acervo";
-                $valores .= "{$gruda}'{$this->ref_cod_acervo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_acervo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->principal)) {
                 $campos .= "{$gruda}principal";
-                $valores .= "{$gruda}'{$this->principal}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->principal)}'";
                 $gruda = ', ';
             }
 
@@ -78,12 +80,12 @@ class clsPmieducarAcervoAcervoAutor extends Model
             $set = '';
 
             if (is_numeric($this->principal)) {
-                $set .= "{$gruda}principal = '{$this->principal}'";
+                $set .= "{$gruda}principal = '{$this->sqlTexto($this->principal)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE ref_cod_acervo_autor = '{$this->ref_cod_acervo_autor}' AND ref_cod_acervo = '{$this->ref_cod_acervo}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE ref_cod_acervo_autor = '{$this->sqlTexto($this->ref_cod_acervo_autor)}' AND ref_cod_acervo = '{$this->sqlTexto($this->ref_cod_acervo)}'");
 
                 return true;
             }
@@ -105,15 +107,15 @@ class clsPmieducarAcervoAcervoAutor extends Model
         $whereAnd = ' WHERE ';
 
         if (is_numeric($int_ref_cod_acervo_autor)) {
-            $filtros .= "{$whereAnd} ref_cod_acervo_autor = '{$int_ref_cod_acervo_autor}'";
+            $filtros .= "{$whereAnd} ref_cod_acervo_autor = '{$this->sqlTexto($int_ref_cod_acervo_autor)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_acervo)) {
-            $filtros .= "{$whereAnd} ref_cod_acervo = '{$int_ref_cod_acervo}'";
+            $filtros .= "{$whereAnd} ref_cod_acervo = '{$this->sqlTexto($int_ref_cod_acervo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_principal)) {
-            $filtros .= "{$whereAnd} principal = '{$int_principal}'";
+            $filtros .= "{$whereAnd} principal = '{$this->sqlTexto($int_principal)}'";
             $whereAnd = ' AND ';
         }
 
@@ -156,7 +158,7 @@ class clsPmieducarAcervoAcervoAutor extends Model
     {
         if (is_numeric($this->ref_cod_acervo_autor) && is_numeric($this->ref_cod_acervo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE ref_cod_acervo_autor = '{$this->ref_cod_acervo_autor}' AND ref_cod_acervo = '{$this->ref_cod_acervo}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} WHERE ref_cod_acervo_autor = '{$this->sqlTexto($this->ref_cod_acervo_autor)}' AND ref_cod_acervo = '{$this->sqlTexto($this->ref_cod_acervo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -174,7 +176,7 @@ class clsPmieducarAcervoAcervoAutor extends Model
     {
         if (is_numeric($this->ref_cod_acervo_autor) && is_numeric($this->ref_cod_acervo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE ref_cod_acervo_autor = '{$this->ref_cod_acervo_autor}' AND ref_cod_acervo = '{$this->ref_cod_acervo}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE ref_cod_acervo_autor = '{$this->sqlTexto($this->ref_cod_acervo_autor)}' AND ref_cod_acervo = '{$this->sqlTexto($this->ref_cod_acervo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -203,7 +205,7 @@ class clsPmieducarAcervoAcervoAutor extends Model
     {
         if (is_numeric($this->ref_cod_acervo)) {
             $db = new clsBanco();
-            $db->Consulta("DELETE FROM {$this->_tabela} WHERE ref_cod_acervo = '{$this->ref_cod_acervo}'");
+            $db->Consulta("DELETE FROM {$this->_tabela} WHERE ref_cod_acervo = '{$this->sqlTexto($this->ref_cod_acervo)}'");
 
             return true;
         }

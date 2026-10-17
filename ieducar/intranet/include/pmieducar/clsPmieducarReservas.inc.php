@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarReservas extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $cod_reserva;
     public $ref_usuario_libera;
     public $ref_usuario_cad;
@@ -67,17 +69,17 @@ class clsPmieducarReservas extends Model
 
             if (is_numeric($this->ref_usuario_libera)) {
                 $campos .= "{$gruda}ref_usuario_libera";
-                $valores .= "{$gruda}'{$this->ref_usuario_libera}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_libera)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
                 $campos .= "{$gruda}ref_usuario_cad";
-                $valores .= "{$gruda}'{$this->ref_usuario_cad}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_cliente)) {
                 $campos .= "{$gruda}ref_cod_cliente";
-                $valores .= "{$gruda}'{$this->ref_cod_cliente}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_cliente)}'";
                 $gruda = ', ';
             }
 
@@ -87,17 +89,17 @@ class clsPmieducarReservas extends Model
 
             if (is_string($this->data_prevista_disponivel)) {
                 $campos .= "{$gruda}data_prevista_disponivel";
-                $valores .= "{$gruda}'{$this->data_prevista_disponivel}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->data_prevista_disponivel)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_retirada)) {
                 $campos .= "{$gruda}data_retirada";
-                $valores .= "{$gruda}'{$this->data_retirada}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->data_retirada)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_exemplar)) {
                 $campos .= "{$gruda}ref_cod_exemplar";
-                $valores .= "{$gruda}'{$this->ref_cod_exemplar}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_exemplar)}'";
                 $gruda = ', ';
             }
             $campos .= "{$gruda}ativo";
@@ -128,41 +130,41 @@ class clsPmieducarReservas extends Model
             $set = '';
 
             if (is_numeric($this->ref_usuario_libera)) {
-                $set .= "{$gruda}ref_usuario_libera = '{$this->ref_usuario_libera}'";
+                $set .= "{$gruda}ref_usuario_libera = '{$this->sqlTexto($this->ref_usuario_libera)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_usuario_cad)) {
-                $set .= "{$gruda}ref_usuario_cad = '{$this->ref_usuario_cad}'";
+                $set .= "{$gruda}ref_usuario_cad = '{$this->sqlTexto($this->ref_usuario_cad)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_cliente)) {
-                $set .= "{$gruda}ref_cod_cliente = '{$this->ref_cod_cliente}'";
+                $set .= "{$gruda}ref_cod_cliente = '{$this->sqlTexto($this->ref_cod_cliente)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_reserva)) {
-                $set .= "{$gruda}data_reserva = '{$this->data_reserva}'";
+                $set .= "{$gruda}data_reserva = '{$this->sqlTexto($this->data_reserva)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_prevista_disponivel)) {
-                $set .= "{$gruda}data_prevista_disponivel = '{$this->data_prevista_disponivel}'";
+                $set .= "{$gruda}data_prevista_disponivel = '{$this->sqlTexto($this->data_prevista_disponivel)}'";
                 $gruda = ', ';
             }
             if (is_string($this->data_retirada)) {
-                $set .= "{$gruda}data_retirada = '{$this->data_retirada}'";
+                $set .= "{$gruda}data_retirada = '{$this->sqlTexto($this->data_retirada)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_exemplar)) {
-                $set .= "{$gruda}ref_cod_exemplar = '{$this->ref_cod_exemplar}'";
+                $set .= "{$gruda}ref_cod_exemplar = '{$this->sqlTexto($this->ref_cod_exemplar)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ativo)) {
-                $set .= "{$gruda}ativo = '{$this->ativo}'";
+                $set .= "{$gruda}ativo = '{$this->sqlTexto($this->ativo)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
                 $detalheAntigo = $this->detalhe();
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_reserva = '{$this->cod_reserva}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE cod_reserva = '{$this->sqlTexto($this->cod_reserva)}'");
 
                 return true;
             }
@@ -184,47 +186,47 @@ class clsPmieducarReservas extends Model
         $filtros = ' WHERE r.ref_cod_exemplar = e.cod_exemplar AND e.ref_cod_acervo = a.cod_acervo AND a.ref_cod_biblioteca = b.cod_biblioteca ';
 
         if (is_numeric($int_cod_reserva)) {
-            $filtros .= "{$whereAnd} r.cod_reserva = '{$int_cod_reserva}'";
+            $filtros .= "{$whereAnd} r.cod_reserva = '{$this->sqlTexto($int_cod_reserva)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_libera)) {
-            $filtros .= "{$whereAnd} r.ref_usuario_libera = '{$int_ref_usuario_libera}'";
+            $filtros .= "{$whereAnd} r.ref_usuario_libera = '{$this->sqlTexto($int_ref_usuario_libera)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_usuario_cad)) {
-            $filtros .= "{$whereAnd} r.ref_usuario_cad = '{$int_ref_usuario_cad}'";
+            $filtros .= "{$whereAnd} r.ref_usuario_cad = '{$this->sqlTexto($int_ref_usuario_cad)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_cliente)) {
-            $filtros .= "{$whereAnd} r.ref_cod_cliente = '{$int_ref_cod_cliente}'";
+            $filtros .= "{$whereAnd} r.ref_cod_cliente = '{$this->sqlTexto($int_ref_cod_cliente)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_reserva_ini)) {
-            $filtros .= "{$whereAnd} r.data_reserva >= '{$date_data_reserva_ini}'";
+            $filtros .= "{$whereAnd} r.data_reserva >= '{$this->sqlTexto($date_data_reserva_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_reserva_fim)) {
-            $filtros .= "{$whereAnd} r.data_reserva <= '{$date_data_reserva_fim}'";
+            $filtros .= "{$whereAnd} r.data_reserva <= '{$this->sqlTexto($date_data_reserva_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_prevista_disponivel_ini)) {
-            $filtros .= "{$whereAnd} r.data_prevista_disponivel >= '{$date_data_prevista_disponivel_ini}'";
+            $filtros .= "{$whereAnd} r.data_prevista_disponivel >= '{$this->sqlTexto($date_data_prevista_disponivel_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_prevista_disponivel_fim)) {
-            $filtros .= "{$whereAnd} r.data_prevista_disponivel <= '{$date_data_prevista_disponivel_fim}'";
+            $filtros .= "{$whereAnd} r.data_prevista_disponivel <= '{$this->sqlTexto($date_data_prevista_disponivel_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_retirada_ini)) {
-            $filtros .= "{$whereAnd} r.data_retirada >= '{$date_data_retirada_ini}'";
+            $filtros .= "{$whereAnd} r.data_retirada >= '{$this->sqlTexto($date_data_retirada_ini)}'";
             $whereAnd = ' AND ';
         }
         if (is_string($date_data_retirada_fim)) {
-            $filtros .= "{$whereAnd} r.data_retirada <= '{$date_data_retirada_fim}'";
+            $filtros .= "{$whereAnd} r.data_retirada <= '{$this->sqlTexto($date_data_retirada_fim)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_exemplar)) {
-            $filtros .= "{$whereAnd} r.ref_cod_exemplar = '{$int_ref_cod_exemplar}'";
+            $filtros .= "{$whereAnd} r.ref_cod_exemplar = '{$this->sqlTexto($int_ref_cod_exemplar)}'";
             $whereAnd = ' AND ';
         }
         if (is_null($int_ativo) || $int_ativo) {
@@ -235,15 +237,15 @@ class clsPmieducarReservas extends Model
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_biblioteca)) {
-            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$int_ref_cod_biblioteca}'";
+            $filtros .= "{$whereAnd} a.ref_cod_biblioteca = '{$this->sqlTexto($int_ref_cod_biblioteca)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_instituicao)) {
-            $filtros .= "{$whereAnd} b.ref_cod_instituicao = '{$int_ref_cod_instituicao}'";
+            $filtros .= "{$whereAnd} b.ref_cod_instituicao = '{$this->sqlTexto($int_ref_cod_instituicao)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_escola)) {
-            $filtros .= "{$whereAnd} b.ref_cod_escola = '{$int_ref_cod_escola}'";
+            $filtros .= "{$whereAnd} b.ref_cod_escola = '{$this->sqlTexto($int_ref_cod_escola)}'";
             $whereAnd = ' AND ';
         }
         if (!is_null($data_retirada_null)) {
@@ -295,7 +297,7 @@ class clsPmieducarReservas extends Model
     {
         if (is_numeric($this->cod_reserva)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} r WHERE r.cod_reserva = '{$this->cod_reserva}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} r WHERE r.cod_reserva = '{$this->sqlTexto($this->cod_reserva)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -313,7 +315,7 @@ class clsPmieducarReservas extends Model
     {
         if (is_numeric($this->cod_reserva)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_reserva = '{$this->cod_reserva}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE cod_reserva = '{$this->sqlTexto($this->cod_reserva)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -351,11 +353,11 @@ class clsPmieducarReservas extends Model
                     FROM {$this->_tabela} r,
                          {$this->_schema}exemplar e
                     WHERE r.ref_cod_exemplar = e.cod_exemplar AND
-                          e.ref_cod_acervo = '{$int_ref_cod_acervo}'
+                          e.ref_cod_acervo = '{$this->sqlTexto($int_ref_cod_acervo)}'
                     GROUP BY r.ref_cod_exemplar
                     ORDER BY max(data_prevista_disponivel) ASC";
             if ($int_limite) {
-                $sql .= " limit '{$int_limite}'";
+                $sql .= " limit '{$this->sqlTexto($int_limite)}'";
             }
 
             $db->Consulta($sql);
@@ -386,7 +388,7 @@ class clsPmieducarReservas extends Model
                     FROM {$this->_tabela} r,
                          {$this->_schema}exemplar e
                     WHERE r.ref_cod_exemplar = e.cod_exemplar AND
-                          e.cod_exemplar = '{$int_ref_cod_exemplar}'
+                          e.cod_exemplar = '{$this->sqlTexto($int_ref_cod_exemplar)}'
                     GROUP BY r.ref_cod_exemplar
                     ORDER BY max(data_prevista_disponivel) ASC";
             $db->Consulta($sql);

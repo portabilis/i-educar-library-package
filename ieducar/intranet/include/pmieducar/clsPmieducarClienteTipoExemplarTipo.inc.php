@@ -4,6 +4,8 @@ use iEducar\Legacy\Model;
 
 class clsPmieducarClienteTipoExemplarTipo extends Model
 {
+    use \iEducar\Packages\Library\Support\EscapaSql;
+
     public $ref_cod_cliente_tipo;
     public $ref_cod_exemplar_tipo;
     public $dias_emprestimo;
@@ -44,17 +46,17 @@ class clsPmieducarClienteTipoExemplarTipo extends Model
 
             if (is_numeric($this->ref_cod_cliente_tipo)) {
                 $campos .= "{$gruda}ref_cod_cliente_tipo";
-                $valores .= "{$gruda}'{$this->ref_cod_cliente_tipo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_cliente_tipo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->ref_cod_exemplar_tipo)) {
                 $campos .= "{$gruda}ref_cod_exemplar_tipo";
-                $valores .= "{$gruda}'{$this->ref_cod_exemplar_tipo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->ref_cod_exemplar_tipo)}'";
                 $gruda = ', ';
             }
             if (is_numeric($this->dias_emprestimo)) {
                 $campos .= "{$gruda}dias_emprestimo";
-                $valores .= "{$gruda}'{$this->dias_emprestimo}'";
+                $valores .= "{$gruda}'{$this->sqlTexto($this->dias_emprestimo)}'";
                 $gruda = ', ';
             }
 
@@ -78,12 +80,12 @@ class clsPmieducarClienteTipoExemplarTipo extends Model
             $set = '';
 
             if (is_numeric($this->dias_emprestimo)) {
-                $set .= "{$gruda}dias_emprestimo = '{$this->dias_emprestimo}'";
+                $set .= "{$gruda}dias_emprestimo = '{$this->sqlTexto($this->dias_emprestimo)}'";
                 $gruda = ', ';
             }
 
             if ($set) {
-                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE ref_cod_cliente_tipo = '{$this->ref_cod_cliente_tipo}' AND ref_cod_exemplar_tipo = '{$this->ref_cod_exemplar_tipo}'");
+                $db->Consulta("UPDATE {$this->_tabela} SET $set WHERE ref_cod_cliente_tipo = '{$this->sqlTexto($this->ref_cod_cliente_tipo)}' AND ref_cod_exemplar_tipo = '{$this->sqlTexto($this->ref_cod_exemplar_tipo)}'");
 
                 return true;
             }
@@ -105,15 +107,15 @@ class clsPmieducarClienteTipoExemplarTipo extends Model
         $filtros = ' WHERE ctet.ref_cod_cliente_tipo = ct.cod_cliente_tipo AND ctet.ref_cod_exemplar_tipo = et.cod_exemplar_tipo ';
 
         if (is_numeric($int_ref_cod_cliente_tipo)) {
-            $filtros .= "{$whereAnd} ctet.ref_cod_cliente_tipo = '{$int_ref_cod_cliente_tipo}'";
+            $filtros .= "{$whereAnd} ctet.ref_cod_cliente_tipo = '{$this->sqlTexto($int_ref_cod_cliente_tipo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_ref_cod_exemplar_tipo)) {
-            $filtros .= "{$whereAnd} ctet.ref_cod_exemplar_tipo = '{$int_ref_cod_exemplar_tipo}'";
+            $filtros .= "{$whereAnd} ctet.ref_cod_exemplar_tipo = '{$this->sqlTexto($int_ref_cod_exemplar_tipo)}'";
             $whereAnd = ' AND ';
         }
         if (is_numeric($int_dias_emprestimo)) {
-            $filtros .= "{$whereAnd} ctet.dias_emprestimo = '{$int_dias_emprestimo}'";
+            $filtros .= "{$whereAnd} ctet.dias_emprestimo = '{$this->sqlTexto($int_dias_emprestimo)}'";
             $whereAnd = ' AND ';
         }
 
@@ -162,7 +164,7 @@ class clsPmieducarClienteTipoExemplarTipo extends Model
     {
         if (is_numeric($this->ref_cod_cliente_tipo) && is_numeric($this->ref_cod_exemplar_tipo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} ctet WHERE ctet.ref_cod_cliente_tipo = '{$this->ref_cod_cliente_tipo}' AND ctet.ref_cod_exemplar_tipo = '{$this->ref_cod_exemplar_tipo}'");
+            $db->Consulta("SELECT {$this->_todos_campos} FROM {$this->_tabela} ctet WHERE ctet.ref_cod_cliente_tipo = '{$this->sqlTexto($this->ref_cod_cliente_tipo)}' AND ctet.ref_cod_exemplar_tipo = '{$this->sqlTexto($this->ref_cod_exemplar_tipo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();
@@ -180,7 +182,7 @@ class clsPmieducarClienteTipoExemplarTipo extends Model
     {
         if (is_numeric($this->ref_cod_cliente_tipo) && is_numeric($this->ref_cod_exemplar_tipo)) {
             $db = new clsBanco();
-            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE ref_cod_cliente_tipo = '{$this->ref_cod_cliente_tipo}' AND ref_cod_exemplar_tipo = '{$this->ref_cod_exemplar_tipo}'");
+            $db->Consulta("SELECT 1 FROM {$this->_tabela} WHERE ref_cod_cliente_tipo = '{$this->sqlTexto($this->ref_cod_cliente_tipo)}' AND ref_cod_exemplar_tipo = '{$this->sqlTexto($this->ref_cod_exemplar_tipo)}'");
             $db->ProximoRegistro();
 
             return $db->Tupla();

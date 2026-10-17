@@ -2,6 +2,7 @@
 
 use App\Models\LegacyInstitution;
 use App\Models\LegacyPerson;
+use App\Models\LegacySchool;
 
 return new class extends clsListagem {
     /**
@@ -104,7 +105,7 @@ return new class extends clsListagem {
 
         // Paginador
         $this->limite = 20;
-        $this->offset = ($_GET["pagina_{$this->nome}"]) ? $_GET["pagina_{$this->nome}"]*$this->limite-$this->limite: 0;
+        $this->offset = (min(max(1, request()->integer("pagina_{$this->nome}", 1)), 100000) - 1) * $this->limite;
         $obj_exemplar_emprestimo = new clsPmieducarExemplarEmprestimo();
         $lst_exemplar_emprestimo = $obj_exemplar_emprestimo->listaDividaPagamentoCliente($this->ref_cod_cliente, $this->ref_idpes, $this->ref_cod_cliente_tipo, $this->pessoa_logada, $this->ref_cod_biblioteca, $this->ref_cod_escola, $this->ref_cod_instituicao);
 
@@ -138,10 +139,12 @@ return new class extends clsListagem {
                     $nm_instituicao = LegacyInstitution::query()
                         ->whereKey($det_bib['ref_cod_instituicao'])
                         ->value('nm_instituicao');
-                    $obj_escola = new clsPmieducarEscola($det_bib['ref_cod_escola']);
-                    $det_escola = $obj_escola->detalhe();
-                    if ($det_escola) {
-                        $nome_escola = LegacyPerson::query()->whereKey($det_escola['ref_idpes'])->value('nome');
+                    $idpes_escola = LegacySchool::query()
+                        ->joinOrganization()
+                        ->whereKey($det_bib['ref_cod_escola'])
+                        ->value('ref_idpes');
+                    if ($idpes_escola) {
+                        $nome_escola = LegacyPerson::query()->whereKey($idpes_escola)->value('nome');
                     }
                 }
 

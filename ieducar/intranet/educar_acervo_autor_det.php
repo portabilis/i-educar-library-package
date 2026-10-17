@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyInstitution;
+use App\Models\LegacySchool;
 
 return new class extends clsDetalhe {
     /**
@@ -46,9 +47,10 @@ return new class extends clsDetalhe {
                 ->value('nm_instituicao');
         }
         if ($registro['ref_cod_escola']) {
-            $obj_ref_cod_escola = new clsPmieducarEscola();
-            $det_ref_cod_escola = array_shift($obj_ref_cod_escola->lista($registro['ref_cod_escola']));
-            $registro['ref_cod_escola'] = $det_ref_cod_escola['nome'];
+            $registro['ref_cod_escola'] = LegacySchool::query()
+                ->joinOrganization()
+                ->whereKey($registro['ref_cod_escola'])
+                ->value('fantasia');
         }
 
         if ($nm_instituicao && $nivel_usuario == 1) {

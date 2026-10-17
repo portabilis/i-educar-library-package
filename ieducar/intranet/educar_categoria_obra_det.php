@@ -23,7 +23,7 @@ return new class extends clsDetalhe {
         $tmp_obj = new clsPmieducarCategoriaObra($this->id);
         $registro = $tmp_obj->detalhe();
         if (!$registro) {
-            $this->simpleRedirect('educar_categoria_nivel_lst.php');
+            $this->simpleRedirect('educar_categoria_lst.php');
         }
         if ($registro['id']) {
             $this->addDetalhe(['Código', "{$registro['id']}"]);

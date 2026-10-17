@@ -47,7 +47,7 @@ return new class extends clsCadastro {
         }
 
         if (!isset($this->ref_cod_cliente)) {
-            $this->simpleRedirect('educar_reserva_vaga_lst.php');
+            $this->simpleRedirect('educar_reservas_lst.php');
         }
 
         if (is_numeric($this->cod_reserva)) {

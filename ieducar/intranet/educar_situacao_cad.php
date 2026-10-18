@@ -30,9 +30,8 @@ return new class extends clsCadastro {
             $this->simpleRedirect('educar_situacao_lst.php');
         }
 
-        $obj_usuario_biblioteca = new clsPmieducarBibliotecaUsuario();
-        $lst_usuario_biblioteca = $obj_usuario_biblioteca->lista(null, $this->pessoa_logada);
-        $this->ref_cod_biblioteca = $this->ref_cod_biblioteca_ = $lst_usuario_biblioteca ?: 0;
+        $this->ref_cod_biblioteca = $this->ref_cod_biblioteca_ = new clsPmieducarBibliotecaUsuario()
+            ->lista(null, $this->pessoa_logada) ?: 0;
         if (is_numeric($this->cod_situacao)) {
             $obj = new clsPmieducarSituacao($this->cod_situacao);
             $registro  = $obj->detalhe();

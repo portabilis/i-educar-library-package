@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -35,8 +37,9 @@ return new class extends clsCadastro {
         $this->ref_cod_cliente_tipo          = $_GET['cod_cliente_tipo'];
         $this->ref_cod_cliente_tipo_original = $_GET['cod_cliente_tipo'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        if (!Gate::allows('modify', 623)) {
+            $this->simpleRedirect('educar_definir_cliente_tipo_lst.php');
+        }
 
         if (is_numeric($this->cod_cliente) && is_numeric($this->ref_cod_cliente_tipo)) {
             $obj_cliente = new clsPmieducarCliente();
@@ -64,8 +67,7 @@ return new class extends clsCadastro {
                     $this->ref_cod_instituicao = $cliente['cod_instituicao'];
                     $this->ref_cod_escola      = $cliente['cod_escola'];
                     $this->ref_cod_biblioteca  = $cliente['cod_biblioteca'];
-                    $obj_permissoes      = new clsPermissoes();
-                    if ($obj_permissoes->permissao_excluir(623, $this->pessoa_logada, 11)) {
+                    if (Gate::allows('remove', 623)) {
                         $this->fexcluir = true;
                     }
 
@@ -111,8 +113,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        if (!Gate::allows('modify', 623)) {
+            $this->simpleRedirect('educar_definir_cliente_tipo_lst.php');
+        }
 
         $obj_cliente = new clsPmieducarCliente($this->cod_cliente);
         $det_cliente = $obj_cliente->detalhe();
@@ -143,8 +146,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        if (!Gate::allows('modify', 623)) {
+            $this->simpleRedirect('educar_definir_cliente_tipo_lst.php');
+        }
 
         $obj_cliente_tipo = new clsPmieducarClienteTipoCliente($this->ref_cod_cliente_tipo, $this->cod_cliente, null, null, null, $this->pessoa_logada);
         if ($obj_cliente_tipo->existeCliente()) {
@@ -164,8 +168,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(623, $this->pessoa_logada, 11, 'educar_definir_cliente_tipo_lst.php');
+        if (!Gate::allows('remove', 623)) {
+            $this->simpleRedirect('educar_definir_cliente_tipo_lst.php');
+        }
 
         $obj_cliente_tipo = new clsPmieducarClienteTipoCliente($this->ref_cod_cliente_tipo, $this->cod_cliente, null, null, null, $this->pessoa_logada, 1);
         if ($obj_cliente_tipo->existe()) {

@@ -2,6 +2,7 @@
 
 use App\Models\LegacyPerson;
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsListagem {
@@ -190,8 +191,7 @@ return new class extends clsListagem {
             }
         }
         $this->addPaginador2('educar_exemplar_emprestimo_lst.php', $total, $_GET, $this->nome, $this->limite);
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(610, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 610)) {
             $this->acao = 'go("educar_exemplar_emprestimo_login_cad.php")';
             $this->nome_acao = 'Novo';
         }

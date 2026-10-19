@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsDetalhe {
     /**
@@ -79,8 +81,7 @@ return new class extends clsDetalhe {
         $det_ref_cod_acervo_editora = $obj_ref_cod_acervo_editora->detalhe();
         $registro['ref_cod_acervo_editora'] = $det_ref_cod_acervo_editora['nm_editora'];
 
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
         if ($nivel_usuario == 1) {
             if ($registro['ref_cod_instituicao']) {
                 $this->addDetalhe([ 'Instituição', "{$registro['ref_cod_instituicao']}"]);
@@ -199,8 +200,7 @@ return new class extends clsDetalhe {
             }
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(598, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 598)) {
             $this->url_novo = 'educar_acervo_cad.php';
             $this->url_editar = "educar_acervo_cad.php?cod_acervo={$registro['cod_acervo']}";
         }

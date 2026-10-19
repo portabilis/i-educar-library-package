@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -24,8 +26,9 @@ return new class extends clsCadastro {
 
         $this->cod_fonte=$_GET['cod_fonte'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(608, $this->pessoa_logada, 11, 'educar_fonte_lst.php');
+        if (!Gate::allows('modify', 608)) {
+            $this->simpleRedirect('educar_fonte_lst.php');
+        }
 
         if (is_numeric($this->cod_fonte)) {
             $obj = new clsPmieducarFonte($this->cod_fonte);
@@ -35,8 +38,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                $obj_permissoes = new clsPermissoes();
-                if ($obj_permissoes->permissao_excluir(608, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 608)) {
                     $this->fexcluir = true;
                 }
 
@@ -70,8 +72,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(608, $this->pessoa_logada, 11, 'educar_fonte_lst.php');
+        if (!Gate::allows('modify', 608)) {
+            $this->simpleRedirect('educar_fonte_lst.php');
+        }
 
         $obj = new clsPmieducarFonte($this->cod_fonte, $this->pessoa_logada, $this->pessoa_logada, $this->nm_fonte, $this->descricao, $this->data_cadastro, $this->data_exclusao, $this->ativo, $this->ref_cod_biblioteca);
         $this->cod_fonte = $cadastrou = $obj->cadastra();
@@ -88,8 +91,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(608, $this->pessoa_logada, 11, 'educar_fonte_lst.php');
+        if (!Gate::allows('modify', 608)) {
+            $this->simpleRedirect('educar_fonte_lst.php');
+        }
 
         $obj = new clsPmieducarFonte($this->cod_fonte, $this->pessoa_logada, $this->pessoa_logada, $this->nm_fonte, $this->descricao, $this->data_cadastro, $this->data_exclusao, $this->ativo, $this->ref_cod_biblioteca);
         $editou = $obj->edita();
@@ -105,8 +109,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(608, $this->pessoa_logada, 11, 'educar_fonte_lst.php');
+        if (!Gate::allows('remove', 608)) {
+            $this->simpleRedirect('educar_fonte_lst.php');
+        }
 
         $obj = new clsPmieducarFonte($this->cod_fonte, $this->pessoa_logada, $this->pessoa_logada, $this->nm_fonte, $this->descricao, $this->data_cadastro, $this->data_exclusao, 0);
         $excluiu = $obj->excluir();

@@ -2,6 +2,8 @@
 
 use App\Models\LegacyPerson;
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsDetalhe {
@@ -71,8 +73,7 @@ return new class extends clsDetalhe {
             $registro['ref_cod_cliente'] = LegacyPerson::query()->whereKey($ref_idpes)->value('nome');
         }
 
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
         if ($nivel_usuario == 1) {
             if ($registro['ref_cod_instituicao']) {
                 $this->addDetalhe([ 'Instituição', "{$registro['ref_cod_instituicao']}"]);
@@ -103,7 +104,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Valor Multa', "{$registro['valor_multa']}"]);
         }
 
-        if ($obj_permissoes->permissao_cadastra(628, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 628)) {
             $this->array_botao = [];
             $this->array_botao_url_script = [];
 

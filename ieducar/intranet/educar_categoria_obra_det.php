@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsDetalhe {
     /**
      * Titulo no topo da pagina
@@ -21,7 +23,7 @@ return new class extends clsDetalhe {
         $tmp_obj = new clsPmieducarCategoriaObra($this->id);
         $registro = $tmp_obj->detalhe();
         if (!$registro) {
-            $this->simpleRedirect('educar_categoria_nivel_lst.php');
+            $this->simpleRedirect('educar_categoria_lst.php');
         }
         if ($registro['id']) {
             $this->addDetalhe(['Código', "{$registro['id']}"]);
@@ -33,8 +35,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe(['Observações', "{$registro['observacoes']}"]);
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 592)) {
             $this->url_novo = 'educar_categoria_cad.php';
             $this->url_editar = "educar_categoria_cad.php?id={$registro['id']}";
         }

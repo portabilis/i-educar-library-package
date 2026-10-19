@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -22,8 +24,9 @@ return new class extends clsCadastro {
     {
         $retorno = 'Novo';
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(593, $this->pessoa_logada, 11, 'educar_acervo_colecao_lst.php');
+        if (!Gate::allows('modify', 593)) {
+            $this->simpleRedirect('educar_acervo_colecao_lst.php');
+        }
 
         return $retorno;
     }
@@ -39,8 +42,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(593, $this->pessoa_logada, 11, 'educar_acervo_colecao_lst.php');
+        if (!Gate::allows('modify', 593)) {
+            $this->simpleRedirect('educar_acervo_colecao_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoColecao($this->cod_acervo_colecao, $this->pessoa_logada, $this->pessoa_logada, $this->nm_colecao, $this->descricao, $this->data_cadastro, $this->data_exclusao, $this->ativo, $this->ref_cod_biblioteca);
         $this->cod_acervo_colecao = $cadastrou = $obj->cadastra();

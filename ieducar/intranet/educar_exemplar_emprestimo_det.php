@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsDetalhe {
     /**
@@ -61,8 +62,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Valor Multa', "{$registro['valor_multa']}"]);
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(610, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 610)) {
             $this->url_novo = 'educar_exemplar_emprestimo_login_cad.php';
         }
 

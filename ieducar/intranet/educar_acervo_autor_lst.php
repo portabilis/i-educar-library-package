@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\LegacySchool;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsListagem {
     /**
@@ -46,8 +48,7 @@ return new class extends clsListagem {
     public function Gerar()
     {
         $this->titulo = 'Autor - Listagem';
-        $obj_permissoes = new clsPermissoes();
-        $nivel_usuario = $obj_permissoes->nivel_acesso($this->pessoa_logada);
+        $nivel_usuario = Auth::user()->type?->level;
 
         foreach ($_GET as $var => $val) { // passa todos os valores obtidos no GET para atributos do objeto
             $this->$var = ($val === '') ? null: $val;
@@ -158,7 +159,7 @@ return new class extends clsListagem {
         }
         $this->addPaginador2('educar_acervo_autor_lst.php', $total, $_GET, $this->nome, $this->limite);
 
-        if ($obj_permissoes->permissao_cadastra(594, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 594)) {
             $this->acao = 'go("educar_acervo_autor_cad.php")';
             $this->nome_acao = 'Novo';
         }

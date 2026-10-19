@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsDetalhe {
     /**
      * Titulo no topo da pagina
@@ -118,8 +120,7 @@ return new class extends clsDetalhe {
             }
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 622)) {
             $this->caption_novo = 'Pagar';
             $this->url_novo = "educar_pagamento_multa_cad.php?cod_cliente={$this->ref_cod_cliente}&cod_biblioteca={$det_tipo['ref_cod_biblioteca']}";
             $this->url_editar = false;

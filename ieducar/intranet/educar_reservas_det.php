@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsDetalhe {
     /**
@@ -61,8 +62,7 @@ return new class extends clsDetalhe {
             $this->addDetalhe([ 'Data Prevista Disponível', dataFromPgToBr($registro['data_prevista_disponivel'], 'd/m/Y') ]);
         }
 
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(609, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 609)) {
             $this->url_novo = 'educar_reservas_login_cad.php';
         }
 

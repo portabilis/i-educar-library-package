@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -30,8 +31,9 @@ return new class extends clsCadastro {
 
         $this->cod_emprestimo = $_GET['cod_emprestimo'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(628, $this->pessoa_logada, 11, 'educar_exemplar_devolucao_lst.php');
+        if (!Gate::allows('modify', 628)) {
+            $this->simpleRedirect('educar_exemplar_devolucao_lst.php');
+        }
 
         if (is_numeric($this->cod_emprestimo)) {
             $obj = new clsPmieducarExemplarEmprestimo($this->cod_emprestimo);
@@ -182,8 +184,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(628, $this->pessoa_logada, 11, 'educar_exemplar_devolucao_lst.php');
+        if (!Gate::allows('modify', 628)) {
+            $this->simpleRedirect('educar_exemplar_devolucao_lst.php');
+        }
 
         $this->valor_multa = urldecode($this->valor_multa);
         $this->valor_multa = str_replace('.', '', $this->valor_multa);

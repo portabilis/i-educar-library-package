@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsCadastro {
     /**
@@ -34,8 +35,9 @@ return new class extends clsCadastro {
             $this->simpleRedirect('educar_pagamento_multa_lst.php');
         }
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        if (!Gate::allows('modify', 622)) {
+            $this->simpleRedirect('educar_pagamento_multa_lst.php');
+        }
 
         if (is_numeric($this->ref_cod_cliente)) {
             $obj_total_divida = new clsPmieducarExemplarEmprestimo();
@@ -105,8 +107,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        if (!Gate::allows('modify', 622)) {
+            $this->simpleRedirect('educar_pagamento_multa_lst.php');
+        }
 
         $this->valor_pagamento = str_replace(',', '.', $this->valor_pagamento);
         $obj = new clsPmieducarPagamentoMulta(null, $this->pessoa_logada, $this->ref_cod_cliente, $this->valor_pagamento, null, $this->ref_cod_biblioteca);
@@ -123,8 +126,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        if (!Gate::allows('modify', 622)) {
+            $this->simpleRedirect('educar_pagamento_multa_lst.php');
+        }
 
         $obj = new clsPmieducarPagamentoMulta($this->cod_pagamento_multa, null, $this->ref_cod_cliente, $this->valor_pago, null, $this->ref_cod_biblioteca);
         $editou = $obj->edita();
@@ -140,8 +144,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(622, $this->pessoa_logada, 11, 'educar_pagamento_multa_lst.php');
+        if (!Gate::allows('remove', 622)) {
+            $this->simpleRedirect('educar_pagamento_multa_lst.php');
+        }
 
         $obj = new clsPmieducarPagamentoMulta($this->cod_pagamento_multa, null, $this->ref_cod_cliente, $this->valor_pago, null, $this->ref_cod_biblioteca);
         $excluiu = $obj->excluir();

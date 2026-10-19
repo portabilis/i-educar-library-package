@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -41,11 +42,12 @@ return new class extends clsCadastro {
 
         $this->cod_reserva=$_GET['cod_reserva'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(609, $this->pessoa_logada, 11, 'educar_reservas_lst.php');
+        if (!Gate::allows('modify', 609)) {
+            $this->simpleRedirect('educar_reservas_lst.php');
+        }
 
         if (!isset($this->ref_cod_cliente)) {
-            $this->simpleRedirect('educar_reserva_vaga_lst.php');
+            $this->simpleRedirect('educar_reservas_lst.php');
         }
 
         if (is_numeric($this->cod_reserva)) {
@@ -232,8 +234,9 @@ return new class extends clsCadastro {
             return true;
         }
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(609, $this->pessoa_logada, 11, 'educar_reservas_lst.php');
+        if (!Gate::allows('modify', 609)) {
+            $this->simpleRedirect('educar_reservas_lst.php');
+        }
 
         $obj_acervo = new clsPmieducarAcervo($this->ref_cod_acervo);
         $det_acervo = $obj_acervo->detalhe();

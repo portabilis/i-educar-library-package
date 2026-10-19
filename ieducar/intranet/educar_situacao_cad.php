@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     public $pessoa_logada;
     public $cod_situacao;
@@ -24,10 +26,12 @@ return new class extends clsCadastro {
 
         $this->cod_situacao=$_GET['cod_situacao'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(602, $this->pessoa_logada, 11, 'educar_situacao_lst.php');
+        if (!Gate::allows('modify', 602)) {
+            $this->simpleRedirect('educar_situacao_lst.php');
+        }
 
-        $this->ref_cod_biblioteca = $this->ref_cod_biblioteca_ = $obj_permissoes->getBiblioteca($this->pessoa_logada);
+        $this->ref_cod_biblioteca = $this->ref_cod_biblioteca_ = new clsPmieducarBibliotecaUsuario()
+            ->lista(null, $this->pessoa_logada) ?: 0;
         if (is_numeric($this->cod_situacao)) {
             $obj = new clsPmieducarSituacao($this->cod_situacao);
             $registro  = $obj->detalhe();
@@ -44,7 +48,7 @@ return new class extends clsCadastro {
                     $this->ref_cod_biblioteca = $this->ref_cod_biblioteca_ = $this->ref_cod_biblioteca;
                 }
 
-                if ($obj_permissoes->permissao_excluir(602, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 602)) {
                     $this->fexcluir = true;
                 }
                 $retorno = 'Editar';
@@ -135,8 +139,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(602, $this->pessoa_logada, 11, 'educar_situacao_lst.php');
+        if (!Gate::allows('modify', 602)) {
+            $this->simpleRedirect('educar_situacao_lst.php');
+        }
 
         $this->situacao_padrao = is_null($this->situacao_padrao) ? 0 : 1;
         $this->situacao_emprestada = is_null($this->situacao_emprestada) ? 0 : 1;
@@ -156,8 +161,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(602, $this->pessoa_logada, 11, 'educar_situacao_lst.php');
+        if (!Gate::allows('modify', 602)) {
+            $this->simpleRedirect('educar_situacao_lst.php');
+        }
 
         $this->situacao_padrao = is_null($this->situacao_padrao) ? 0 : 1;
         $this->situacao_emprestada = is_null($this->situacao_emprestada) ? 0 : 1;
@@ -176,8 +182,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(602, $this->pessoa_logada, 11, 'educar_situacao_lst.php');
+        if (!Gate::allows('remove', 602)) {
+            $this->simpleRedirect('educar_situacao_lst.php');
+        }
 
         $obj = new clsPmieducarSituacao($this->cod_situacao, $this->pessoa_logada, null, null, null, null, null, null, null, null, 0);
         $excluiu = $obj->excluir();

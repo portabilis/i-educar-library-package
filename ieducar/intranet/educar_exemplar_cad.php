@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -35,8 +37,9 @@ return new class extends clsCadastro {
 
         $this->cod_exemplar=$_GET['cod_exemplar'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        if (!Gate::allows('modify', 606)) {
+            $this->simpleRedirect('educar_exemplar_lst.php');
+        }
 
         if (is_numeric($this->cod_exemplar)) {
             $obj = new clsPmieducarExemplar($this->cod_exemplar);
@@ -58,7 +61,7 @@ return new class extends clsCadastro {
 
                 $this->data_aquisicao = dataFromPgToBr($this->data_aquisicao);
 
-                if ($obj_permissoes->permissao_excluir(606, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 606)) {
                     $this->fexcluir = true;
                 }
 
@@ -112,8 +115,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        if (!Gate::allows('modify', 606)) {
+            $this->simpleRedirect('educar_exemplar_lst.php');
+        }
 
         $this->preco = str_replace('.', '', $this->preco);
         $this->preco = str_replace(',', '.', $this->preco);
@@ -142,8 +146,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        if (!Gate::allows('modify', 606)) {
+            $this->simpleRedirect('educar_exemplar_lst.php');
+        }
 
         $this->preco = str_replace('.', '', $this->preco);
         $this->preco = str_replace(',', '.', $this->preco);
@@ -171,8 +176,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(606, $this->pessoa_logada, 11, 'educar_exemplar_lst.php');
+        if (!Gate::allows('remove', 606)) {
+            $this->simpleRedirect('educar_exemplar_lst.php');
+        }
         $this->data_aquisicao = dataToBanco($this->data_aquisicao);
 
         $obj = new clsPmieducarExemplar($this->cod_exemplar, $this->ref_cod_fonte, $this->ref_cod_motivo_baixa, $this->ref_cod_acervo, $this->ref_cod_situacao, $this->pessoa_logada, $this->pessoa_logada, $this->permite_emprestimo, $this->preco, $this->data_cadastro, $this->data_exclusao, 0, $this->data_aquisicao);

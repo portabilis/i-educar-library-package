@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -18,8 +20,9 @@ return new class extends clsCadastro {
 
         $this->id = $_GET['id'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        if (!Gate::allows('modify', 592)) {
+            $this->simpleRedirect('educar_categoria_lst.php');
+        }
 
         if (is_numeric($this->id)) {
             $obj = new clsPmieducarCategoriaObra($this->id);
@@ -30,8 +33,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                $obj_permissoes = new clsPermissoes();
-                if ($obj_permissoes->permissao_excluir(592, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 592)) {
                     $this->fexcluir = true;
                 }
                 $retorno = 'Editar';
@@ -58,8 +60,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        if (!Gate::allows('modify', 592)) {
+            $this->simpleRedirect('educar_categoria_lst.php');
+        }
 
         $obj = new clsPmieducarCategoriaObra(0, $this->descricao, $this->observacoes);
         $this->id = $cadastrou = $obj->cadastra();
@@ -77,8 +80,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        if (!Gate::allows('modify', 592)) {
+            $this->simpleRedirect('educar_categoria_lst.php');
+        }
 
         $obj = new clsPmieducarCategoriaObra($this->id, $this->descricao, $this->observacoes);
         $editou = $obj->edita();
@@ -94,8 +98,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(592, $this->pessoa_logada, 11, 'educar_categoria_lst.php');
+        if (!Gate::allows('remove', 592)) {
+            $this->simpleRedirect('educar_categoria_lst.php');
+        }
 
         $obj = new clsPmieducarCategoriaObra($this->id);
         $excluiu = $obj->excluir();

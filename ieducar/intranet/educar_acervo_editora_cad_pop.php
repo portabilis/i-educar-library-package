@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\State;
+use Illuminate\Support\Facades\Gate;
 
 return new class extends clsCadastro {
     /**
@@ -32,8 +33,9 @@ return new class extends clsCadastro {
     {
         $retorno = 'Novo';
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        if (!Gate::allows('modify', 595)) {
+            $this->simpleRedirect('educar_acervo_editora_lst.php');
+        }
 
         return $retorno;
     }
@@ -74,8 +76,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(595, $this->pessoa_logada, 11, 'educar_acervo_editora_lst.php');
+        if (!Gate::allows('modify', 595)) {
+            $this->simpleRedirect('educar_acervo_editora_lst.php');
+        }
 
         $this->cep = idFederal2int($this->cep);
 

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -27,8 +29,9 @@ return new class extends clsCadastro {
 
         $this->cod_exemplar_tipo=$_GET['cod_exemplar_tipo'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(597, $this->pessoa_logada, 11, 'educar_exemplar_tipo_lst.php');
+        if (!Gate::allows('modify', 597)) {
+            $this->simpleRedirect('educar_exemplar_tipo_lst.php');
+        }
 
         if (is_numeric($this->cod_exemplar_tipo)) {
             $obj = new clsPmieducarExemplarTipo($this->cod_exemplar_tipo);
@@ -45,7 +48,7 @@ return new class extends clsCadastro {
                     $this->ref_cod_escola = $det_biblioteca['ref_cod_escola'];
                 }
 
-                if ($obj_permissoes->permissao_excluir(597, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 597)) {
                     $this->fexcluir = true;
                 }
                 $retorno = 'Editar';
@@ -115,8 +118,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(597, $this->pessoa_logada, 11, 'educar_exemplar_tipo_lst.php');
+        if (!Gate::allows('modify', 597)) {
+            $this->simpleRedirect('educar_exemplar_tipo_lst.php');
+        }
 
         $array_tipos = [];
         foreach ($_POST as $key => $cliente_tipo) {
@@ -155,8 +159,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(597, $this->pessoa_logada, 11, 'educar_exemplar_tipo_lst.php');
+        if (!Gate::allows('modify', 597)) {
+            $this->simpleRedirect('educar_exemplar_tipo_lst.php');
+        }
 
         $array_tipos = [];
         foreach ($_POST as $key => $cliente_tipo) {
@@ -193,8 +198,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(597, $this->pessoa_logada, 11, 'educar_exemplar_tipo_lst.php');
+        if (!Gate::allows('remove', 597)) {
+            $this->simpleRedirect('educar_exemplar_tipo_lst.php');
+        }
 
         $obj = new clsPmieducarExemplarTipo($this->cod_exemplar_tipo, null, $this->pessoa_logada, null, null, null, null, null, 0);
         $excluiu = $obj->excluir();

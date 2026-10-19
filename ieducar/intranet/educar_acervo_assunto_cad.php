@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsCadastro {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -23,8 +25,9 @@ return new class extends clsCadastro {
 
         $this->cod_acervo_assunto=$_GET['cod_acervo_assunto'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_acervo_assunto_lst.php');
+        if (!Gate::allows('modify', 592)) {
+            $this->simpleRedirect('educar_acervo_assunto_lst.php');
+        }
 
         if (is_numeric($this->cod_acervo_assunto)) {
             $obj = new clsPmieducarAcervoAssunto($this->cod_acervo_assunto);
@@ -34,8 +37,7 @@ return new class extends clsCadastro {
                     $this->$campo = $val;
                 }
 
-                $obj_permissoes = new clsPermissoes();
-                if ($obj_permissoes->permissao_excluir(592, $this->pessoa_logada, 11)) {
+                if (Gate::allows('remove', 592)) {
                     $this->fexcluir = true;
                 }
 
@@ -65,8 +67,9 @@ return new class extends clsCadastro {
 
     public function Novo()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_acervo_assunto_lst.php');
+        if (!Gate::allows('modify', 592)) {
+            $this->simpleRedirect('educar_acervo_assunto_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoAssunto(null, null, $this->pessoa_logada, $this->nm_assunto, $this->descricao, null, null, 1);#, $this->ref_cod_biblioteca );
         $this->cod_acervo_assunto = $cadastrou = $obj->cadastra();
@@ -84,8 +87,9 @@ return new class extends clsCadastro {
 
     public function Editar()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(592, $this->pessoa_logada, 11, 'educar_acervo_assunto_lst.php');
+        if (!Gate::allows('modify', 592)) {
+            $this->simpleRedirect('educar_acervo_assunto_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoAssunto($this->cod_acervo_assunto, $this->pessoa_logada, null, $this->nm_assunto, $this->descricao, null, null, 1);#, $this->ref_cod_biblioteca);
         $editou = $obj->edita();
@@ -102,8 +106,9 @@ return new class extends clsCadastro {
 
     public function Excluir()
     {
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_excluir(592, $this->pessoa_logada, 11, 'educar_acervo_assunto_lst.php');
+        if (!Gate::allows('remove', 592)) {
+            $this->simpleRedirect('educar_acervo_assunto_lst.php');
+        }
 
         $obj = new clsPmieducarAcervoAssunto($this->cod_acervo_assunto, $this->pessoa_logada, null, null, null, null, null, 0);
         $excluiu = $obj->excluir();

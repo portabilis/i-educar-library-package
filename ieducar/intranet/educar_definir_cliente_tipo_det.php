@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsDetalhe {
     /**
      * Titulo no topo da pagina
@@ -79,8 +81,7 @@ return new class extends clsDetalhe {
                 }
             }
         }
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(623, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 623)) {
             $this->url_novo = 'educar_definir_cliente_tipo_cad.php';
             $this->url_editar = "educar_definir_cliente_tipo_cad.php?cod_cliente={$cliente['cod_cliente']}&cod_cliente_tipo={$cliente['cod_cliente_tipo']}";
         }

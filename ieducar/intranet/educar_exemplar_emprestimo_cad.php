@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\LegacyPerson;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 
 return new class extends clsCadastro {
@@ -37,8 +38,9 @@ return new class extends clsCadastro {
 
         $this->cod_emprestimo=$_GET['cod_emprestimo'];
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(610, $this->pessoa_logada, 11, 'educar_exemplar_emprestimo_lst.php');
+        if (!Gate::allows('modify', 610)) {
+            $this->simpleRedirect('educar_exemplar_emprestimo_lst.php');
+        }
 
         if (is_numeric($this->cod_emprestimo)) {
             $obj = new clsPmieducarExemplarEmprestimo($this->cod_emprestimo);
@@ -323,8 +325,9 @@ return new class extends clsCadastro {
     {
         $this->ref_cod_cliente = Session::get('emprestimo.cod_cliente');
 
-        $obj_permissoes = new clsPermissoes();
-        $obj_permissoes->permissao_cadastra(610, $this->pessoa_logada, 11, 'educar_exemplar_emprestimo_lst.php');
+        if (!Gate::allows('modify', 610)) {
+            $this->simpleRedirect('educar_exemplar_emprestimo_lst.php');
+        }
 
         $this->exemplar_emprestimo = unserialize(urldecode($this->exemplar_emprestimo));
         if ($this->exemplar_emprestimo) {

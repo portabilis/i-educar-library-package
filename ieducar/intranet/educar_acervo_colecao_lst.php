@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Gate;
+
 return new class extends clsListagem {
     /**
      * Referencia pega da session para o idpes do usuario atual
@@ -103,8 +105,7 @@ return new class extends clsListagem {
             }
         }
         $this->addPaginador2('educar_acervo_colecao_lst.php', $total, $_GET, $this->nome, $this->limite);
-        $obj_permissoes = new clsPermissoes();
-        if ($obj_permissoes->permissao_cadastra(593, $this->pessoa_logada, 11)) {
+        if (Gate::allows('modify', 593)) {
             $this->acao = 'go("educar_acervo_colecao_cad.php")';
             $this->nome_acao = 'Novo';
         }

@@ -2,6 +2,8 @@
 
 class Portabilis_View_Helper_DynamicInput_BibliotecaPesquisaObra extends Portabilis_View_Helper_DynamicInput_Core
 {
+    use \iEducar\Packages\Library\Support\UserLibrary;
+
     protected function getAcervoId($id = null)
     {
         if (!$id && $this->viewInstance->ref_cod_acervo) {

@@ -2,6 +2,8 @@
 
 class Portabilis_View_Helper_DynamicInput_BibliotecaSituacao extends Portabilis_View_Helper_DynamicInput_CoreSelect
 {
+    use \iEducar\Packages\Library\Support\UserLibrary;
+
     protected function inputName()
     {
         return 'ref_cod_situacao';

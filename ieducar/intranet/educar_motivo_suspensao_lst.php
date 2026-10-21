@@ -57,7 +57,7 @@ return new class extends clsListagem {
         $get_escola = true;
         $get_biblioteca = true;
         $get_cabecalho = 'lista_busca';
-        include('include/pmieducar/educar_campo_lista.php');
+        include('include/pmieducar/educar_campo_lista_biblioteca.php');
 
         // outros Filtros
         $this->campoTexto('nm_motivo', 'Motivo Suspensão', $this->nm_motivo, 30, 255, false);

@@ -2,7 +2,7 @@
 
 class Portabilis_View_Helper_DynamicInput_Biblioteca extends Portabilis_View_Helper_DynamicInput_CoreSelect
 {
-    use \iEducar\Packages\Library\Support\CurrentLibrary;
+    use \iEducar\Packages\Library\Support\UserLibrary;
 
     protected function inputValue($value = null)
     {

@@ -2,9 +2,9 @@
 
 namespace iEducar\Packages\Library\Support;
 
-use clsPmieducarBibliotecaUsuario;
+use iEducar\Packages\Library\Models\LegacyUserLibrary;
 
-trait CurrentLibrary
+trait UserLibrary
 {
     protected function getBibliotecaId($bibliotecaId = null)
     {
@@ -16,8 +16,8 @@ trait CurrentLibrary
             return $this->viewInstance->ref_cod_biblioteca;
         }
 
-        $bibliotecas = new clsPmieducarBibliotecaUsuario()->lista(null, $this->getCurrentUserId());
-
-        return $bibliotecas ? $bibliotecas[0]['ref_cod_biblioteca'] : null;
+        return LegacyUserLibrary::query()
+            ->where('ref_cod_usuario', $this->getCurrentUserId())
+            ->value('ref_cod_biblioteca');
     }
 }

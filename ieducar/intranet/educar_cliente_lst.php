@@ -73,7 +73,7 @@ return new class extends clsListagem {
         $get_biblioteca           = true;
         $get_cliente_tipo         = true;
 
-        include('include/pmieducar/educar_campo_lista.php');
+        include('include/pmieducar/educar_campo_lista_biblioteca.php');
 
         // Paginador
         $this->limite = 20;

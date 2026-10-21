@@ -78,7 +78,7 @@ return new class extends clsCadastro {
         $get_biblioteca = 1;
         $instituicao_obrigatorio = true;
         $biblioteca_obrigatorio = true;
-        include('include/pmieducar/educar_campo_lista.php');
+        include('include/pmieducar/educar_campo_lista_biblioteca.php');
 
         // text
         $this->campoTexto('nm_autor', 'Autor', $this->nm_autor, 30, 255, true);

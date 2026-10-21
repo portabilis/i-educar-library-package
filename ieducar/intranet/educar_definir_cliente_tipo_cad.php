@@ -100,7 +100,7 @@ return new class extends clsCadastro {
             $escola_desabilitado = true;
             $biblioteca_desabilitado = true;
         }
-        include('include/pmieducar/educar_campo_lista.php');
+        include('include/pmieducar/educar_campo_lista_biblioteca.php');
         if (!$this->cod_cliente) {
             $opcoes_cliente = [ '' => 'Pesquise a pessoa clicando na lupa ao lado' ];
 

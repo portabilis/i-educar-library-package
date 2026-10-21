@@ -2,6 +2,8 @@
 
 class Portabilis_View_Helper_DynamicInput_BibliotecaTipoExemplar extends Portabilis_View_Helper_DynamicInput_CoreSelect
 {
+    use \iEducar\Packages\Library\Support\CurrentLibrary;
+
     protected function inputName()
     {
         return 'ref_cod_exemplar_tipo';

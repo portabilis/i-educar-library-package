@@ -59,7 +59,7 @@ return new class extends clsListagem {
         $get_biblioteca = true;
         $get_cabecalho = 'lista_busca';
 
-        include('include/pmieducar/educar_campo_lista.php');
+        include('include/pmieducar/educar_campo_lista_biblioteca.php');
         // outros Filtros
         $this->campoTexto('nm_colecao', 'Coleção', $this->nm_colecao, 30, 255, false);
 

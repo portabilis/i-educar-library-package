@@ -44,7 +44,7 @@ return new class extends clsCadastro {
         $get_biblioteca = 1;
         $instituicao_obrigatorio = true;
         $biblioteca_obrigatorio = true;
-        include('include/pmieducar/educar_campo_lista.php');
+        include('include/pmieducar/educar_campo_lista_biblioteca.php');
         // text
         $this->campoNumero('login_', 'Login', $this->login_, 9, 9, false);
         $this->campoSenha('senha_', 'Senha', $this->senha_, false);

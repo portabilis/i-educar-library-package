@@ -2,6 +2,8 @@
 
 class Portabilis_View_Helper_DynamicInput_Biblioteca extends Portabilis_View_Helper_DynamicInput_CoreSelect
 {
+    use \iEducar\Packages\Library\Support\CurrentLibrary;
+
     protected function inputValue($value = null)
     {
         return $this->getBibliotecaId($value);

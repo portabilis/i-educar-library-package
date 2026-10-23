@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacySchool;
 use Illuminate\Support\Facades\Gate;
 
@@ -123,14 +124,17 @@ return new class extends clsListagem {
         $obj_banco = new clsBanco();
         // monta a lista
         if (is_array($lista) && count($lista)) {
+            $nomesInstituicoes = LegacyInstitution::query()
+                ->whereIn('cod_instituicao', array_column($lista, 'cod_instituicao'))
+                ->pluck('nm_instituicao', 'cod_instituicao');
+
             foreach ($lista as $registro) {
                 $obj_ref_cod_biblioteca = new clsPmieducarBiblioteca($registro['cod_biblioteca']);
                 $det_ref_cod_biblioteca = $obj_ref_cod_biblioteca->detalhe();
                 $registro['cod_biblioteca'] = $det_ref_cod_biblioteca['nm_biblioteca'];
+                $nm_instituicao = null;
                 if ($registro['cod_instituicao']) {
-                    $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['cod_instituicao']);
-                    $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-                    $registro['cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+                    $nm_instituicao = $nomesInstituicoes[$registro['cod_instituicao']] ?? null;
                 }
                 if ($registro['cod_escola']) {
                     $registro['cod_escola'] = LegacySchool::query()
@@ -153,7 +157,7 @@ return new class extends clsListagem {
                     $lista_busca[] = "<a href=\"educar_definir_cliente_tipo_det.php?cod_cliente={$registro['cod_cliente']}&cod_cliente_tipo={$registro['cod_cliente_tipo']}\">{$registro['cod_escola']}</a>";
                 }
                 if ($nivel_usuario == 1) {
-                    $lista_busca[] = "<a href=\"educar_definir_cliente_tipo_det.php?cod_cliente={$registro['cod_cliente']}&cod_cliente_tipo={$registro['cod_cliente_tipo']}\">{$registro['cod_instituicao']}</a>";
+                    $lista_busca[] = "<a href=\"educar_definir_cliente_tipo_det.php?cod_cliente={$registro['cod_cliente']}&cod_cliente_tipo={$registro['cod_cliente_tipo']}\">{$nm_instituicao}</a>";
                 }
 
                 $this->addLinhas($lista_busca);

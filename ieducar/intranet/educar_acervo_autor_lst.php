@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacySchool;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -129,15 +130,15 @@ return new class extends clsListagem {
 
                 switch ($nivel_usuario) {
                     case 1:
-                        $obj_ref_cod_intituicao = new clsPmieducarInstituicao($det_biblioteca['ref_cod_instituicao']);
-                        $det_ref_cod_intituicao = $obj_ref_cod_intituicao->detalhe();
-                        $registro['ref_cod_instituicao'] = $det_ref_cod_intituicao['nm_instituicao'];
+                        $nm_instituicao = LegacyInstitution::query()
+                            ->whereKey($det_biblioteca['ref_cod_instituicao'])
+                            ->value('nm_instituicao');
 
                         $this->addLinhas([
                             "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$registro['nm_autor']}</a>",
                             "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$det_biblioteca['nm_biblioteca']}</a>",
                             "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$registro['ref_cod_escola']}</a>",
-                            "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$registro['ref_cod_instituicao']}</a>"
+                            "<a href=\"educar_acervo_autor_det.php?cod_acervo_autor={$registro['cod_acervo_autor']}\">{$nm_instituicao}</a>"
                         ]);
 
                         break;

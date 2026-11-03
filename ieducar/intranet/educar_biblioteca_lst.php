@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacySchool;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -107,10 +108,12 @@ return new class extends clsListagem {
                 ->join('cadastro.juridica', 'cadastro.juridica.idpes', 'pmieducar.escola.ref_idpes')
                 ->pluck('cadastro.juridica.fantasia', 'pmieducar.escola.cod_escola');
 
+            $nomesInstituicoes = LegacyInstitution::query()
+                ->whereIn('cod_instituicao', array_column($lista, 'ref_cod_instituicao'))
+                ->pluck('nm_instituicao', 'cod_instituicao');
+
             foreach ($lista as $registro) {
-                $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-                $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-                $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+                $nm_instituicao = $nomesInstituicoes[$registro['ref_cod_instituicao']] ?? null;
 
                 $registro['ref_cod_escola'] = $fantasias[$registro['ref_cod_escola']] ?? null;
 
@@ -120,7 +123,7 @@ return new class extends clsListagem {
                 ];
 
                 if ($nivel_usuario == 1) {
-                    $lista_busca[] = "<a href=\"educar_biblioteca_det.php?cod_biblioteca={$registro['cod_biblioteca']}\">{$registro['ref_cod_instituicao']}</a>";
+                    $lista_busca[] = "<a href=\"educar_biblioteca_det.php?cod_biblioteca={$registro['cod_biblioteca']}\">{$nm_instituicao}</a>";
                 }
                 $this->addLinhas($lista_busca);
             }

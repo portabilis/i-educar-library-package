@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacyPerson;
 use App\Models\LegacySchool;
 use Illuminate\Support\Facades\Auth;
@@ -34,9 +35,9 @@ return new class extends clsDetalhe {
             $this->simpleRedirect('educar_biblioteca_lst.php');
         }
 
-        $obj_ref_cod_instituicao = new clsPmieducarInstituicao($registro['ref_cod_instituicao']);
-        $det_ref_cod_instituicao = $obj_ref_cod_instituicao->detalhe();
-        $registro['ref_cod_instituicao'] = $det_ref_cod_instituicao['nm_instituicao'];
+        $nm_instituicao = LegacyInstitution::query()
+            ->whereKey($registro['ref_cod_instituicao'])
+            ->value('nm_instituicao');
 
         $registro['ref_cod_escola'] = LegacySchool::query()
             ->joinOrganization()
@@ -45,8 +46,8 @@ return new class extends clsDetalhe {
 
         $nivel_usuario = Auth::user()->type?->level;
         if ($nivel_usuario == 1) {
-            if ($registro['ref_cod_instituicao']) {
-                $this->addDetalhe([ 'Instituição', "{$registro['ref_cod_instituicao']}"]);
+            if ($nm_instituicao) {
+                $this->addDetalhe([ 'Instituição', "{$nm_instituicao}"]);
             }
         }
         if ($registro['ref_cod_escola']) {

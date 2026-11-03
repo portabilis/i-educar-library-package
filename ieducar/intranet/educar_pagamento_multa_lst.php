@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\LegacyInstitution;
 use App\Models\LegacyPerson;
 use App\Models\LegacySchool;
 
@@ -135,8 +136,9 @@ return new class extends clsListagem {
                 $obj_bib = new clsPmieducarBiblioteca($registro['ref_cod_biblioteca']);
                 $det_bib = $obj_bib->detalhe();
                 if ($det_bib) {
-                    $obj_inst = new clsPmieducarInstituicao($det_bib['ref_cod_instituicao']);
-                    $det_inst = $obj_inst->detalhe();
+                    $nm_instituicao = LegacyInstitution::query()
+                        ->whereKey($det_bib['ref_cod_instituicao'])
+                        ->value('nm_instituicao');
                     $idpes_escola = LegacySchool::query()
                         ->joinOrganization()
                         ->whereKey($det_bib['ref_cod_escola'])
@@ -164,7 +166,7 @@ return new class extends clsListagem {
                     $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">{$nome_escola}</a>";
                 }
                 if ($nivel_usuario == 1) {
-                    $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">{$det_inst['nm_instituicao']}</a>";
+                    $lista_busca[] = "<a href=\"educar_pagamento_multa_det.php?cod_cliente={$registro['ref_cod_cliente']}&cod_cliente_tipo={$det_tipo['cod_cliente_tipo']}\">{$nm_instituicao}</a>";
                 }
                 $this->addLinhas($lista_busca);
             }

@@ -3,11 +3,20 @@
 namespace iEducar\Packages\Library\Providers;
 
 use App\Http\Controllers\LegacyController;
+use App\Support\Permissions\PermissionCatalog;
 use iEducar\Packages\Library\Commands\LibraryInstallCommand;
+use iEducar\Packages\Library\Permissions\PackagePermissions;
 use Illuminate\Support\ServiceProvider;
 
 class LibraryServiceProvider extends ServiceProvider
 {
+    public function register()
+    {
+        $this->callAfterResolving(PermissionCatalog::class, function (PermissionCatalog $catalog) {
+            $catalog->register(...PackagePermissions::definitions());
+        });
+    }
+
     public function boot()
     {
         if ($this->app->runningInConsole()) {
